@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package osdd.recipes.ide;
+
+option go_package = "github.com/opensdd/osdd-api/clients/go/osdd/recipes";
+
+import "osdd/common.proto";
+import "osdd/recipes/permissions.proto";
+
+message Ide {
+  optional Commands commands = 1;
+  optional Mcp mcp = 2;
+  optional permissions.Permissions permissions = 3;
+}
+
+message Mcp {
+  map<string, McpServer> servers = 1;
+}
+
+message McpServer {
+  oneof type {
+    HttpMcpServer http = 100;
+    StdioMcpServer stdio = 101;
+  }
+}
+
+message HttpMcpServer {
+  string url = 1;
+}
+
+message StdioMcpServer {
+  string command = 1;
+}
+
+message Commands {
+  repeated Command entries = 1;
+}
+
+message Command {
+  string name = 1;
+  CommandFrom from = 2;
+}
+
+message CommandFrom {
+  oneof type {
+    common.GitReference github = 100;
+    string cmd = 101;
+    string text = 102;
+  }
+}
+
+

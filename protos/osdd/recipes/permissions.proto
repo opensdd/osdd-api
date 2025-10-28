@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package osdd.recipes.permissions;
+
+option go_package = "github.com/opensdd/osdd-api/clients/go/osdd/recipes";
+
+message OperationPermission {
+  oneof type {
+    string bash = 100;
+    string read = 101;
+    string write = 102;
+  }
+}
+
+message Permissions {
+  repeated OperationPermission allow = 1;
+  repeated OperationPermission deny = 2;
+}
+

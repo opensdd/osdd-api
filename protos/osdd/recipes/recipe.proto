@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package osdd.recipes.recipe;
+
+option go_package = "github.com/opensdd/osdd-api/clients/go/osdd/recipes";
+
+import "osdd/recipes/context.proto";
+import "osdd/recipes/ide.proto";
+import "osdd/content.proto";
+
+message Recipe {
+  optional content.Prefetch prefetch = 1;
+  optional context.Context context = 2;
+  optional ide.Ide ide = 3;
+}
+
+message ExecutableRecipe {
+  Recipe recipe = 1;
+  EntryPoint entry_point = 2;
+}
+
+message EntryPoint {
+  string ide_type = 1;
+}

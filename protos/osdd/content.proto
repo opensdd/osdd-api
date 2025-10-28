@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package osdd.content;
+
+option go_package = "github.com/opensdd/osdd-api/clients/go/osdd";
+
+message Prefetch {
+  repeated PrefetchEntry entries = 1;
+}
+
+message PrefetchEntry {
+  oneof type {
+    string cmd = 100;
+  }
+}
+
+message PrefetchResult {
+  repeated FetchedData data = 1;
+}
+
+message FetchedData {
+  string id = 1;
+  string data = 2;
+}

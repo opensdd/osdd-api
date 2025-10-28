@@ -1,0 +1,64 @@
+{
+  "name": "@opensdd/api",
+  "version": "0.6.0",
+  "description": "API for OpenSDD",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "browser": "dist/index.browser.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "node": {
+        "import": "./dist/index.node.js",
+        "require": "./dist/index.node.cjs"
+      },
+      "browser": {
+        "import": "./dist/index.browser.js",
+        "require": "./dist/index.browser.cjs"
+      },
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensdd/osdd-api.git",
+    "directory": "clients/ts"
+  },
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "npm run build:js && npm run build:types",
+    "build:js": "rollup -c",
+    "build:dts": "tsc -p tsconfig.dts.json",
+    "build:types": "npm run build:dts && rollup -c rollup.config.dts.js",
+    "build:legacy": "tsc -p tsconfig.build.json",
+    "lint": "eslint 'src/**/*.{ts,tsx}'",
+    "test": "jest"
+  },
+  "dependencies": {
+    "ts-proto": "^2.7.7"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "@types/jest": "^29.5.12",
+    "eslint": "^9.25.0",
+    "jest": "^29.7.0",
+    "rollup": "^4.43.0",
+    "rollup-plugin-dts": "^6.1.0",
+    "ts-jest": "^29.1.2",
+    "tslib": "^2.8.1",
+    "typescript": "^5.8.3"
+  },
+  "files": [
+    "dist"
+  ],
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package osdd.recipes.context;
+
+option go_package = "github.com/opensdd/osdd-api/clients/go/osdd/recipes";
+
+import "osdd/common.proto";
+
+message Context {
+  repeated ContextEntry entries = 1;
+}
+
+message ContextEntry {
+  string path = 1;
+  ContextFrom from = 2;
+}
+
+message ContextFrom {
+  oneof type {
+    CombinedContextSource combined = 100;
+    common.GitReference github = 101;
+    string cmd = 102;
+    string text = 103;
+    string prefetch_id = 104;
+  }
+}
+
+message CombinedContextSource {
+  repeated Item items = 1;
+
+  message Item {
+    oneof type {
+      common.GitReference github = 100;
+      string cmd = 101;
+      string text = 102;
+      string prefetch_id = 103;
+    }
+  }
+}

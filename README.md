@@ -1,2 +1,1 @@
-# osdd-api
-API for OSDD
+# Set of APIs for OpenSDD

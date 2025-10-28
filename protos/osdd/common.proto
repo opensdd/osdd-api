@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package osdd.common;
+
+option go_package = "github.com/opensdd/osdd-api/clients/go/osdd";
+
+message GitReference {
+  string path = 1;
+  optional GitVersion version = 2;
+}
+
+message GitVersion {
+  oneof type {
+    string tag = 100;
+    string commit = 101;
+  }
+}

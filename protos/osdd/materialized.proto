@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package osdd.materialized;
+
+option go_package = "github.com/opensdd/osdd-api/clients/go/osdd";
+
+message MaterializedResult {
+  repeated Entry entries = 1;
+
+  message Entry {
+    oneof type {
+      FullFileContent file = 100;
+    }
+  }
+}
+
+message FullFileContent {
+  string path = 1;
+  string content = 2;
+}
