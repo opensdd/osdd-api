@@ -1,0 +1,68 @@
+name: Release TS
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release-ts:
+    name: Bump minor and publish TS to npm
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    defaults:
+      run:
+        working-directory: clients/ts
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+          cache: npm
+          cache-dependency-path: clients/ts/package-lock.json
+
+      - name: Configure git user
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        working-directory: .
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Bump minor version and capture new version
+        id: bump
+        run: |
+          NEW_VERSION=$(npm version minor --no-git-tag-version)
+          NEW_VERSION=${NEW_VERSION#v}
+          echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Commit version bump
+        run: |
+          git add clients/ts/package.json clients/ts/package-lock.json || true
+          git commit -m "chore(release): ts v${{ steps.bump.outputs.version }}" || echo "No changes to commit"
+        working-directory: .
+
+      - name: Push changes
+        run: git push
+        working-directory: .
+
+      - name: Create and push git tag
+        run: |
+          TAG="ts-v${{ steps.bump.outputs.version }}"
+          git tag -a "$TAG" -m "Release TS ${{ steps.bump.outputs.version }}"
+          git push origin "$TAG"
+        working-directory: .
+
+      - name: Build package
+        run: npm run build
+
+      - name: Publish to npm
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
