@@ -20,3 +20,13 @@ class GitVersion(_message.Message):
     tag: str
     commit: str
     def __init__(self, tag: _Optional[str] = ..., commit: _Optional[str] = ...) -> None: ...
+
+class UserInputParameter(_message.Message):
+    __slots__ = ("name", "description", "optional")
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
+    OPTIONAL_FIELD_NUMBER: _ClassVar[int]
+    name: str
+    description: str
+    optional: bool
+    def __init__(self, name: _Optional[str] = ..., description: _Optional[str] = ..., optional: bool = ...) -> None: ...

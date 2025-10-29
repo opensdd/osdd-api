@@ -239,6 +239,15 @@ func (x *ContextFrom) GetPrefetchId() string {
 	return ""
 }
 
+func (x *ContextFrom) GetUserInput() *UserInputContextSource {
+	if x != nil {
+		if x, ok := x.xxx_hidden_Type.(*contextFrom_UserInput); ok {
+			return x.UserInput
+		}
+	}
+	return nil
+}
+
 func (x *ContextFrom) SetCombined(v *CombinedContextSource) {
 	if v == nil {
 		x.xxx_hidden_Type = nil
@@ -265,6 +274,14 @@ func (x *ContextFrom) SetText(v string) {
 
 func (x *ContextFrom) SetPrefetchId(v string) {
 	x.xxx_hidden_Type = &contextFrom_PrefetchId{v}
+}
+
+func (x *ContextFrom) SetUserInput(v *UserInputContextSource) {
+	if v == nil {
+		x.xxx_hidden_Type = nil
+		return
+	}
+	x.xxx_hidden_Type = &contextFrom_UserInput{v}
 }
 
 func (x *ContextFrom) HasType() bool {
@@ -314,6 +331,14 @@ func (x *ContextFrom) HasPrefetchId() bool {
 	return ok
 }
 
+func (x *ContextFrom) HasUserInput() bool {
+	if x == nil {
+		return false
+	}
+	_, ok := x.xxx_hidden_Type.(*contextFrom_UserInput)
+	return ok
+}
+
 func (x *ContextFrom) ClearType() {
 	x.xxx_hidden_Type = nil
 }
@@ -348,12 +373,19 @@ func (x *ContextFrom) ClearPrefetchId() {
 	}
 }
 
+func (x *ContextFrom) ClearUserInput() {
+	if _, ok := x.xxx_hidden_Type.(*contextFrom_UserInput); ok {
+		x.xxx_hidden_Type = nil
+	}
+}
+
 const ContextFrom_Type_not_set_case case_ContextFrom_Type = 0
 const ContextFrom_Combined_case case_ContextFrom_Type = 100
 const ContextFrom_Github_case case_ContextFrom_Type = 101
 const ContextFrom_Cmd_case case_ContextFrom_Type = 102
 const ContextFrom_Text_case case_ContextFrom_Type = 103
 const ContextFrom_PrefetchId_case case_ContextFrom_Type = 104
+const ContextFrom_UserInput_case case_ContextFrom_Type = 105
 
 func (x *ContextFrom) WhichType() case_ContextFrom_Type {
 	if x == nil {
@@ -370,6 +402,8 @@ func (x *ContextFrom) WhichType() case_ContextFrom_Type {
 		return ContextFrom_Text_case
 	case *contextFrom_PrefetchId:
 		return ContextFrom_PrefetchId_case
+	case *contextFrom_UserInput:
+		return ContextFrom_UserInput_case
 	default:
 		return ContextFrom_Type_not_set_case
 	}
@@ -384,6 +418,7 @@ type ContextFrom_builder struct {
 	Cmd        *string
 	Text       *string
 	PrefetchId *string
+	UserInput  *UserInputContextSource
 	// -- end of xxx_hidden_Type
 }
 
@@ -405,6 +440,9 @@ func (b0 ContextFrom_builder) Build() *ContextFrom {
 	}
 	if b.PrefetchId != nil {
 		x.xxx_hidden_Type = &contextFrom_PrefetchId{*b.PrefetchId}
+	}
+	if b.UserInput != nil {
+		x.xxx_hidden_Type = &contextFrom_UserInput{b.UserInput}
 	}
 	return m0
 }
@@ -443,6 +481,10 @@ type contextFrom_PrefetchId struct {
 	PrefetchId string `protobuf:"bytes,104,opt,name=prefetch_id,json=prefetchId,proto3,oneof"`
 }
 
+type contextFrom_UserInput struct {
+	UserInput *UserInputContextSource `protobuf:"bytes,105,opt,name=user_input,json=userInput,proto3,oneof"`
+}
+
 func (*contextFrom_Combined) isContextFrom_Type() {}
 
 func (*contextFrom_Github) isContextFrom_Type() {}
@@ -452,6 +494,8 @@ func (*contextFrom_Cmd) isContextFrom_Type() {}
 func (*contextFrom_Text) isContextFrom_Type() {}
 
 func (*contextFrom_PrefetchId) isContextFrom_Type() {}
+
+func (*contextFrom_UserInput) isContextFrom_Type() {}
 
 type CombinedContextSource struct {
 	state            protoimpl.MessageState         `protogen:"opaque.v1"`
@@ -512,6 +556,65 @@ func (b0 CombinedContextSource_builder) Build() *CombinedContextSource {
 	return m0
 }
 
+type UserInputContextSource struct {
+	state              protoimpl.MessageState      `protogen:"opaque.v1"`
+	xxx_hidden_Entries *[]*osdd.UserInputParameter `protobuf:"bytes,1,rep,name=entries,proto3"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *UserInputContextSource) Reset() {
+	*x = UserInputContextSource{}
+	mi := &file_osdd_recipes_context_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserInputContextSource) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserInputContextSource) ProtoMessage() {}
+
+func (x *UserInputContextSource) ProtoReflect() protoreflect.Message {
+	mi := &file_osdd_recipes_context_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (x *UserInputContextSource) GetEntries() []*osdd.UserInputParameter {
+	if x != nil {
+		if x.xxx_hidden_Entries != nil {
+			return *x.xxx_hidden_Entries
+		}
+	}
+	return nil
+}
+
+func (x *UserInputContextSource) SetEntries(v []*osdd.UserInputParameter) {
+	x.xxx_hidden_Entries = &v
+}
+
+type UserInputContextSource_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	Entries []*osdd.UserInputParameter
+}
+
+func (b0 UserInputContextSource_builder) Build() *UserInputContextSource {
+	m0 := &UserInputContextSource{}
+	b, x := &b0, m0
+	_, _ = b, x
+	x.xxx_hidden_Entries = &b.Entries
+	return m0
+}
+
 type CombinedContextSource_Item struct {
 	state           protoimpl.MessageState            `protogen:"opaque.v1"`
 	xxx_hidden_Type isCombinedContextSource_Item_Type `protobuf_oneof:"type"`
@@ -521,7 +624,7 @@ type CombinedContextSource_Item struct {
 
 func (x *CombinedContextSource_Item) Reset() {
 	*x = CombinedContextSource_Item{}
-	mi := &file_osdd_recipes_context_proto_msgTypes[4]
+	mi := &file_osdd_recipes_context_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -533,7 +636,7 @@ func (x *CombinedContextSource_Item) String() string {
 func (*CombinedContextSource_Item) ProtoMessage() {}
 
 func (x *CombinedContextSource_Item) ProtoReflect() protoreflect.Message {
-	mi := &file_osdd_recipes_context_proto_msgTypes[4]
+	mi := &file_osdd_recipes_context_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -580,6 +683,15 @@ func (x *CombinedContextSource_Item) GetPrefetchId() string {
 	return ""
 }
 
+func (x *CombinedContextSource_Item) GetUserInput() *UserInputContextSource {
+	if x != nil {
+		if x, ok := x.xxx_hidden_Type.(*combinedContextSource_Item_UserInput); ok {
+			return x.UserInput
+		}
+	}
+	return nil
+}
+
 func (x *CombinedContextSource_Item) SetGithub(v *osdd.GitReference) {
 	if v == nil {
 		x.xxx_hidden_Type = nil
@@ -598,6 +710,14 @@ func (x *CombinedContextSource_Item) SetText(v string) {
 
 func (x *CombinedContextSource_Item) SetPrefetchId(v string) {
 	x.xxx_hidden_Type = &combinedContextSource_Item_PrefetchId{v}
+}
+
+func (x *CombinedContextSource_Item) SetUserInput(v *UserInputContextSource) {
+	if v == nil {
+		x.xxx_hidden_Type = nil
+		return
+	}
+	x.xxx_hidden_Type = &combinedContextSource_Item_UserInput{v}
 }
 
 func (x *CombinedContextSource_Item) HasType() bool {
@@ -639,6 +759,14 @@ func (x *CombinedContextSource_Item) HasPrefetchId() bool {
 	return ok
 }
 
+func (x *CombinedContextSource_Item) HasUserInput() bool {
+	if x == nil {
+		return false
+	}
+	_, ok := x.xxx_hidden_Type.(*combinedContextSource_Item_UserInput)
+	return ok
+}
+
 func (x *CombinedContextSource_Item) ClearType() {
 	x.xxx_hidden_Type = nil
 }
@@ -667,11 +795,18 @@ func (x *CombinedContextSource_Item) ClearPrefetchId() {
 	}
 }
 
+func (x *CombinedContextSource_Item) ClearUserInput() {
+	if _, ok := x.xxx_hidden_Type.(*combinedContextSource_Item_UserInput); ok {
+		x.xxx_hidden_Type = nil
+	}
+}
+
 const CombinedContextSource_Item_Type_not_set_case case_CombinedContextSource_Item_Type = 0
 const CombinedContextSource_Item_Github_case case_CombinedContextSource_Item_Type = 100
 const CombinedContextSource_Item_Cmd_case case_CombinedContextSource_Item_Type = 101
 const CombinedContextSource_Item_Text_case case_CombinedContextSource_Item_Type = 102
 const CombinedContextSource_Item_PrefetchId_case case_CombinedContextSource_Item_Type = 103
+const CombinedContextSource_Item_UserInput_case case_CombinedContextSource_Item_Type = 104
 
 func (x *CombinedContextSource_Item) WhichType() case_CombinedContextSource_Item_Type {
 	if x == nil {
@@ -686,6 +821,8 @@ func (x *CombinedContextSource_Item) WhichType() case_CombinedContextSource_Item
 		return CombinedContextSource_Item_Text_case
 	case *combinedContextSource_Item_PrefetchId:
 		return CombinedContextSource_Item_PrefetchId_case
+	case *combinedContextSource_Item_UserInput:
+		return CombinedContextSource_Item_UserInput_case
 	default:
 		return CombinedContextSource_Item_Type_not_set_case
 	}
@@ -699,6 +836,7 @@ type CombinedContextSource_Item_builder struct {
 	Cmd        *string
 	Text       *string
 	PrefetchId *string
+	UserInput  *UserInputContextSource
 	// -- end of xxx_hidden_Type
 }
 
@@ -718,13 +856,16 @@ func (b0 CombinedContextSource_Item_builder) Build() *CombinedContextSource_Item
 	if b.PrefetchId != nil {
 		x.xxx_hidden_Type = &combinedContextSource_Item_PrefetchId{*b.PrefetchId}
 	}
+	if b.UserInput != nil {
+		x.xxx_hidden_Type = &combinedContextSource_Item_UserInput{b.UserInput}
+	}
 	return m0
 }
 
 type case_CombinedContextSource_Item_Type protoreflect.FieldNumber
 
 func (x case_CombinedContextSource_Item_Type) String() string {
-	md := file_osdd_recipes_context_proto_msgTypes[4].Descriptor()
+	md := file_osdd_recipes_context_proto_msgTypes[5].Descriptor()
 	if x == 0 {
 		return "not set"
 	}
@@ -751,6 +892,10 @@ type combinedContextSource_Item_PrefetchId struct {
 	PrefetchId string `protobuf:"bytes,103,opt,name=prefetch_id,json=prefetchId,proto3,oneof"`
 }
 
+type combinedContextSource_Item_UserInput struct {
+	UserInput *UserInputContextSource `protobuf:"bytes,104,opt,name=user_input,json=userInput,proto3,oneof"`
+}
+
 func (*combinedContextSource_Item_Github) isCombinedContextSource_Item_Type() {}
 
 func (*combinedContextSource_Item_Cmd) isCombinedContextSource_Item_Type() {}
@@ -758,6 +903,8 @@ func (*combinedContextSource_Item_Cmd) isCombinedContextSource_Item_Type() {}
 func (*combinedContextSource_Item_Text) isCombinedContextSource_Item_Type() {}
 
 func (*combinedContextSource_Item_PrefetchId) isCombinedContextSource_Item_Type() {}
+
+func (*combinedContextSource_Item_UserInput) isCombinedContextSource_Item_Type() {}
 
 var File_osdd_recipes_context_proto protoreflect.FileDescriptor
 
@@ -768,46 +915,57 @@ const file_osdd_recipes_context_proto_rawDesc = "" +
 	"\aentries\x18\x01 \x03(\v2\".osdd.recipes.context.ContextEntryR\aentries\"Y\n" +
 	"\fContextEntry\x12\x12\n" +
 	"\x04path\x18\x01 \x01(\tR\x04path\x125\n" +
-	"\x04from\x18\x02 \x01(\v2!.osdd.recipes.context.ContextFromR\x04from\"\xe2\x01\n" +
+	"\x04from\x18\x02 \x01(\v2!.osdd.recipes.context.ContextFromR\x04from\"\xb1\x02\n" +
 	"\vContextFrom\x12I\n" +
 	"\bcombined\x18d \x01(\v2+.osdd.recipes.context.CombinedContextSourceH\x00R\bcombined\x123\n" +
 	"\x06github\x18e \x01(\v2\x19.osdd.common.GitReferenceH\x00R\x06github\x12\x12\n" +
 	"\x03cmd\x18f \x01(\tH\x00R\x03cmd\x12\x14\n" +
 	"\x04text\x18g \x01(\tH\x00R\x04text\x12!\n" +
 	"\vprefetch_id\x18h \x01(\tH\x00R\n" +
-	"prefetchIdB\x06\n" +
-	"\x04type\"\xf2\x01\n" +
+	"prefetchId\x12M\n" +
+	"\n" +
+	"user_input\x18i \x01(\v2,.osdd.recipes.context.UserInputContextSourceH\x00R\tuserInputB\x06\n" +
+	"\x04type\"\xc1\x02\n" +
 	"\x15CombinedContextSource\x12F\n" +
-	"\x05items\x18\x01 \x03(\v20.osdd.recipes.context.CombinedContextSource.ItemR\x05items\x1a\x90\x01\n" +
+	"\x05items\x18\x01 \x03(\v20.osdd.recipes.context.CombinedContextSource.ItemR\x05items\x1a\xdf\x01\n" +
 	"\x04Item\x123\n" +
 	"\x06github\x18d \x01(\v2\x19.osdd.common.GitReferenceH\x00R\x06github\x12\x12\n" +
 	"\x03cmd\x18e \x01(\tH\x00R\x03cmd\x12\x14\n" +
 	"\x04text\x18f \x01(\tH\x00R\x04text\x12!\n" +
 	"\vprefetch_id\x18g \x01(\tH\x00R\n" +
-	"prefetchIdB\x06\n" +
-	"\x04typeB5Z3github.com/opensdd/osdd-api/clients/go/osdd/recipesb\x06proto3"
+	"prefetchId\x12M\n" +
+	"\n" +
+	"user_input\x18h \x01(\v2,.osdd.recipes.context.UserInputContextSourceH\x00R\tuserInputB\x06\n" +
+	"\x04type\"S\n" +
+	"\x16UserInputContextSource\x129\n" +
+	"\aentries\x18\x01 \x03(\v2\x1f.osdd.common.UserInputParameterR\aentriesB5Z3github.com/opensdd/osdd-api/clients/go/osdd/recipesb\x06proto3"
 
-var file_osdd_recipes_context_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_osdd_recipes_context_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_osdd_recipes_context_proto_goTypes = []any{
 	(*Context)(nil),                    // 0: osdd.recipes.context.Context
 	(*ContextEntry)(nil),               // 1: osdd.recipes.context.ContextEntry
 	(*ContextFrom)(nil),                // 2: osdd.recipes.context.ContextFrom
 	(*CombinedContextSource)(nil),      // 3: osdd.recipes.context.CombinedContextSource
-	(*CombinedContextSource_Item)(nil), // 4: osdd.recipes.context.CombinedContextSource.Item
-	(*osdd.GitReference)(nil),          // 5: osdd.common.GitReference
+	(*UserInputContextSource)(nil),     // 4: osdd.recipes.context.UserInputContextSource
+	(*CombinedContextSource_Item)(nil), // 5: osdd.recipes.context.CombinedContextSource.Item
+	(*osdd.GitReference)(nil),          // 6: osdd.common.GitReference
+	(*osdd.UserInputParameter)(nil),    // 7: osdd.common.UserInputParameter
 }
 var file_osdd_recipes_context_proto_depIdxs = []int32{
 	1, // 0: osdd.recipes.context.Context.entries:type_name -> osdd.recipes.context.ContextEntry
 	2, // 1: osdd.recipes.context.ContextEntry.from:type_name -> osdd.recipes.context.ContextFrom
 	3, // 2: osdd.recipes.context.ContextFrom.combined:type_name -> osdd.recipes.context.CombinedContextSource
-	5, // 3: osdd.recipes.context.ContextFrom.github:type_name -> osdd.common.GitReference
-	4, // 4: osdd.recipes.context.CombinedContextSource.items:type_name -> osdd.recipes.context.CombinedContextSource.Item
-	5, // 5: osdd.recipes.context.CombinedContextSource.Item.github:type_name -> osdd.common.GitReference
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	6, // 3: osdd.recipes.context.ContextFrom.github:type_name -> osdd.common.GitReference
+	4, // 4: osdd.recipes.context.ContextFrom.user_input:type_name -> osdd.recipes.context.UserInputContextSource
+	5, // 5: osdd.recipes.context.CombinedContextSource.items:type_name -> osdd.recipes.context.CombinedContextSource.Item
+	7, // 6: osdd.recipes.context.UserInputContextSource.entries:type_name -> osdd.common.UserInputParameter
+	6, // 7: osdd.recipes.context.CombinedContextSource.Item.github:type_name -> osdd.common.GitReference
+	4, // 8: osdd.recipes.context.CombinedContextSource.Item.user_input:type_name -> osdd.recipes.context.UserInputContextSource
+	9, // [9:9] is the sub-list for method output_type
+	9, // [9:9] is the sub-list for method input_type
+	9, // [9:9] is the sub-list for extension type_name
+	9, // [9:9] is the sub-list for extension extendee
+	0, // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_osdd_recipes_context_proto_init() }
@@ -821,12 +979,14 @@ func file_osdd_recipes_context_proto_init() {
 		(*contextFrom_Cmd)(nil),
 		(*contextFrom_Text)(nil),
 		(*contextFrom_PrefetchId)(nil),
+		(*contextFrom_UserInput)(nil),
 	}
-	file_osdd_recipes_context_proto_msgTypes[4].OneofWrappers = []any{
+	file_osdd_recipes_context_proto_msgTypes[5].OneofWrappers = []any{
 		(*combinedContextSource_Item_Github)(nil),
 		(*combinedContextSource_Item_Cmd)(nil),
 		(*combinedContextSource_Item_Text)(nil),
 		(*combinedContextSource_Item_PrefetchId)(nil),
+		(*combinedContextSource_Item_UserInput)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -834,7 +994,7 @@ func file_osdd_recipes_context_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_osdd_recipes_context_proto_rawDesc), len(file_osdd_recipes_context_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -18,6 +18,12 @@ export interface GitVersion {
   type?: { $case: "tag"; value: string } | { $case: "commit"; value: string } | undefined;
 }
 
+export interface UserInputParameter {
+  name: string;
+  description: string;
+  optional: boolean;
+}
+
 function createBaseGitReference(): GitReference {
   return { path: "", version: undefined };
 }
@@ -184,6 +190,98 @@ export const GitVersion: MessageFns<GitVersion> = {
         break;
       }
     }
+    return message;
+  },
+};
+
+function createBaseUserInputParameter(): UserInputParameter {
+  return { name: "", description: "", optional: false };
+}
+
+export const UserInputParameter: MessageFns<UserInputParameter> = {
+  encode(message: UserInputParameter, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    if (message.description !== "") {
+      writer.uint32(18).string(message.description);
+    }
+    if (message.optional !== false) {
+      writer.uint32(24).bool(message.optional);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UserInputParameter {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUserInputParameter();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.description = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.optional = reader.bool();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UserInputParameter {
+    return {
+      name: isSet(object.name) ? gt.String(object.name) : "",
+      description: isSet(object.description) ? gt.String(object.description) : "",
+      optional: isSet(object.optional) ? gt.Boolean(object.optional) : false,
+    };
+  },
+
+  toJSON(message: UserInputParameter): unknown {
+    const obj: any = {};
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.description !== "") {
+      obj.description = message.description;
+    }
+    if (message.optional !== false) {
+      obj.optional = message.optional;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<UserInputParameter>): UserInputParameter {
+    return UserInputParameter.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<UserInputParameter>): UserInputParameter {
+    const message = createBaseUserInputParameter();
+    message.name = object.name ?? "";
+    message.description = object.description ?? "";
+    message.optional = object.optional ?? false;
     return message;
   },
 };

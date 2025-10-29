@@ -15,3 +15,9 @@ message GitVersion {
     string commit = 101;
   }
 }
+
+message UserInputParameter {
+  string name = 1;
+  string description = 2;
+  bool optional = 3;
+}

@@ -6,7 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { GitReference } from "../common";
+import { GitReference, UserInputParameter } from "../common";
 
 export const protobufPackage = "osdd.recipes.context";
 
@@ -26,6 +26,7 @@ export interface ContextFrom {
     | { $case: "cmd"; value: string }
     | { $case: "text"; value: string }
     | { $case: "prefetchId"; value: string }
+    | { $case: "userInput"; value: UserInputContextSource }
     | undefined;
 }
 
@@ -39,7 +40,12 @@ export interface CombinedContextSource_Item {
     | { $case: "cmd"; value: string }
     | { $case: "text"; value: string }
     | { $case: "prefetchId"; value: string }
+    | { $case: "userInput"; value: UserInputContextSource }
     | undefined;
+}
+
+export interface UserInputContextSource {
+  entries: UserInputParameter[];
 }
 
 function createBaseContext(): Context {
@@ -202,6 +208,9 @@ export const ContextFrom: MessageFns<ContextFrom> = {
       case "prefetchId":
         writer.uint32(834).string(message.type.value);
         break;
+      case "userInput":
+        UserInputContextSource.encode(message.type.value, writer.uint32(842).fork()).join();
+        break;
     }
     return writer;
   },
@@ -253,6 +262,14 @@ export const ContextFrom: MessageFns<ContextFrom> = {
           message.type = { $case: "prefetchId", value: reader.string() };
           continue;
         }
+        case 105: {
+          if (tag !== 842) {
+            break;
+          }
+
+          message.type = { $case: "userInput", value: UserInputContextSource.decode(reader, reader.uint32()) };
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -274,6 +291,8 @@ export const ContextFrom: MessageFns<ContextFrom> = {
         ? { $case: "text", value: gt.String(object.text) }
         : isSet(object.prefetchId)
         ? { $case: "prefetchId", value: gt.String(object.prefetchId) }
+        : isSet(object.userInput)
+        ? { $case: "userInput", value: UserInputContextSource.fromJSON(object.userInput) }
         : undefined,
     };
   },
@@ -290,6 +309,8 @@ export const ContextFrom: MessageFns<ContextFrom> = {
       obj.text = message.type.value;
     } else if (message.type?.$case === "prefetchId") {
       obj.prefetchId = message.type.value;
+    } else if (message.type?.$case === "userInput") {
+      obj.userInput = UserInputContextSource.toJSON(message.type.value);
     }
     return obj;
   },
@@ -327,6 +348,12 @@ export const ContextFrom: MessageFns<ContextFrom> = {
       case "prefetchId": {
         if (object.type?.value !== undefined && object.type?.value !== null) {
           message.type = { $case: "prefetchId", value: object.type.value };
+        }
+        break;
+      }
+      case "userInput": {
+        if (object.type?.value !== undefined && object.type?.value !== null) {
+          message.type = { $case: "userInput", value: UserInputContextSource.fromPartial(object.type.value) };
         }
         break;
       }
@@ -416,6 +443,9 @@ export const CombinedContextSource_Item: MessageFns<CombinedContextSource_Item> 
       case "prefetchId":
         writer.uint32(826).string(message.type.value);
         break;
+      case "userInput":
+        UserInputContextSource.encode(message.type.value, writer.uint32(834).fork()).join();
+        break;
     }
     return writer;
   },
@@ -459,6 +489,14 @@ export const CombinedContextSource_Item: MessageFns<CombinedContextSource_Item> 
           message.type = { $case: "prefetchId", value: reader.string() };
           continue;
         }
+        case 104: {
+          if (tag !== 834) {
+            break;
+          }
+
+          message.type = { $case: "userInput", value: UserInputContextSource.decode(reader, reader.uint32()) };
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -478,6 +516,8 @@ export const CombinedContextSource_Item: MessageFns<CombinedContextSource_Item> 
         ? { $case: "text", value: gt.String(object.text) }
         : isSet(object.prefetchId)
         ? { $case: "prefetchId", value: gt.String(object.prefetchId) }
+        : isSet(object.userInput)
+        ? { $case: "userInput", value: UserInputContextSource.fromJSON(object.userInput) }
         : undefined,
     };
   },
@@ -492,6 +532,8 @@ export const CombinedContextSource_Item: MessageFns<CombinedContextSource_Item> 
       obj.text = message.type.value;
     } else if (message.type?.$case === "prefetchId") {
       obj.prefetchId = message.type.value;
+    } else if (message.type?.$case === "userInput") {
+      obj.userInput = UserInputContextSource.toJSON(message.type.value);
     }
     return obj;
   },
@@ -526,7 +568,73 @@ export const CombinedContextSource_Item: MessageFns<CombinedContextSource_Item> 
         }
         break;
       }
+      case "userInput": {
+        if (object.type?.value !== undefined && object.type?.value !== null) {
+          message.type = { $case: "userInput", value: UserInputContextSource.fromPartial(object.type.value) };
+        }
+        break;
+      }
     }
+    return message;
+  },
+};
+
+function createBaseUserInputContextSource(): UserInputContextSource {
+  return { entries: [] };
+}
+
+export const UserInputContextSource: MessageFns<UserInputContextSource> = {
+  encode(message: UserInputContextSource, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.entries) {
+      UserInputParameter.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UserInputContextSource {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUserInputContextSource();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.entries.push(UserInputParameter.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UserInputContextSource {
+    return {
+      entries: gt.Array.isArray(object?.entries) ? object.entries.map((e: any) => UserInputParameter.fromJSON(e)) : [],
+    };
+  },
+
+  toJSON(message: UserInputContextSource): unknown {
+    const obj: any = {};
+    if (message.entries?.length) {
+      obj.entries = message.entries.map((e) => UserInputParameter.toJSON(e));
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<UserInputContextSource>): UserInputContextSource {
+    return UserInputContextSource.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<UserInputContextSource>): UserInputContextSource {
+    const message = createBaseUserInputContextSource();
+    message.entries = object.entries?.map((e) => UserInputParameter.fromPartial(e)) || [];
     return message;
   },
 };

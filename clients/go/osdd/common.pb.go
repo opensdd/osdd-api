@@ -265,6 +265,91 @@ func (*gitVersion_Tag) isGitVersion_Type() {}
 
 func (*gitVersion_Commit) isGitVersion_Type() {}
 
+type UserInputParameter struct {
+	state                  protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Name        string                 `protobuf:"bytes,1,opt,name=name,proto3"`
+	xxx_hidden_Description string                 `protobuf:"bytes,2,opt,name=description,proto3"`
+	xxx_hidden_Optional    bool                   `protobuf:"varint,3,opt,name=optional,proto3"`
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
+}
+
+func (x *UserInputParameter) Reset() {
+	*x = UserInputParameter{}
+	mi := &file_osdd_common_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserInputParameter) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserInputParameter) ProtoMessage() {}
+
+func (x *UserInputParameter) ProtoReflect() protoreflect.Message {
+	mi := &file_osdd_common_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (x *UserInputParameter) GetName() string {
+	if x != nil {
+		return x.xxx_hidden_Name
+	}
+	return ""
+}
+
+func (x *UserInputParameter) GetDescription() string {
+	if x != nil {
+		return x.xxx_hidden_Description
+	}
+	return ""
+}
+
+func (x *UserInputParameter) GetOptional() bool {
+	if x != nil {
+		return x.xxx_hidden_Optional
+	}
+	return false
+}
+
+func (x *UserInputParameter) SetName(v string) {
+	x.xxx_hidden_Name = v
+}
+
+func (x *UserInputParameter) SetDescription(v string) {
+	x.xxx_hidden_Description = v
+}
+
+func (x *UserInputParameter) SetOptional(v bool) {
+	x.xxx_hidden_Optional = v
+}
+
+type UserInputParameter_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	Name        string
+	Description string
+	Optional    bool
+}
+
+func (b0 UserInputParameter_builder) Build() *UserInputParameter {
+	m0 := &UserInputParameter{}
+	b, x := &b0, m0
+	_, _ = b, x
+	x.xxx_hidden_Name = b.Name
+	x.xxx_hidden_Description = b.Description
+	x.xxx_hidden_Optional = b.Optional
+	return m0
+}
+
 var File_osdd_common_proto protoreflect.FileDescriptor
 
 const file_osdd_common_proto_rawDesc = "" +
@@ -279,12 +364,17 @@ const file_osdd_common_proto_rawDesc = "" +
 	"GitVersion\x12\x12\n" +
 	"\x03tag\x18d \x01(\tH\x00R\x03tag\x12\x18\n" +
 	"\x06commit\x18e \x01(\tH\x00R\x06commitB\x06\n" +
-	"\x04typeB-Z+github.com/opensdd/osdd-api/clients/go/osddb\x06proto3"
+	"\x04type\"f\n" +
+	"\x12UserInputParameter\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12 \n" +
+	"\vdescription\x18\x02 \x01(\tR\vdescription\x12\x1a\n" +
+	"\boptional\x18\x03 \x01(\bR\boptionalB-Z+github.com/opensdd/osdd-api/clients/go/osddb\x06proto3"
 
-var file_osdd_common_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_osdd_common_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_osdd_common_proto_goTypes = []any{
-	(*GitReference)(nil), // 0: osdd.common.GitReference
-	(*GitVersion)(nil),   // 1: osdd.common.GitVersion
+	(*GitReference)(nil),       // 0: osdd.common.GitReference
+	(*GitVersion)(nil),         // 1: osdd.common.GitVersion
+	(*UserInputParameter)(nil), // 2: osdd.common.UserInputParameter
 }
 var file_osdd_common_proto_depIdxs = []int32{
 	1, // 0: osdd.common.GitReference.version:type_name -> osdd.common.GitVersion
@@ -311,7 +401,7 @@ func file_osdd_common_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_osdd_common_proto_rawDesc), len(file_osdd_common_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

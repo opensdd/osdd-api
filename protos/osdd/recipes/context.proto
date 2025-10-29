@@ -22,6 +22,7 @@ message ContextFrom {
     string cmd = 102;
     string text = 103;
     string prefetch_id = 104;
+    UserInputContextSource user_input = 105;
   }
 }
 
@@ -34,6 +35,11 @@ message CombinedContextSource {
       string cmd = 101;
       string text = 102;
       string prefetch_id = 103;
+      UserInputContextSource user_input = 104;
     }
   }
+}
+
+message UserInputContextSource {
+  repeated common.UserInputParameter entries = 1;
 }
