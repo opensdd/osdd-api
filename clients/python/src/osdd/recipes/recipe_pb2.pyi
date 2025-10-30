@@ -1,6 +1,7 @@
 from osdd.recipes import context_pb2 as _context_pb2
 from osdd.recipes import ide_pb2 as _ide_pb2
 from osdd import content_pb2 as _content_pb2
+from osdd import common_pb2 as _common_pb2
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from collections.abc import Mapping as _Mapping
@@ -27,12 +28,14 @@ class ExecutableRecipe(_message.Message):
     def __init__(self, recipe: _Optional[_Union[Recipe, _Mapping]] = ..., entry_point: _Optional[_Union[EntryPoint, _Mapping]] = ...) -> None: ...
 
 class EntryPoint(_message.Message):
-    __slots__ = ("ide_type", "start")
+    __slots__ = ("ide_type", "start", "workspace")
     IDE_TYPE_FIELD_NUMBER: _ClassVar[int]
     START_FIELD_NUMBER: _ClassVar[int]
+    WORKSPACE_FIELD_NUMBER: _ClassVar[int]
     ide_type: str
     start: StartConfig
-    def __init__(self, ide_type: _Optional[str] = ..., start: _Optional[_Union[StartConfig, _Mapping]] = ...) -> None: ...
+    workspace: WorkspaceConfig
+    def __init__(self, ide_type: _Optional[str] = ..., start: _Optional[_Union[StartConfig, _Mapping]] = ..., workspace: _Optional[_Union[WorkspaceConfig, _Mapping]] = ...) -> None: ...
 
 class StartConfig(_message.Message):
     __slots__ = ("command", "prompt")
@@ -41,3 +44,13 @@ class StartConfig(_message.Message):
     command: str
     prompt: str
     def __init__(self, command: _Optional[str] = ..., prompt: _Optional[str] = ...) -> None: ...
+
+class WorkspaceConfig(_message.Message):
+    __slots__ = ("enabled", "path", "unique")
+    ENABLED_FIELD_NUMBER: _ClassVar[int]
+    PATH_FIELD_NUMBER: _ClassVar[int]
+    UNIQUE_FIELD_NUMBER: _ClassVar[int]
+    enabled: bool
+    path: str
+    unique: _common_pb2.NameGenConfig
+    def __init__(self, enabled: bool = ..., path: _Optional[str] = ..., unique: _Optional[_Union[_common_pb2.NameGenConfig, _Mapping]] = ...) -> None: ...

@@ -2,6 +2,13 @@
   "entryPoint": {
     "start": {
       "command": "agents_md"
+    },
+    "workspace": {
+      "enabled": true,
+      "path": "osdd/workspace/docs_update",
+      "unique": {
+        "len": 7
+      }
     }
   },
   "recipe": {

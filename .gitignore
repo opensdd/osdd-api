@@ -327,3 +327,4 @@ cython_debug/
 /.idea/osdd-api.iml
 /.idea/vcs.xml
 /clients/go/bin/protoc-gen-go
+/clients/go/bin/

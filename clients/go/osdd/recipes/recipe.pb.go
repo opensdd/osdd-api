@@ -233,11 +233,12 @@ func (b0 ExecutableRecipe_builder) Build() *ExecutableRecipe {
 }
 
 type EntryPoint struct {
-	state              protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_IdeType string                 `protobuf:"bytes,1,opt,name=ide_type,json=ideType,proto3"`
-	xxx_hidden_Start   *StartConfig           `protobuf:"bytes,2,opt,name=start,proto3,oneof"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	state                protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_IdeType   string                 `protobuf:"bytes,1,opt,name=ide_type,json=ideType,proto3"`
+	xxx_hidden_Start     *StartConfig           `protobuf:"bytes,2,opt,name=start,proto3,oneof"`
+	xxx_hidden_Workspace *WorkspaceConfig       `protobuf:"bytes,3,opt,name=workspace,proto3,oneof"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
 }
 
 func (x *EntryPoint) Reset() {
@@ -279,12 +280,23 @@ func (x *EntryPoint) GetStart() *StartConfig {
 	return nil
 }
 
+func (x *EntryPoint) GetWorkspace() *WorkspaceConfig {
+	if x != nil {
+		return x.xxx_hidden_Workspace
+	}
+	return nil
+}
+
 func (x *EntryPoint) SetIdeType(v string) {
 	x.xxx_hidden_IdeType = v
 }
 
 func (x *EntryPoint) SetStart(v *StartConfig) {
 	x.xxx_hidden_Start = v
+}
+
+func (x *EntryPoint) SetWorkspace(v *WorkspaceConfig) {
+	x.xxx_hidden_Workspace = v
 }
 
 func (x *EntryPoint) HasStart() bool {
@@ -294,15 +306,27 @@ func (x *EntryPoint) HasStart() bool {
 	return x.xxx_hidden_Start != nil
 }
 
+func (x *EntryPoint) HasWorkspace() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Workspace != nil
+}
+
 func (x *EntryPoint) ClearStart() {
 	x.xxx_hidden_Start = nil
+}
+
+func (x *EntryPoint) ClearWorkspace() {
+	x.xxx_hidden_Workspace = nil
 }
 
 type EntryPoint_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	IdeType string
-	Start   *StartConfig
+	IdeType   string
+	Start     *StartConfig
+	Workspace *WorkspaceConfig
 }
 
 func (b0 EntryPoint_builder) Build() *EntryPoint {
@@ -311,6 +335,7 @@ func (b0 EntryPoint_builder) Build() *EntryPoint {
 	_, _ = b, x
 	x.xxx_hidden_IdeType = b.IdeType
 	x.xxx_hidden_Start = b.Start
+	x.xxx_hidden_Workspace = b.Workspace
 	return m0
 }
 
@@ -477,11 +502,111 @@ func (*startConfig_Command) isStartConfig_Type() {}
 
 func (*startConfig_Prompt) isStartConfig_Type() {}
 
+// Describes workspace from which the recipe should be executed.
+type WorkspaceConfig struct {
+	state              protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Enabled bool                   `protobuf:"varint,1,opt,name=enabled,proto3"`
+	xxx_hidden_Path    string                 `protobuf:"bytes,2,opt,name=path,proto3"`
+	xxx_hidden_Unique  *osdd.NameGenConfig    `protobuf:"bytes,3,opt,name=unique,proto3,oneof"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *WorkspaceConfig) Reset() {
+	*x = WorkspaceConfig{}
+	mi := &file_osdd_recipes_recipe_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *WorkspaceConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WorkspaceConfig) ProtoMessage() {}
+
+func (x *WorkspaceConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_osdd_recipes_recipe_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (x *WorkspaceConfig) GetEnabled() bool {
+	if x != nil {
+		return x.xxx_hidden_Enabled
+	}
+	return false
+}
+
+func (x *WorkspaceConfig) GetPath() string {
+	if x != nil {
+		return x.xxx_hidden_Path
+	}
+	return ""
+}
+
+func (x *WorkspaceConfig) GetUnique() *osdd.NameGenConfig {
+	if x != nil {
+		return x.xxx_hidden_Unique
+	}
+	return nil
+}
+
+func (x *WorkspaceConfig) SetEnabled(v bool) {
+	x.xxx_hidden_Enabled = v
+}
+
+func (x *WorkspaceConfig) SetPath(v string) {
+	x.xxx_hidden_Path = v
+}
+
+func (x *WorkspaceConfig) SetUnique(v *osdd.NameGenConfig) {
+	x.xxx_hidden_Unique = v
+}
+
+func (x *WorkspaceConfig) HasUnique() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Unique != nil
+}
+
+func (x *WorkspaceConfig) ClearUnique() {
+	x.xxx_hidden_Unique = nil
+}
+
+type WorkspaceConfig_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	// If true, then the recipe requires a workspace, as opposed to running in the current directory.
+	Enabled bool
+	// Path to the workspace relative to the home directory root.
+	Path string
+	// Configuration for unique name generation.
+	Unique *osdd.NameGenConfig
+}
+
+func (b0 WorkspaceConfig_builder) Build() *WorkspaceConfig {
+	m0 := &WorkspaceConfig{}
+	b, x := &b0, m0
+	_, _ = b, x
+	x.xxx_hidden_Enabled = b.Enabled
+	x.xxx_hidden_Path = b.Path
+	x.xxx_hidden_Unique = b.Unique
+	return m0
+}
+
 var File_osdd_recipes_recipe_proto protoreflect.FileDescriptor
 
 const file_osdd_recipes_recipe_proto_rawDesc = "" +
 	"\n" +
-	"\x19osdd/recipes/recipe.proto\x12\x13osdd.recipes.recipe\x1a\x1aosdd/recipes/context.proto\x1a\x16osdd/recipes/ide.proto\x1a\x12osdd/content.proto\"\xce\x01\n" +
+	"\x19osdd/recipes/recipe.proto\x12\x13osdd.recipes.recipe\x1a\x1aosdd/recipes/context.proto\x1a\x16osdd/recipes/ide.proto\x1a\x12osdd/content.proto\x1a\x11osdd/common.proto\"\xce\x01\n" +
 	"\x06Recipe\x127\n" +
 	"\bprefetch\x18\x01 \x01(\v2\x16.osdd.content.PrefetchH\x00R\bprefetch\x88\x01\x01\x12<\n" +
 	"\acontext\x18\x02 \x01(\v2\x1d.osdd.recipes.context.ContextH\x01R\acontext\x88\x01\x01\x12,\n" +
@@ -493,39 +618,51 @@ const file_osdd_recipes_recipe_proto_rawDesc = "" +
 	"\x10ExecutableRecipe\x123\n" +
 	"\x06recipe\x18\x01 \x01(\v2\x1b.osdd.recipes.recipe.RecipeR\x06recipe\x12@\n" +
 	"\ventry_point\x18\x02 \x01(\v2\x1f.osdd.recipes.recipe.EntryPointR\n" +
-	"entryPoint\"n\n" +
+	"entryPoint\"\xc5\x01\n" +
 	"\n" +
 	"EntryPoint\x12\x19\n" +
 	"\bide_type\x18\x01 \x01(\tR\aideType\x12;\n" +
-	"\x05start\x18\x02 \x01(\v2 .osdd.recipes.recipe.StartConfigH\x00R\x05start\x88\x01\x01B\b\n" +
-	"\x06_start\"K\n" +
+	"\x05start\x18\x02 \x01(\v2 .osdd.recipes.recipe.StartConfigH\x00R\x05start\x88\x01\x01\x12G\n" +
+	"\tworkspace\x18\x03 \x01(\v2$.osdd.recipes.recipe.WorkspaceConfigH\x01R\tworkspace\x88\x01\x01B\b\n" +
+	"\x06_startB\f\n" +
+	"\n" +
+	"_workspace\"K\n" +
 	"\vStartConfig\x12\x1a\n" +
 	"\acommand\x18d \x01(\tH\x00R\acommand\x12\x18\n" +
 	"\x06prompt\x18e \x01(\tH\x00R\x06promptB\x06\n" +
-	"\x04typeB5Z3github.com/opensdd/osdd-api/clients/go/osdd/recipesb\x06proto3"
+	"\x04type\"\x83\x01\n" +
+	"\x0fWorkspaceConfig\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x12\n" +
+	"\x04path\x18\x02 \x01(\tR\x04path\x127\n" +
+	"\x06unique\x18\x03 \x01(\v2\x1a.osdd.common.NameGenConfigH\x00R\x06unique\x88\x01\x01B\t\n" +
+	"\a_uniqueB5Z3github.com/opensdd/osdd-api/clients/go/osdd/recipesb\x06proto3"
 
-var file_osdd_recipes_recipe_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_osdd_recipes_recipe_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_osdd_recipes_recipe_proto_goTypes = []any{
-	(*Recipe)(nil),           // 0: osdd.recipes.recipe.Recipe
-	(*ExecutableRecipe)(nil), // 1: osdd.recipes.recipe.ExecutableRecipe
-	(*EntryPoint)(nil),       // 2: osdd.recipes.recipe.EntryPoint
-	(*StartConfig)(nil),      // 3: osdd.recipes.recipe.StartConfig
-	(*osdd.Prefetch)(nil),    // 4: osdd.content.Prefetch
-	(*Context)(nil),          // 5: osdd.recipes.context.Context
-	(*Ide)(nil),              // 6: osdd.recipes.ide.Ide
+	(*Recipe)(nil),             // 0: osdd.recipes.recipe.Recipe
+	(*ExecutableRecipe)(nil),   // 1: osdd.recipes.recipe.ExecutableRecipe
+	(*EntryPoint)(nil),         // 2: osdd.recipes.recipe.EntryPoint
+	(*StartConfig)(nil),        // 3: osdd.recipes.recipe.StartConfig
+	(*WorkspaceConfig)(nil),    // 4: osdd.recipes.recipe.WorkspaceConfig
+	(*osdd.Prefetch)(nil),      // 5: osdd.content.Prefetch
+	(*Context)(nil),            // 6: osdd.recipes.context.Context
+	(*Ide)(nil),                // 7: osdd.recipes.ide.Ide
+	(*osdd.NameGenConfig)(nil), // 8: osdd.common.NameGenConfig
 }
 var file_osdd_recipes_recipe_proto_depIdxs = []int32{
-	4, // 0: osdd.recipes.recipe.Recipe.prefetch:type_name -> osdd.content.Prefetch
-	5, // 1: osdd.recipes.recipe.Recipe.context:type_name -> osdd.recipes.context.Context
-	6, // 2: osdd.recipes.recipe.Recipe.ide:type_name -> osdd.recipes.ide.Ide
+	5, // 0: osdd.recipes.recipe.Recipe.prefetch:type_name -> osdd.content.Prefetch
+	6, // 1: osdd.recipes.recipe.Recipe.context:type_name -> osdd.recipes.context.Context
+	7, // 2: osdd.recipes.recipe.Recipe.ide:type_name -> osdd.recipes.ide.Ide
 	0, // 3: osdd.recipes.recipe.ExecutableRecipe.recipe:type_name -> osdd.recipes.recipe.Recipe
 	2, // 4: osdd.recipes.recipe.ExecutableRecipe.entry_point:type_name -> osdd.recipes.recipe.EntryPoint
 	3, // 5: osdd.recipes.recipe.EntryPoint.start:type_name -> osdd.recipes.recipe.StartConfig
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 6: osdd.recipes.recipe.EntryPoint.workspace:type_name -> osdd.recipes.recipe.WorkspaceConfig
+	8, // 7: osdd.recipes.recipe.WorkspaceConfig.unique:type_name -> osdd.common.NameGenConfig
+	8, // [8:8] is the sub-list for method output_type
+	8, // [8:8] is the sub-list for method input_type
+	8, // [8:8] is the sub-list for extension type_name
+	8, // [8:8] is the sub-list for extension extendee
+	0, // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_osdd_recipes_recipe_proto_init() }
@@ -541,13 +678,14 @@ func file_osdd_recipes_recipe_proto_init() {
 		(*startConfig_Command)(nil),
 		(*startConfig_Prompt)(nil),
 	}
+	file_osdd_recipes_recipe_proto_msgTypes[4].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_osdd_recipes_recipe_proto_rawDesc), len(file_osdd_recipes_recipe_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

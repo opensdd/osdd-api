@@ -21,3 +21,7 @@ message UserInputParameter {
   string description = 2;
   bool optional = 3;
 }
+
+message NameGenConfig {
+  int32 len = 1;
+}

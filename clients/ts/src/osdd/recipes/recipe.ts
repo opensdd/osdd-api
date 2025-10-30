@@ -6,6 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { NameGenConfig } from "../common";
 import { Prefetch } from "../content";
 import { Context } from "./context";
 import { Ide } from "./ide";
@@ -26,10 +27,21 @@ export interface ExecutableRecipe {
 export interface EntryPoint {
   ideType: string;
   start?: StartConfig | undefined;
+  workspace?: WorkspaceConfig | undefined;
 }
 
 export interface StartConfig {
   type?: { $case: "command"; value: string } | { $case: "prompt"; value: string } | undefined;
+}
+
+/** Describes workspace from which the recipe should be executed. */
+export interface WorkspaceConfig {
+  /** If true, then the recipe requires a workspace, as opposed to running in the current directory. */
+  enabled: boolean;
+  /** Path to the workspace relative to the home directory root. */
+  path: string;
+  /** Configuration for unique name generation. */
+  unique?: NameGenConfig | undefined;
 }
 
 function createBaseRecipe(): Recipe {
@@ -209,7 +221,7 @@ export const ExecutableRecipe: MessageFns<ExecutableRecipe> = {
 };
 
 function createBaseEntryPoint(): EntryPoint {
-  return { ideType: "", start: undefined };
+  return { ideType: "", start: undefined, workspace: undefined };
 }
 
 export const EntryPoint: MessageFns<EntryPoint> = {
@@ -219,6 +231,9 @@ export const EntryPoint: MessageFns<EntryPoint> = {
     }
     if (message.start !== undefined) {
       StartConfig.encode(message.start, writer.uint32(18).fork()).join();
+    }
+    if (message.workspace !== undefined) {
+      WorkspaceConfig.encode(message.workspace, writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -246,6 +261,14 @@ export const EntryPoint: MessageFns<EntryPoint> = {
           message.start = StartConfig.decode(reader, reader.uint32());
           continue;
         }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.workspace = WorkspaceConfig.decode(reader, reader.uint32());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -259,6 +282,7 @@ export const EntryPoint: MessageFns<EntryPoint> = {
     return {
       ideType: isSet(object.ideType) ? gt.String(object.ideType) : "",
       start: isSet(object.start) ? StartConfig.fromJSON(object.start) : undefined,
+      workspace: isSet(object.workspace) ? WorkspaceConfig.fromJSON(object.workspace) : undefined,
     };
   },
 
@@ -269,6 +293,9 @@ export const EntryPoint: MessageFns<EntryPoint> = {
     }
     if (message.start !== undefined) {
       obj.start = StartConfig.toJSON(message.start);
+    }
+    if (message.workspace !== undefined) {
+      obj.workspace = WorkspaceConfig.toJSON(message.workspace);
     }
     return obj;
   },
@@ -281,6 +308,9 @@ export const EntryPoint: MessageFns<EntryPoint> = {
     message.ideType = object.ideType ?? "";
     message.start = (object.start !== undefined && object.start !== null)
       ? StartConfig.fromPartial(object.start)
+      : undefined;
+    message.workspace = (object.workspace !== undefined && object.workspace !== null)
+      ? WorkspaceConfig.fromPartial(object.workspace)
       : undefined;
     return message;
   },
@@ -374,6 +404,100 @@ export const StartConfig: MessageFns<StartConfig> = {
         break;
       }
     }
+    return message;
+  },
+};
+
+function createBaseWorkspaceConfig(): WorkspaceConfig {
+  return { enabled: false, path: "", unique: undefined };
+}
+
+export const WorkspaceConfig: MessageFns<WorkspaceConfig> = {
+  encode(message: WorkspaceConfig, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.enabled !== false) {
+      writer.uint32(8).bool(message.enabled);
+    }
+    if (message.path !== "") {
+      writer.uint32(18).string(message.path);
+    }
+    if (message.unique !== undefined) {
+      NameGenConfig.encode(message.unique, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): WorkspaceConfig {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseWorkspaceConfig();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 8) {
+            break;
+          }
+
+          message.enabled = reader.bool();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.path = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.unique = NameGenConfig.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): WorkspaceConfig {
+    return {
+      enabled: isSet(object.enabled) ? gt.Boolean(object.enabled) : false,
+      path: isSet(object.path) ? gt.String(object.path) : "",
+      unique: isSet(object.unique) ? NameGenConfig.fromJSON(object.unique) : undefined,
+    };
+  },
+
+  toJSON(message: WorkspaceConfig): unknown {
+    const obj: any = {};
+    if (message.enabled !== false) {
+      obj.enabled = message.enabled;
+    }
+    if (message.path !== "") {
+      obj.path = message.path;
+    }
+    if (message.unique !== undefined) {
+      obj.unique = NameGenConfig.toJSON(message.unique);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<WorkspaceConfig>): WorkspaceConfig {
+    return WorkspaceConfig.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<WorkspaceConfig>): WorkspaceConfig {
+    const message = createBaseWorkspaceConfig();
+    message.enabled = object.enabled ?? false;
+    message.path = object.path ?? "";
+    message.unique = (object.unique !== undefined && object.unique !== null)
+      ? NameGenConfig.fromPartial(object.unique)
+      : undefined;
     return message;
   },
 };

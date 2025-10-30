@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11osdd/common.proto\x12\x0bosdd.common\"W\n\x0cGitReference\x12\x0c\n\x04path\x18\x01 \x01(\t\x12-\n\x07version\x18\x02 \x01(\x0b\x32\x17.osdd.common.GitVersionH\x00\x88\x01\x01\x42\n\n\x08_version\"5\n\nGitVersion\x12\r\n\x03tag\x18\x64 \x01(\tH\x00\x12\x10\n\x06\x63ommit\x18\x65 \x01(\tH\x00\x42\x06\n\x04type\"I\n\x12UserInputParameter\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x10\n\x08optional\x18\x03 \x01(\x08\x42-Z+github.com/opensdd/osdd-api/clients/go/osddb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11osdd/common.proto\x12\x0bosdd.common\"W\n\x0cGitReference\x12\x0c\n\x04path\x18\x01 \x01(\t\x12-\n\x07version\x18\x02 \x01(\x0b\x32\x17.osdd.common.GitVersionH\x00\x88\x01\x01\x42\n\n\x08_version\"5\n\nGitVersion\x12\r\n\x03tag\x18\x64 \x01(\tH\x00\x12\x10\n\x06\x63ommit\x18\x65 \x01(\tH\x00\x42\x06\n\x04type\"I\n\x12UserInputParameter\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x10\n\x08optional\x18\x03 \x01(\x08\"\x1c\n\rNameGenConfig\x12\x0b\n\x03len\x18\x01 \x01(\x05\x42-Z+github.com/opensdd/osdd-api/clients/go/osddb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -38,4 +38,6 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_GITVERSION']._serialized_end=176
   _globals['_USERINPUTPARAMETER']._serialized_start=178
   _globals['_USERINPUTPARAMETER']._serialized_end=251
+  _globals['_NAMEGENCONFIG']._serialized_start=253
+  _globals['_NAMEGENCONFIG']._serialized_end=281
 # @@protoc_insertion_point(module_scope)

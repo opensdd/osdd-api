@@ -7,6 +7,7 @@ option go_package = "github.com/opensdd/osdd-api/clients/go/osdd/recipes";
 import "osdd/recipes/context.proto";
 import "osdd/recipes/ide.proto";
 import "osdd/content.proto";
+import "osdd/common.proto";
 
 message Recipe {
   optional content.Prefetch prefetch = 1;
@@ -22,6 +23,7 @@ message ExecutableRecipe {
 message EntryPoint {
   string ide_type = 1;
   optional StartConfig start = 2;
+  optional WorkspaceConfig workspace = 3;
 }
 
 message StartConfig {
@@ -30,3 +32,15 @@ message StartConfig {
     string prompt = 101;
   }
 }
+
+// Describes workspace from which the recipe should be executed.
+message WorkspaceConfig {
+  // If true, then the recipe requires a workspace, as opposed to running in the current directory.
+  bool enabled = 1;
+  // Path to the workspace relative to the home directory root.
+  string path = 2;
+  // Configuration for unique name generation.
+  optional common.NameGenConfig unique = 3;
+}
+
+

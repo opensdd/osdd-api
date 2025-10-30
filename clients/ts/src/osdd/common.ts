@@ -24,6 +24,10 @@ export interface UserInputParameter {
   optional: boolean;
 }
 
+export interface NameGenConfig {
+  len: number;
+}
+
 function createBaseGitReference(): GitReference {
   return { path: "", version: undefined };
 }
@@ -282,6 +286,64 @@ export const UserInputParameter: MessageFns<UserInputParameter> = {
     message.name = object.name ?? "";
     message.description = object.description ?? "";
     message.optional = object.optional ?? false;
+    return message;
+  },
+};
+
+function createBaseNameGenConfig(): NameGenConfig {
+  return { len: 0 };
+}
+
+export const NameGenConfig: MessageFns<NameGenConfig> = {
+  encode(message: NameGenConfig, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.len !== 0) {
+      writer.uint32(8).int32(message.len);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): NameGenConfig {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseNameGenConfig();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 8) {
+            break;
+          }
+
+          message.len = reader.int32();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): NameGenConfig {
+    return { len: isSet(object.len) ? gt.Number(object.len) : 0 };
+  },
+
+  toJSON(message: NameGenConfig): unknown {
+    const obj: any = {};
+    if (message.len !== 0) {
+      obj.len = Math.round(message.len);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<NameGenConfig>): NameGenConfig {
+    return NameGenConfig.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<NameGenConfig>): NameGenConfig {
+    const message = createBaseNameGenConfig();
+    message.len = object.len ?? 0;
     return message;
   },
 };

@@ -30,3 +30,9 @@ class UserInputParameter(_message.Message):
     description: str
     optional: bool
     def __init__(self, name: _Optional[str] = ..., description: _Optional[str] = ..., optional: bool = ...) -> None: ...
+
+class NameGenConfig(_message.Message):
+    __slots__ = ("len",)
+    LEN_FIELD_NUMBER: _ClassVar[int]
+    len: int
+    def __init__(self, len: _Optional[int] = ...) -> None: ...
