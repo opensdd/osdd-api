@@ -407,6 +407,77 @@ func (b0 NameGenConfig_builder) Build() *NameGenConfig {
 	return m0
 }
 
+type Exec struct {
+	state           protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Cmd  string                 `protobuf:"bytes,1,opt,name=cmd,proto3"`
+	xxx_hidden_Args []string               `protobuf:"bytes,2,rep,name=args,proto3"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *Exec) Reset() {
+	*x = Exec{}
+	mi := &file_osdd_common_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Exec) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Exec) ProtoMessage() {}
+
+func (x *Exec) ProtoReflect() protoreflect.Message {
+	mi := &file_osdd_common_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (x *Exec) GetCmd() string {
+	if x != nil {
+		return x.xxx_hidden_Cmd
+	}
+	return ""
+}
+
+func (x *Exec) GetArgs() []string {
+	if x != nil {
+		return x.xxx_hidden_Args
+	}
+	return nil
+}
+
+func (x *Exec) SetCmd(v string) {
+	x.xxx_hidden_Cmd = v
+}
+
+func (x *Exec) SetArgs(v []string) {
+	x.xxx_hidden_Args = v
+}
+
+type Exec_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	Cmd  string
+	Args []string
+}
+
+func (b0 Exec_builder) Build() *Exec {
+	m0 := &Exec{}
+	b, x := &b0, m0
+	_, _ = b, x
+	x.xxx_hidden_Cmd = b.Cmd
+	x.xxx_hidden_Args = b.Args
+	return m0
+}
+
 var File_osdd_common_proto protoreflect.FileDescriptor
 
 const file_osdd_common_proto_rawDesc = "" +
@@ -427,14 +498,18 @@ const file_osdd_common_proto_rawDesc = "" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x12\x1a\n" +
 	"\boptional\x18\x03 \x01(\bR\boptional\"!\n" +
 	"\rNameGenConfig\x12\x10\n" +
-	"\x03len\x18\x01 \x01(\x05R\x03lenB-Z+github.com/opensdd/osdd-api/clients/go/osddb\x06proto3"
+	"\x03len\x18\x01 \x01(\x05R\x03len\",\n" +
+	"\x04Exec\x12\x10\n" +
+	"\x03cmd\x18\x01 \x01(\tR\x03cmd\x12\x12\n" +
+	"\x04args\x18\x02 \x03(\tR\x04argsB-Z+github.com/opensdd/osdd-api/clients/go/osddb\x06proto3"
 
-var file_osdd_common_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_osdd_common_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_osdd_common_proto_goTypes = []any{
 	(*GitReference)(nil),       // 0: osdd.common.GitReference
 	(*GitVersion)(nil),         // 1: osdd.common.GitVersion
 	(*UserInputParameter)(nil), // 2: osdd.common.UserInputParameter
 	(*NameGenConfig)(nil),      // 3: osdd.common.NameGenConfig
+	(*Exec)(nil),               // 4: osdd.common.Exec
 }
 var file_osdd_common_proto_depIdxs = []int32{
 	1, // 0: osdd.common.GitReference.version:type_name -> osdd.common.GitVersion
@@ -461,7 +536,7 @@ func file_osdd_common_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_osdd_common_proto_rawDesc), len(file_osdd_common_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

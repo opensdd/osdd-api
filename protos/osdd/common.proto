@@ -25,3 +25,8 @@ message UserInputParameter {
 message NameGenConfig {
   int32 len = 1;
 }
+
+message Exec {
+  string cmd = 1;
+  repeated string args = 2;
+}

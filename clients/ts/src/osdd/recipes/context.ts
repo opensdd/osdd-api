@@ -6,7 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { GitReference, UserInputParameter } from "../common";
+import { Exec, GitReference, UserInputParameter } from "../common";
 
 export const protobufPackage = "osdd.recipes.context";
 
@@ -23,7 +23,7 @@ export interface ContextFrom {
   type?:
     | { $case: "combined"; value: CombinedContextSource }
     | { $case: "github"; value: GitReference }
-    | { $case: "cmd"; value: string }
+    | { $case: "cmd"; value: Exec }
     | { $case: "text"; value: string }
     | { $case: "prefetchId"; value: string }
     | { $case: "userInput"; value: UserInputContextSource }
@@ -37,7 +37,7 @@ export interface CombinedContextSource {
 export interface CombinedContextSource_Item {
   type?:
     | { $case: "github"; value: GitReference }
-    | { $case: "cmd"; value: string }
+    | { $case: "cmd"; value: Exec }
     | { $case: "text"; value: string }
     | { $case: "prefetchId"; value: string }
     | { $case: "userInput"; value: UserInputContextSource }
@@ -200,7 +200,7 @@ export const ContextFrom: MessageFns<ContextFrom> = {
         GitReference.encode(message.type.value, writer.uint32(810).fork()).join();
         break;
       case "cmd":
-        writer.uint32(818).string(message.type.value);
+        Exec.encode(message.type.value, writer.uint32(818).fork()).join();
         break;
       case "text":
         writer.uint32(826).string(message.type.value);
@@ -243,7 +243,7 @@ export const ContextFrom: MessageFns<ContextFrom> = {
             break;
           }
 
-          message.type = { $case: "cmd", value: reader.string() };
+          message.type = { $case: "cmd", value: Exec.decode(reader, reader.uint32()) };
           continue;
         }
         case 103: {
@@ -286,7 +286,7 @@ export const ContextFrom: MessageFns<ContextFrom> = {
         : isSet(object.github)
         ? { $case: "github", value: GitReference.fromJSON(object.github) }
         : isSet(object.cmd)
-        ? { $case: "cmd", value: gt.String(object.cmd) }
+        ? { $case: "cmd", value: Exec.fromJSON(object.cmd) }
         : isSet(object.text)
         ? { $case: "text", value: gt.String(object.text) }
         : isSet(object.prefetchId)
@@ -304,7 +304,7 @@ export const ContextFrom: MessageFns<ContextFrom> = {
     } else if (message.type?.$case === "github") {
       obj.github = GitReference.toJSON(message.type.value);
     } else if (message.type?.$case === "cmd") {
-      obj.cmd = message.type.value;
+      obj.cmd = Exec.toJSON(message.type.value);
     } else if (message.type?.$case === "text") {
       obj.text = message.type.value;
     } else if (message.type?.$case === "prefetchId") {
@@ -335,7 +335,7 @@ export const ContextFrom: MessageFns<ContextFrom> = {
       }
       case "cmd": {
         if (object.type?.value !== undefined && object.type?.value !== null) {
-          message.type = { $case: "cmd", value: object.type.value };
+          message.type = { $case: "cmd", value: Exec.fromPartial(object.type.value) };
         }
         break;
       }
@@ -435,7 +435,7 @@ export const CombinedContextSource_Item: MessageFns<CombinedContextSource_Item> 
         GitReference.encode(message.type.value, writer.uint32(802).fork()).join();
         break;
       case "cmd":
-        writer.uint32(810).string(message.type.value);
+        Exec.encode(message.type.value, writer.uint32(810).fork()).join();
         break;
       case "text":
         writer.uint32(818).string(message.type.value);
@@ -470,7 +470,7 @@ export const CombinedContextSource_Item: MessageFns<CombinedContextSource_Item> 
             break;
           }
 
-          message.type = { $case: "cmd", value: reader.string() };
+          message.type = { $case: "cmd", value: Exec.decode(reader, reader.uint32()) };
           continue;
         }
         case 102: {
@@ -511,7 +511,7 @@ export const CombinedContextSource_Item: MessageFns<CombinedContextSource_Item> 
       type: isSet(object.github)
         ? { $case: "github", value: GitReference.fromJSON(object.github) }
         : isSet(object.cmd)
-        ? { $case: "cmd", value: gt.String(object.cmd) }
+        ? { $case: "cmd", value: Exec.fromJSON(object.cmd) }
         : isSet(object.text)
         ? { $case: "text", value: gt.String(object.text) }
         : isSet(object.prefetchId)
@@ -527,7 +527,7 @@ export const CombinedContextSource_Item: MessageFns<CombinedContextSource_Item> 
     if (message.type?.$case === "github") {
       obj.github = GitReference.toJSON(message.type.value);
     } else if (message.type?.$case === "cmd") {
-      obj.cmd = message.type.value;
+      obj.cmd = Exec.toJSON(message.type.value);
     } else if (message.type?.$case === "text") {
       obj.text = message.type.value;
     } else if (message.type?.$case === "prefetchId") {
@@ -552,7 +552,7 @@ export const CombinedContextSource_Item: MessageFns<CombinedContextSource_Item> 
       }
       case "cmd": {
         if (object.type?.value !== undefined && object.type?.value !== null) {
-          message.type = { $case: "cmd", value: object.type.value };
+          message.type = { $case: "cmd", value: Exec.fromPartial(object.type.value) };
         }
         break;
       }

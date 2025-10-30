@@ -44,7 +44,7 @@ message Command {
 message CommandFrom {
   oneof type {
     common.GitReference github = 100;
-    string cmd = 101;
+    common.Exec cmd = 101;
     string text = 102;
   }
 }

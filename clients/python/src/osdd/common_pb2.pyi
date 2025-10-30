@@ -1,6 +1,7 @@
+from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
-from collections.abc import Mapping as _Mapping
+from collections.abc import Iterable as _Iterable, Mapping as _Mapping
 from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
@@ -36,3 +37,11 @@ class NameGenConfig(_message.Message):
     LEN_FIELD_NUMBER: _ClassVar[int]
     len: int
     def __init__(self, len: _Optional[int] = ...) -> None: ...
+
+class Exec(_message.Message):
+    __slots__ = ("cmd", "args")
+    CMD_FIELD_NUMBER: _ClassVar[int]
+    ARGS_FIELD_NUMBER: _ClassVar[int]
+    cmd: str
+    args: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(self, cmd: _Optional[str] = ..., args: _Optional[_Iterable[str]] = ...) -> None: ...

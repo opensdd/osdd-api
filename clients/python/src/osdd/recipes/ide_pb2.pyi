@@ -70,6 +70,6 @@ class CommandFrom(_message.Message):
     CMD_FIELD_NUMBER: _ClassVar[int]
     TEXT_FIELD_NUMBER: _ClassVar[int]
     github: _common_pb2.GitReference
-    cmd: str
+    cmd: _common_pb2.Exec
     text: str
-    def __init__(self, github: _Optional[_Union[_common_pb2.GitReference, _Mapping]] = ..., cmd: _Optional[str] = ..., text: _Optional[str] = ...) -> None: ...
+    def __init__(self, github: _Optional[_Union[_common_pb2.GitReference, _Mapping]] = ..., cmd: _Optional[_Union[_common_pb2.Exec, _Mapping]] = ..., text: _Optional[str] = ...) -> None: ...

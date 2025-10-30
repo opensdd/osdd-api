@@ -6,7 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { GitReference } from "../common";
+import { Exec, GitReference } from "../common";
 import { Permissions } from "./permissions";
 
 export const protobufPackage = "osdd.recipes.ide";
@@ -50,7 +50,7 @@ export interface Command {
 export interface CommandFrom {
   type?:
     | { $case: "github"; value: GitReference }
-    | { $case: "cmd"; value: string }
+    | { $case: "cmd"; value: Exec }
     | { $case: "text"; value: string }
     | undefined;
 }
@@ -663,7 +663,7 @@ export const CommandFrom: MessageFns<CommandFrom> = {
         GitReference.encode(message.type.value, writer.uint32(802).fork()).join();
         break;
       case "cmd":
-        writer.uint32(810).string(message.type.value);
+        Exec.encode(message.type.value, writer.uint32(810).fork()).join();
         break;
       case "text":
         writer.uint32(818).string(message.type.value);
@@ -692,7 +692,7 @@ export const CommandFrom: MessageFns<CommandFrom> = {
             break;
           }
 
-          message.type = { $case: "cmd", value: reader.string() };
+          message.type = { $case: "cmd", value: Exec.decode(reader, reader.uint32()) };
           continue;
         }
         case 102: {
@@ -717,7 +717,7 @@ export const CommandFrom: MessageFns<CommandFrom> = {
       type: isSet(object.github)
         ? { $case: "github", value: GitReference.fromJSON(object.github) }
         : isSet(object.cmd)
-        ? { $case: "cmd", value: gt.String(object.cmd) }
+        ? { $case: "cmd", value: Exec.fromJSON(object.cmd) }
         : isSet(object.text)
         ? { $case: "text", value: gt.String(object.text) }
         : undefined,
@@ -729,7 +729,7 @@ export const CommandFrom: MessageFns<CommandFrom> = {
     if (message.type?.$case === "github") {
       obj.github = GitReference.toJSON(message.type.value);
     } else if (message.type?.$case === "cmd") {
-      obj.cmd = message.type.value;
+      obj.cmd = Exec.toJSON(message.type.value);
     } else if (message.type?.$case === "text") {
       obj.text = message.type.value;
     }
@@ -750,7 +750,7 @@ export const CommandFrom: MessageFns<CommandFrom> = {
       }
       case "cmd": {
         if (object.type?.value !== undefined && object.type?.value !== null) {
-          message.type = { $case: "cmd", value: object.type.value };
+          message.type = { $case: "cmd", value: Exec.fromPartial(object.type.value) };
         }
         break;
       }

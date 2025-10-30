@@ -212,13 +212,13 @@ func (x *ContextFrom) GetGithub() *osdd.GitReference {
 	return nil
 }
 
-func (x *ContextFrom) GetCmd() string {
+func (x *ContextFrom) GetCmd() *osdd.Exec {
 	if x != nil {
 		if x, ok := x.xxx_hidden_Type.(*contextFrom_Cmd); ok {
 			return x.Cmd
 		}
 	}
-	return ""
+	return nil
 }
 
 func (x *ContextFrom) GetText() string {
@@ -264,7 +264,11 @@ func (x *ContextFrom) SetGithub(v *osdd.GitReference) {
 	x.xxx_hidden_Type = &contextFrom_Github{v}
 }
 
-func (x *ContextFrom) SetCmd(v string) {
+func (x *ContextFrom) SetCmd(v *osdd.Exec) {
+	if v == nil {
+		x.xxx_hidden_Type = nil
+		return
+	}
 	x.xxx_hidden_Type = &contextFrom_Cmd{v}
 }
 
@@ -415,7 +419,7 @@ type ContextFrom_builder struct {
 	// Fields of oneof xxx_hidden_Type:
 	Combined   *CombinedContextSource
 	Github     *osdd.GitReference
-	Cmd        *string
+	Cmd        *osdd.Exec
 	Text       *string
 	PrefetchId *string
 	UserInput  *UserInputContextSource
@@ -433,7 +437,7 @@ func (b0 ContextFrom_builder) Build() *ContextFrom {
 		x.xxx_hidden_Type = &contextFrom_Github{b.Github}
 	}
 	if b.Cmd != nil {
-		x.xxx_hidden_Type = &contextFrom_Cmd{*b.Cmd}
+		x.xxx_hidden_Type = &contextFrom_Cmd{b.Cmd}
 	}
 	if b.Text != nil {
 		x.xxx_hidden_Type = &contextFrom_Text{*b.Text}
@@ -470,7 +474,7 @@ type contextFrom_Github struct {
 }
 
 type contextFrom_Cmd struct {
-	Cmd string `protobuf:"bytes,102,opt,name=cmd,proto3,oneof"`
+	Cmd *osdd.Exec `protobuf:"bytes,102,opt,name=cmd,proto3,oneof"`
 }
 
 type contextFrom_Text struct {
@@ -656,13 +660,13 @@ func (x *CombinedContextSource_Item) GetGithub() *osdd.GitReference {
 	return nil
 }
 
-func (x *CombinedContextSource_Item) GetCmd() string {
+func (x *CombinedContextSource_Item) GetCmd() *osdd.Exec {
 	if x != nil {
 		if x, ok := x.xxx_hidden_Type.(*combinedContextSource_Item_Cmd); ok {
 			return x.Cmd
 		}
 	}
-	return ""
+	return nil
 }
 
 func (x *CombinedContextSource_Item) GetText() string {
@@ -700,7 +704,11 @@ func (x *CombinedContextSource_Item) SetGithub(v *osdd.GitReference) {
 	x.xxx_hidden_Type = &combinedContextSource_Item_Github{v}
 }
 
-func (x *CombinedContextSource_Item) SetCmd(v string) {
+func (x *CombinedContextSource_Item) SetCmd(v *osdd.Exec) {
+	if v == nil {
+		x.xxx_hidden_Type = nil
+		return
+	}
 	x.xxx_hidden_Type = &combinedContextSource_Item_Cmd{v}
 }
 
@@ -833,7 +841,7 @@ type CombinedContextSource_Item_builder struct {
 
 	// Fields of oneof xxx_hidden_Type:
 	Github     *osdd.GitReference
-	Cmd        *string
+	Cmd        *osdd.Exec
 	Text       *string
 	PrefetchId *string
 	UserInput  *UserInputContextSource
@@ -848,7 +856,7 @@ func (b0 CombinedContextSource_Item_builder) Build() *CombinedContextSource_Item
 		x.xxx_hidden_Type = &combinedContextSource_Item_Github{b.Github}
 	}
 	if b.Cmd != nil {
-		x.xxx_hidden_Type = &combinedContextSource_Item_Cmd{*b.Cmd}
+		x.xxx_hidden_Type = &combinedContextSource_Item_Cmd{b.Cmd}
 	}
 	if b.Text != nil {
 		x.xxx_hidden_Type = &combinedContextSource_Item_Text{*b.Text}
@@ -881,7 +889,7 @@ type combinedContextSource_Item_Github struct {
 }
 
 type combinedContextSource_Item_Cmd struct {
-	Cmd string `protobuf:"bytes,101,opt,name=cmd,proto3,oneof"`
+	Cmd *osdd.Exec `protobuf:"bytes,101,opt,name=cmd,proto3,oneof"`
 }
 
 type combinedContextSource_Item_Text struct {
@@ -915,22 +923,22 @@ const file_osdd_recipes_context_proto_rawDesc = "" +
 	"\aentries\x18\x01 \x03(\v2\".osdd.recipes.context.ContextEntryR\aentries\"Y\n" +
 	"\fContextEntry\x12\x12\n" +
 	"\x04path\x18\x01 \x01(\tR\x04path\x125\n" +
-	"\x04from\x18\x02 \x01(\v2!.osdd.recipes.context.ContextFromR\x04from\"\xb1\x02\n" +
+	"\x04from\x18\x02 \x01(\v2!.osdd.recipes.context.ContextFromR\x04from\"\xc4\x02\n" +
 	"\vContextFrom\x12I\n" +
 	"\bcombined\x18d \x01(\v2+.osdd.recipes.context.CombinedContextSourceH\x00R\bcombined\x123\n" +
-	"\x06github\x18e \x01(\v2\x19.osdd.common.GitReferenceH\x00R\x06github\x12\x12\n" +
-	"\x03cmd\x18f \x01(\tH\x00R\x03cmd\x12\x14\n" +
+	"\x06github\x18e \x01(\v2\x19.osdd.common.GitReferenceH\x00R\x06github\x12%\n" +
+	"\x03cmd\x18f \x01(\v2\x11.osdd.common.ExecH\x00R\x03cmd\x12\x14\n" +
 	"\x04text\x18g \x01(\tH\x00R\x04text\x12!\n" +
 	"\vprefetch_id\x18h \x01(\tH\x00R\n" +
 	"prefetchId\x12M\n" +
 	"\n" +
 	"user_input\x18i \x01(\v2,.osdd.recipes.context.UserInputContextSourceH\x00R\tuserInputB\x06\n" +
-	"\x04type\"\xc1\x02\n" +
+	"\x04type\"\xd4\x02\n" +
 	"\x15CombinedContextSource\x12F\n" +
-	"\x05items\x18\x01 \x03(\v20.osdd.recipes.context.CombinedContextSource.ItemR\x05items\x1a\xdf\x01\n" +
+	"\x05items\x18\x01 \x03(\v20.osdd.recipes.context.CombinedContextSource.ItemR\x05items\x1a\xf2\x01\n" +
 	"\x04Item\x123\n" +
-	"\x06github\x18d \x01(\v2\x19.osdd.common.GitReferenceH\x00R\x06github\x12\x12\n" +
-	"\x03cmd\x18e \x01(\tH\x00R\x03cmd\x12\x14\n" +
+	"\x06github\x18d \x01(\v2\x19.osdd.common.GitReferenceH\x00R\x06github\x12%\n" +
+	"\x03cmd\x18e \x01(\v2\x11.osdd.common.ExecH\x00R\x03cmd\x12\x14\n" +
 	"\x04text\x18f \x01(\tH\x00R\x04text\x12!\n" +
 	"\vprefetch_id\x18g \x01(\tH\x00R\n" +
 	"prefetchId\x12M\n" +
@@ -949,23 +957,26 @@ var file_osdd_recipes_context_proto_goTypes = []any{
 	(*UserInputContextSource)(nil),     // 4: osdd.recipes.context.UserInputContextSource
 	(*CombinedContextSource_Item)(nil), // 5: osdd.recipes.context.CombinedContextSource.Item
 	(*osdd.GitReference)(nil),          // 6: osdd.common.GitReference
-	(*osdd.UserInputParameter)(nil),    // 7: osdd.common.UserInputParameter
+	(*osdd.Exec)(nil),                  // 7: osdd.common.Exec
+	(*osdd.UserInputParameter)(nil),    // 8: osdd.common.UserInputParameter
 }
 var file_osdd_recipes_context_proto_depIdxs = []int32{
-	1, // 0: osdd.recipes.context.Context.entries:type_name -> osdd.recipes.context.ContextEntry
-	2, // 1: osdd.recipes.context.ContextEntry.from:type_name -> osdd.recipes.context.ContextFrom
-	3, // 2: osdd.recipes.context.ContextFrom.combined:type_name -> osdd.recipes.context.CombinedContextSource
-	6, // 3: osdd.recipes.context.ContextFrom.github:type_name -> osdd.common.GitReference
-	4, // 4: osdd.recipes.context.ContextFrom.user_input:type_name -> osdd.recipes.context.UserInputContextSource
-	5, // 5: osdd.recipes.context.CombinedContextSource.items:type_name -> osdd.recipes.context.CombinedContextSource.Item
-	7, // 6: osdd.recipes.context.UserInputContextSource.entries:type_name -> osdd.common.UserInputParameter
-	6, // 7: osdd.recipes.context.CombinedContextSource.Item.github:type_name -> osdd.common.GitReference
-	4, // 8: osdd.recipes.context.CombinedContextSource.Item.user_input:type_name -> osdd.recipes.context.UserInputContextSource
-	9, // [9:9] is the sub-list for method output_type
-	9, // [9:9] is the sub-list for method input_type
-	9, // [9:9] is the sub-list for extension type_name
-	9, // [9:9] is the sub-list for extension extendee
-	0, // [0:9] is the sub-list for field type_name
+	1,  // 0: osdd.recipes.context.Context.entries:type_name -> osdd.recipes.context.ContextEntry
+	2,  // 1: osdd.recipes.context.ContextEntry.from:type_name -> osdd.recipes.context.ContextFrom
+	3,  // 2: osdd.recipes.context.ContextFrom.combined:type_name -> osdd.recipes.context.CombinedContextSource
+	6,  // 3: osdd.recipes.context.ContextFrom.github:type_name -> osdd.common.GitReference
+	7,  // 4: osdd.recipes.context.ContextFrom.cmd:type_name -> osdd.common.Exec
+	4,  // 5: osdd.recipes.context.ContextFrom.user_input:type_name -> osdd.recipes.context.UserInputContextSource
+	5,  // 6: osdd.recipes.context.CombinedContextSource.items:type_name -> osdd.recipes.context.CombinedContextSource.Item
+	8,  // 7: osdd.recipes.context.UserInputContextSource.entries:type_name -> osdd.common.UserInputParameter
+	6,  // 8: osdd.recipes.context.CombinedContextSource.Item.github:type_name -> osdd.common.GitReference
+	7,  // 9: osdd.recipes.context.CombinedContextSource.Item.cmd:type_name -> osdd.common.Exec
+	4,  // 10: osdd.recipes.context.CombinedContextSource.Item.user_input:type_name -> osdd.recipes.context.UserInputContextSource
+	11, // [11:11] is the sub-list for method output_type
+	11, // [11:11] is the sub-list for method input_type
+	11, // [11:11] is the sub-list for extension type_name
+	11, // [11:11] is the sub-list for extension extendee
+	0,  // [0:11] is the sub-list for field type_name
 }
 
 func init() { file_osdd_recipes_context_proto_init() }

@@ -30,11 +30,11 @@ class ContextFrom(_message.Message):
     USER_INPUT_FIELD_NUMBER: _ClassVar[int]
     combined: CombinedContextSource
     github: _common_pb2.GitReference
-    cmd: str
+    cmd: _common_pb2.Exec
     text: str
     prefetch_id: str
     user_input: UserInputContextSource
-    def __init__(self, combined: _Optional[_Union[CombinedContextSource, _Mapping]] = ..., github: _Optional[_Union[_common_pb2.GitReference, _Mapping]] = ..., cmd: _Optional[str] = ..., text: _Optional[str] = ..., prefetch_id: _Optional[str] = ..., user_input: _Optional[_Union[UserInputContextSource, _Mapping]] = ...) -> None: ...
+    def __init__(self, combined: _Optional[_Union[CombinedContextSource, _Mapping]] = ..., github: _Optional[_Union[_common_pb2.GitReference, _Mapping]] = ..., cmd: _Optional[_Union[_common_pb2.Exec, _Mapping]] = ..., text: _Optional[str] = ..., prefetch_id: _Optional[str] = ..., user_input: _Optional[_Union[UserInputContextSource, _Mapping]] = ...) -> None: ...
 
 class CombinedContextSource(_message.Message):
     __slots__ = ("items",)
@@ -46,11 +46,11 @@ class CombinedContextSource(_message.Message):
         PREFETCH_ID_FIELD_NUMBER: _ClassVar[int]
         USER_INPUT_FIELD_NUMBER: _ClassVar[int]
         github: _common_pb2.GitReference
-        cmd: str
+        cmd: _common_pb2.Exec
         text: str
         prefetch_id: str
         user_input: UserInputContextSource
-        def __init__(self, github: _Optional[_Union[_common_pb2.GitReference, _Mapping]] = ..., cmd: _Optional[str] = ..., text: _Optional[str] = ..., prefetch_id: _Optional[str] = ..., user_input: _Optional[_Union[UserInputContextSource, _Mapping]] = ...) -> None: ...
+        def __init__(self, github: _Optional[_Union[_common_pb2.GitReference, _Mapping]] = ..., cmd: _Optional[_Union[_common_pb2.Exec, _Mapping]] = ..., text: _Optional[str] = ..., prefetch_id: _Optional[str] = ..., user_input: _Optional[_Union[UserInputContextSource, _Mapping]] = ...) -> None: ...
     ITEMS_FIELD_NUMBER: _ClassVar[int]
     items: _containers.RepeatedCompositeFieldContainer[CombinedContextSource.Item]
     def __init__(self, items: _Optional[_Iterable[_Union[CombinedContextSource.Item, _Mapping]]] = ...) -> None: ...

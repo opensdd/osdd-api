@@ -28,6 +28,11 @@ export interface NameGenConfig {
   len: number;
 }
 
+export interface Exec {
+  cmd: string;
+  args: string[];
+}
+
 function createBaseGitReference(): GitReference {
   return { path: "", version: undefined };
 }
@@ -344,6 +349,82 @@ export const NameGenConfig: MessageFns<NameGenConfig> = {
   fromPartial(object: DeepPartial<NameGenConfig>): NameGenConfig {
     const message = createBaseNameGenConfig();
     message.len = object.len ?? 0;
+    return message;
+  },
+};
+
+function createBaseExec(): Exec {
+  return { cmd: "", args: [] };
+}
+
+export const Exec: MessageFns<Exec> = {
+  encode(message: Exec, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.cmd !== "") {
+      writer.uint32(10).string(message.cmd);
+    }
+    for (const v of message.args) {
+      writer.uint32(18).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): Exec {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseExec();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.cmd = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.args.push(reader.string());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Exec {
+    return {
+      cmd: isSet(object.cmd) ? gt.String(object.cmd) : "",
+      args: gt.Array.isArray(object?.args) ? object.args.map((e: any) => gt.String(e)) : [],
+    };
+  },
+
+  toJSON(message: Exec): unknown {
+    const obj: any = {};
+    if (message.cmd !== "") {
+      obj.cmd = message.cmd;
+    }
+    if (message.args?.length) {
+      obj.args = message.args;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<Exec>): Exec {
+    return Exec.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<Exec>): Exec {
+    const message = createBaseExec();
+    message.cmd = object.cmd ?? "";
+    message.args = object.args?.map((e) => e) || [];
     return message;
   },
 };

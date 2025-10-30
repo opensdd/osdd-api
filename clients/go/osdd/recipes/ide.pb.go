@@ -663,13 +663,13 @@ func (x *CommandFrom) GetGithub() *osdd.GitReference {
 	return nil
 }
 
-func (x *CommandFrom) GetCmd() string {
+func (x *CommandFrom) GetCmd() *osdd.Exec {
 	if x != nil {
 		if x, ok := x.xxx_hidden_Type.(*commandFrom_Cmd); ok {
 			return x.Cmd
 		}
 	}
-	return ""
+	return nil
 }
 
 func (x *CommandFrom) GetText() string {
@@ -689,7 +689,11 @@ func (x *CommandFrom) SetGithub(v *osdd.GitReference) {
 	x.xxx_hidden_Type = &commandFrom_Github{v}
 }
 
-func (x *CommandFrom) SetCmd(v string) {
+func (x *CommandFrom) SetCmd(v *osdd.Exec) {
+	if v == nil {
+		x.xxx_hidden_Type = nil
+		return
+	}
 	x.xxx_hidden_Type = &commandFrom_Cmd{v}
 }
 
@@ -776,7 +780,7 @@ type CommandFrom_builder struct {
 
 	// Fields of oneof xxx_hidden_Type:
 	Github *osdd.GitReference
-	Cmd    *string
+	Cmd    *osdd.Exec
 	Text   *string
 	// -- end of xxx_hidden_Type
 }
@@ -789,7 +793,7 @@ func (b0 CommandFrom_builder) Build() *CommandFrom {
 		x.xxx_hidden_Type = &commandFrom_Github{b.Github}
 	}
 	if b.Cmd != nil {
-		x.xxx_hidden_Type = &commandFrom_Cmd{*b.Cmd}
+		x.xxx_hidden_Type = &commandFrom_Cmd{b.Cmd}
 	}
 	if b.Text != nil {
 		x.xxx_hidden_Type = &commandFrom_Text{*b.Text}
@@ -816,7 +820,7 @@ type commandFrom_Github struct {
 }
 
 type commandFrom_Cmd struct {
-	Cmd string `protobuf:"bytes,101,opt,name=cmd,proto3,oneof"`
+	Cmd *osdd.Exec `protobuf:"bytes,101,opt,name=cmd,proto3,oneof"`
 }
 
 type commandFrom_Text struct {
@@ -858,10 +862,10 @@ const file_osdd_recipes_ide_proto_rawDesc = "" +
 	"\aentries\x18\x01 \x03(\v2\x19.osdd.recipes.ide.CommandR\aentries\"P\n" +
 	"\aCommand\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x121\n" +
-	"\x04from\x18\x02 \x01(\v2\x1d.osdd.recipes.ide.CommandFromR\x04from\"t\n" +
+	"\x04from\x18\x02 \x01(\v2\x1d.osdd.recipes.ide.CommandFromR\x04from\"\x87\x01\n" +
 	"\vCommandFrom\x123\n" +
-	"\x06github\x18d \x01(\v2\x19.osdd.common.GitReferenceH\x00R\x06github\x12\x12\n" +
-	"\x03cmd\x18e \x01(\tH\x00R\x03cmd\x12\x14\n" +
+	"\x06github\x18d \x01(\v2\x19.osdd.common.GitReferenceH\x00R\x06github\x12%\n" +
+	"\x03cmd\x18e \x01(\v2\x11.osdd.common.ExecH\x00R\x03cmd\x12\x14\n" +
 	"\x04text\x18f \x01(\tH\x00R\x04textB\x06\n" +
 	"\x04typeB5Z3github.com/opensdd/osdd-api/clients/go/osdd/recipesb\x06proto3"
 
@@ -878,6 +882,7 @@ var file_osdd_recipes_ide_proto_goTypes = []any{
 	nil,                       // 8: osdd.recipes.ide.Mcp.ServersEntry
 	(*Permissions)(nil),       // 9: osdd.recipes.permissions.Permissions
 	(*osdd.GitReference)(nil), // 10: osdd.common.GitReference
+	(*osdd.Exec)(nil),         // 11: osdd.common.Exec
 }
 var file_osdd_recipes_ide_proto_depIdxs = []int32{
 	5,  // 0: osdd.recipes.ide.Ide.commands:type_name -> osdd.recipes.ide.Commands
@@ -889,12 +894,13 @@ var file_osdd_recipes_ide_proto_depIdxs = []int32{
 	6,  // 6: osdd.recipes.ide.Commands.entries:type_name -> osdd.recipes.ide.Command
 	7,  // 7: osdd.recipes.ide.Command.from:type_name -> osdd.recipes.ide.CommandFrom
 	10, // 8: osdd.recipes.ide.CommandFrom.github:type_name -> osdd.common.GitReference
-	2,  // 9: osdd.recipes.ide.Mcp.ServersEntry.value:type_name -> osdd.recipes.ide.McpServer
-	10, // [10:10] is the sub-list for method output_type
-	10, // [10:10] is the sub-list for method input_type
-	10, // [10:10] is the sub-list for extension type_name
-	10, // [10:10] is the sub-list for extension extendee
-	0,  // [0:10] is the sub-list for field type_name
+	11, // 9: osdd.recipes.ide.CommandFrom.cmd:type_name -> osdd.common.Exec
+	2,  // 10: osdd.recipes.ide.Mcp.ServersEntry.value:type_name -> osdd.recipes.ide.McpServer
+	11, // [11:11] is the sub-list for method output_type
+	11, // [11:11] is the sub-list for method input_type
+	11, // [11:11] is the sub-list for extension type_name
+	11, // [11:11] is the sub-list for extension extendee
+	0,  // [0:11] is the sub-list for field type_name
 }
 
 func init() { file_osdd_recipes_ide_proto_init() }

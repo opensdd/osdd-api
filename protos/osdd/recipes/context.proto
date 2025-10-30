@@ -19,7 +19,7 @@ message ContextFrom {
   oneof type {
     CombinedContextSource combined = 100;
     common.GitReference github = 101;
-    string cmd = 102;
+    common.Exec cmd = 102;
     string text = 103;
     string prefetch_id = 104;
     UserInputContextSource user_input = 105;
@@ -32,7 +32,7 @@ message CombinedContextSource {
   message Item {
     oneof type {
       common.GitReference github = 100;
-      string cmd = 101;
+      common.Exec cmd = 101;
       string text = 102;
       string prefetch_id = 103;
       UserInputContextSource user_input = 104;
