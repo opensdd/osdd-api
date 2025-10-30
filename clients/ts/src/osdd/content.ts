@@ -6,6 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { Exec } from "./common";
 
 export const protobufPackage = "osdd.content";
 
@@ -14,7 +15,7 @@ export interface Prefetch {
 }
 
 export interface PrefetchEntry {
-  type?: { $case: "cmd"; value: string } | undefined;
+  type?: { $case: "cmd"; value: Exec } | undefined;
 }
 
 export interface PrefetchResult {
@@ -94,7 +95,7 @@ export const PrefetchEntry: MessageFns<PrefetchEntry> = {
   encode(message: PrefetchEntry, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     switch (message.type?.$case) {
       case "cmd":
-        writer.uint32(802).string(message.type.value);
+        Exec.encode(message.type.value, writer.uint32(802).fork()).join();
         break;
     }
     return writer;
@@ -112,7 +113,7 @@ export const PrefetchEntry: MessageFns<PrefetchEntry> = {
             break;
           }
 
-          message.type = { $case: "cmd", value: reader.string() };
+          message.type = { $case: "cmd", value: Exec.decode(reader, reader.uint32()) };
           continue;
         }
       }
@@ -125,13 +126,13 @@ export const PrefetchEntry: MessageFns<PrefetchEntry> = {
   },
 
   fromJSON(object: any): PrefetchEntry {
-    return { type: isSet(object.cmd) ? { $case: "cmd", value: gt.String(object.cmd) } : undefined };
+    return { type: isSet(object.cmd) ? { $case: "cmd", value: Exec.fromJSON(object.cmd) } : undefined };
   },
 
   toJSON(message: PrefetchEntry): unknown {
     const obj: any = {};
     if (message.type?.$case === "cmd") {
-      obj.cmd = message.type.value;
+      obj.cmd = Exec.toJSON(message.type.value);
     }
     return obj;
   },
@@ -144,7 +145,7 @@ export const PrefetchEntry: MessageFns<PrefetchEntry> = {
     switch (object.type?.$case) {
       case "cmd": {
         if (object.type?.value !== undefined && object.type?.value !== null) {
-          message.type = { $case: "cmd", value: object.type.value };
+          message.type = { $case: "cmd", value: Exec.fromPartial(object.type.value) };
         }
         break;
       }

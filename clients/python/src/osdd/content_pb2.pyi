@@ -1,3 +1,4 @@
+from osdd import common_pb2 as _common_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
@@ -15,8 +16,8 @@ class Prefetch(_message.Message):
 class PrefetchEntry(_message.Message):
     __slots__ = ("cmd",)
     CMD_FIELD_NUMBER: _ClassVar[int]
-    cmd: str
-    def __init__(self, cmd: _Optional[str] = ...) -> None: ...
+    cmd: _common_pb2.Exec
+    def __init__(self, cmd: _Optional[_Union[_common_pb2.Exec, _Mapping]] = ...) -> None: ...
 
 class PrefetchResult(_message.Message):
     __slots__ = ("data",)

@@ -22,9 +22,10 @@ _runtime_version.ValidateProtobufRuntimeVersion(
 _sym_db = _symbol_database.Default()
 
 
+from osdd import common_pb2 as osdd_dot_common__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x12osdd/content.proto\x12\x0cosdd.content\"8\n\x08Prefetch\x12,\n\x07\x65ntries\x18\x01 \x03(\x0b\x32\x1b.osdd.content.PrefetchEntry\"&\n\rPrefetchEntry\x12\r\n\x03\x63md\x18\x64 \x01(\tH\x00\x42\x06\n\x04type\"9\n\x0ePrefetchResult\x12\'\n\x04\x64\x61ta\x18\x01 \x03(\x0b\x32\x19.osdd.content.FetchedData\"\'\n\x0b\x46\x65tchedData\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\tB-Z+github.com/opensdd/osdd-api/clients/go/osddb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x12osdd/content.proto\x12\x0cosdd.content\x1a\x11osdd/common.proto\"8\n\x08Prefetch\x12,\n\x07\x65ntries\x18\x01 \x03(\x0b\x32\x1b.osdd.content.PrefetchEntry\"9\n\rPrefetchEntry\x12 \n\x03\x63md\x18\x64 \x01(\x0b\x32\x11.osdd.common.ExecH\x00\x42\x06\n\x04type\"9\n\x0ePrefetchResult\x12\'\n\x04\x64\x61ta\x18\x01 \x03(\x0b\x32\x19.osdd.content.FetchedData\"\'\n\x0b\x46\x65tchedData\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\tB-Z+github.com/opensdd/osdd-api/clients/go/osddb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -32,12 +33,12 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'osdd.content_pb2', _globals
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'Z+github.com/opensdd/osdd-api/clients/go/osdd'
-  _globals['_PREFETCH']._serialized_start=36
-  _globals['_PREFETCH']._serialized_end=92
-  _globals['_PREFETCHENTRY']._serialized_start=94
-  _globals['_PREFETCHENTRY']._serialized_end=132
-  _globals['_PREFETCHRESULT']._serialized_start=134
-  _globals['_PREFETCHRESULT']._serialized_end=191
-  _globals['_FETCHEDDATA']._serialized_start=193
-  _globals['_FETCHEDDATA']._serialized_end=232
+  _globals['_PREFETCH']._serialized_start=55
+  _globals['_PREFETCH']._serialized_end=111
+  _globals['_PREFETCHENTRY']._serialized_start=113
+  _globals['_PREFETCHENTRY']._serialized_end=170
+  _globals['_PREFETCHRESULT']._serialized_start=172
+  _globals['_PREFETCHRESULT']._serialized_end=229
+  _globals['_FETCHEDDATA']._serialized_start=231
+  _globals['_FETCHEDDATA']._serialized_end=270
 # @@protoc_insertion_point(module_scope)

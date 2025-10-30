@@ -4,13 +4,15 @@ package osdd.content;
 
 option go_package = "github.com/opensdd/osdd-api/clients/go/osdd";
 
+import "osdd/common.proto";
+
 message Prefetch {
   repeated PrefetchEntry entries = 1;
 }
 
 message PrefetchEntry {
   oneof type {
-    string cmd = 100;
+    common.Exec cmd = 100;
   }
 }
 

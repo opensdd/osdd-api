@@ -111,16 +111,20 @@ func (x *PrefetchEntry) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *PrefetchEntry) GetCmd() string {
+func (x *PrefetchEntry) GetCmd() *Exec {
 	if x != nil {
 		if x, ok := x.xxx_hidden_Type.(*prefetchEntry_Cmd); ok {
 			return x.Cmd
 		}
 	}
-	return ""
+	return nil
 }
 
-func (x *PrefetchEntry) SetCmd(v string) {
+func (x *PrefetchEntry) SetCmd(v *Exec) {
+	if v == nil {
+		x.xxx_hidden_Type = nil
+		return
+	}
 	x.xxx_hidden_Type = &prefetchEntry_Cmd{v}
 }
 
@@ -168,7 +172,7 @@ type PrefetchEntry_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// Fields of oneof xxx_hidden_Type:
-	Cmd *string
+	Cmd *Exec
 	// -- end of xxx_hidden_Type
 }
 
@@ -177,7 +181,7 @@ func (b0 PrefetchEntry_builder) Build() *PrefetchEntry {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.Cmd != nil {
-		x.xxx_hidden_Type = &prefetchEntry_Cmd{*b.Cmd}
+		x.xxx_hidden_Type = &prefetchEntry_Cmd{b.Cmd}
 	}
 	return m0
 }
@@ -197,7 +201,7 @@ type isPrefetchEntry_Type interface {
 }
 
 type prefetchEntry_Cmd struct {
-	Cmd string `protobuf:"bytes,100,opt,name=cmd,proto3,oneof"`
+	Cmd *Exec `protobuf:"bytes,100,opt,name=cmd,proto3,oneof"`
 }
 
 func (*prefetchEntry_Cmd) isPrefetchEntry_Type() {}
@@ -336,11 +340,11 @@ var File_osdd_content_proto protoreflect.FileDescriptor
 
 const file_osdd_content_proto_rawDesc = "" +
 	"\n" +
-	"\x12osdd/content.proto\x12\fosdd.content\"A\n" +
+	"\x12osdd/content.proto\x12\fosdd.content\x1a\x11osdd/common.proto\"A\n" +
 	"\bPrefetch\x125\n" +
-	"\aentries\x18\x01 \x03(\v2\x1b.osdd.content.PrefetchEntryR\aentries\"+\n" +
-	"\rPrefetchEntry\x12\x12\n" +
-	"\x03cmd\x18d \x01(\tH\x00R\x03cmdB\x06\n" +
+	"\aentries\x18\x01 \x03(\v2\x1b.osdd.content.PrefetchEntryR\aentries\">\n" +
+	"\rPrefetchEntry\x12%\n" +
+	"\x03cmd\x18d \x01(\v2\x11.osdd.common.ExecH\x00R\x03cmdB\x06\n" +
 	"\x04type\"?\n" +
 	"\x0ePrefetchResult\x12-\n" +
 	"\x04data\x18\x01 \x03(\v2\x19.osdd.content.FetchedDataR\x04data\"1\n" +
@@ -354,15 +358,17 @@ var file_osdd_content_proto_goTypes = []any{
 	(*PrefetchEntry)(nil),  // 1: osdd.content.PrefetchEntry
 	(*PrefetchResult)(nil), // 2: osdd.content.PrefetchResult
 	(*FetchedData)(nil),    // 3: osdd.content.FetchedData
+	(*Exec)(nil),           // 4: osdd.common.Exec
 }
 var file_osdd_content_proto_depIdxs = []int32{
 	1, // 0: osdd.content.Prefetch.entries:type_name -> osdd.content.PrefetchEntry
-	3, // 1: osdd.content.PrefetchResult.data:type_name -> osdd.content.FetchedData
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	4, // 1: osdd.content.PrefetchEntry.cmd:type_name -> osdd.common.Exec
+	3, // 2: osdd.content.PrefetchResult.data:type_name -> osdd.content.FetchedData
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_osdd_content_proto_init() }
@@ -370,6 +376,7 @@ func file_osdd_content_proto_init() {
 	if File_osdd_content_proto != nil {
 		return
 	}
+	file_osdd_common_proto_init()
 	file_osdd_content_proto_msgTypes[1].OneofWrappers = []any{
 		(*prefetchEntry_Cmd)(nil),
 	}
