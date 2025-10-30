@@ -15,17 +15,21 @@ func TestParseExampleJSON(t *testing.T) {
 		t.Fatalf("failed to read testdata/example.json: %v", err)
 	}
 
-	var r recipes.Recipe
+	var r recipes.ExecutableRecipe
 	// Intentionally not discarding unknown fields. We need to make sure that every field is parsed.
 	um := protojson.UnmarshalOptions{DiscardUnknown: false}
 	if err := um.Unmarshal(data, &r); err != nil {
 		t.Fatalf("failed to unmarshal example.json into recipes.Recipe: %v", err)
 	}
 
-	if !r.HasContext() || r.GetContext() == nil {
+	if r.GetEntryPoint().GetStart().GetCommand() != "agents_md" {
+		t.Fatalf("agents_md should be a start command")
+	}
+
+	if r.GetRecipe().GetContext() == nil {
 		t.Fatalf("expected context to be present in recipe")
 	}
-	ctx := r.GetContext()
+	ctx := r.GetRecipe().GetContext()
 	entries := ctx.GetEntries()
 	if len(entries) < 2 {
 		t.Fatalf("expected at least 2 context entries, got %d", len(entries))
@@ -39,11 +43,9 @@ func TestParseExampleJSON(t *testing.T) {
 	if got := entries[0].GetFrom().GetGithub().GetPath(); got != "https://github.com/opensdd/recipes/global/agents_md/resources/goal.md" {
 		t.Errorf("first context entry github.path mismatch: got %q", got)
 	}
+	rec := r.GetRecipe()
+	cmds := rec.GetIde().GetCommands().GetEntries()
 
-	if !r.HasIde() || r.GetIde() == nil || r.GetIde().GetCommands() == nil {
-		t.Fatalf("expected ide.commands to be present in recipe")
-	}
-	cmds := r.GetIde().GetCommands().GetEntries()
 	if len(cmds) != 3 {
 		t.Fatalf("expected 3 commands, got %d", len(cmds))
 	}

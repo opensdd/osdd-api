@@ -25,6 +25,11 @@ export interface ExecutableRecipe {
 
 export interface EntryPoint {
   ideType: string;
+  start?: StartConfig | undefined;
+}
+
+export interface StartConfig {
+  type?: { $case: "command"; value: string } | { $case: "prompt"; value: string } | undefined;
 }
 
 function createBaseRecipe(): Recipe {
@@ -204,13 +209,16 @@ export const ExecutableRecipe: MessageFns<ExecutableRecipe> = {
 };
 
 function createBaseEntryPoint(): EntryPoint {
-  return { ideType: "" };
+  return { ideType: "", start: undefined };
 }
 
 export const EntryPoint: MessageFns<EntryPoint> = {
   encode(message: EntryPoint, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.ideType !== "") {
       writer.uint32(10).string(message.ideType);
+    }
+    if (message.start !== undefined) {
+      StartConfig.encode(message.start, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -230,6 +238,14 @@ export const EntryPoint: MessageFns<EntryPoint> = {
           message.ideType = reader.string();
           continue;
         }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.start = StartConfig.decode(reader, reader.uint32());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -240,13 +256,19 @@ export const EntryPoint: MessageFns<EntryPoint> = {
   },
 
   fromJSON(object: any): EntryPoint {
-    return { ideType: isSet(object.ideType) ? gt.String(object.ideType) : "" };
+    return {
+      ideType: isSet(object.ideType) ? gt.String(object.ideType) : "",
+      start: isSet(object.start) ? StartConfig.fromJSON(object.start) : undefined,
+    };
   },
 
   toJSON(message: EntryPoint): unknown {
     const obj: any = {};
     if (message.ideType !== "") {
       obj.ideType = message.ideType;
+    }
+    if (message.start !== undefined) {
+      obj.start = StartConfig.toJSON(message.start);
     }
     return obj;
   },
@@ -257,6 +279,101 @@ export const EntryPoint: MessageFns<EntryPoint> = {
   fromPartial(object: DeepPartial<EntryPoint>): EntryPoint {
     const message = createBaseEntryPoint();
     message.ideType = object.ideType ?? "";
+    message.start = (object.start !== undefined && object.start !== null)
+      ? StartConfig.fromPartial(object.start)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseStartConfig(): StartConfig {
+  return { type: undefined };
+}
+
+export const StartConfig: MessageFns<StartConfig> = {
+  encode(message: StartConfig, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    switch (message.type?.$case) {
+      case "command":
+        writer.uint32(802).string(message.type.value);
+        break;
+      case "prompt":
+        writer.uint32(810).string(message.type.value);
+        break;
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): StartConfig {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStartConfig();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 100: {
+          if (tag !== 802) {
+            break;
+          }
+
+          message.type = { $case: "command", value: reader.string() };
+          continue;
+        }
+        case 101: {
+          if (tag !== 810) {
+            break;
+          }
+
+          message.type = { $case: "prompt", value: reader.string() };
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StartConfig {
+    return {
+      type: isSet(object.command)
+        ? { $case: "command", value: gt.String(object.command) }
+        : isSet(object.prompt)
+        ? { $case: "prompt", value: gt.String(object.prompt) }
+        : undefined,
+    };
+  },
+
+  toJSON(message: StartConfig): unknown {
+    const obj: any = {};
+    if (message.type?.$case === "command") {
+      obj.command = message.type.value;
+    } else if (message.type?.$case === "prompt") {
+      obj.prompt = message.type.value;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<StartConfig>): StartConfig {
+    return StartConfig.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<StartConfig>): StartConfig {
+    const message = createBaseStartConfig();
+    switch (object.type?.$case) {
+      case "command": {
+        if (object.type?.value !== undefined && object.type?.value !== null) {
+          message.type = { $case: "command", value: object.type.value };
+        }
+        break;
+      }
+      case "prompt": {
+        if (object.type?.value !== undefined && object.type?.value !== null) {
+          message.type = { $case: "prompt", value: object.type.value };
+        }
+        break;
+      }
+    }
     return message;
   },
 };

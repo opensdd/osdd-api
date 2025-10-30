@@ -27,7 +27,7 @@ from osdd.recipes import ide_pb2 as osdd_dot_recipes_dot_ide__pb2
 from osdd import content_pb2 as osdd_dot_content__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x19osdd/recipes/recipe.proto\x12\x13osdd.recipes.recipe\x1a\x1aosdd/recipes/context.proto\x1a\x16osdd/recipes/ide.proto\x1a\x12osdd/content.proto\"\xb6\x01\n\x06Recipe\x12-\n\x08prefetch\x18\x01 \x01(\x0b\x32\x16.osdd.content.PrefetchH\x00\x88\x01\x01\x12\x33\n\x07\x63ontext\x18\x02 \x01(\x0b\x32\x1d.osdd.recipes.context.ContextH\x01\x88\x01\x01\x12\'\n\x03ide\x18\x03 \x01(\x0b\x32\x15.osdd.recipes.ide.IdeH\x02\x88\x01\x01\x42\x0b\n\t_prefetchB\n\n\x08_contextB\x06\n\x04_ide\"u\n\x10\x45xecutableRecipe\x12+\n\x06recipe\x18\x01 \x01(\x0b\x32\x1b.osdd.recipes.recipe.Recipe\x12\x34\n\x0b\x65ntry_point\x18\x02 \x01(\x0b\x32\x1f.osdd.recipes.recipe.EntryPoint\"\x1e\n\nEntryPoint\x12\x10\n\x08ide_type\x18\x01 \x01(\tB5Z3github.com/opensdd/osdd-api/clients/go/osdd/recipesb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x19osdd/recipes/recipe.proto\x12\x13osdd.recipes.recipe\x1a\x1aosdd/recipes/context.proto\x1a\x16osdd/recipes/ide.proto\x1a\x12osdd/content.proto\"\xb6\x01\n\x06Recipe\x12-\n\x08prefetch\x18\x01 \x01(\x0b\x32\x16.osdd.content.PrefetchH\x00\x88\x01\x01\x12\x33\n\x07\x63ontext\x18\x02 \x01(\x0b\x32\x1d.osdd.recipes.context.ContextH\x01\x88\x01\x01\x12\'\n\x03ide\x18\x03 \x01(\x0b\x32\x15.osdd.recipes.ide.IdeH\x02\x88\x01\x01\x42\x0b\n\t_prefetchB\n\n\x08_contextB\x06\n\x04_ide\"u\n\x10\x45xecutableRecipe\x12+\n\x06recipe\x18\x01 \x01(\x0b\x32\x1b.osdd.recipes.recipe.Recipe\x12\x34\n\x0b\x65ntry_point\x18\x02 \x01(\x0b\x32\x1f.osdd.recipes.recipe.EntryPoint\"^\n\nEntryPoint\x12\x10\n\x08ide_type\x18\x01 \x01(\t\x12\x34\n\x05start\x18\x02 \x01(\x0b\x32 .osdd.recipes.recipe.StartConfigH\x00\x88\x01\x01\x42\x08\n\x06_start\":\n\x0bStartConfig\x12\x11\n\x07\x63ommand\x18\x64 \x01(\tH\x00\x12\x10\n\x06prompt\x18\x65 \x01(\tH\x00\x42\x06\n\x04typeB5Z3github.com/opensdd/osdd-api/clients/go/osdd/recipesb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -40,5 +40,7 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_EXECUTABLERECIPE']._serialized_start=307
   _globals['_EXECUTABLERECIPE']._serialized_end=424
   _globals['_ENTRYPOINT']._serialized_start=426
-  _globals['_ENTRYPOINT']._serialized_end=456
+  _globals['_ENTRYPOINT']._serialized_end=520
+  _globals['_STARTCONFIG']._serialized_start=522
+  _globals['_STARTCONFIG']._serialized_end=580
 # @@protoc_insertion_point(module_scope)

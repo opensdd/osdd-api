@@ -27,7 +27,17 @@ class ExecutableRecipe(_message.Message):
     def __init__(self, recipe: _Optional[_Union[Recipe, _Mapping]] = ..., entry_point: _Optional[_Union[EntryPoint, _Mapping]] = ...) -> None: ...
 
 class EntryPoint(_message.Message):
-    __slots__ = ("ide_type",)
+    __slots__ = ("ide_type", "start")
     IDE_TYPE_FIELD_NUMBER: _ClassVar[int]
+    START_FIELD_NUMBER: _ClassVar[int]
     ide_type: str
-    def __init__(self, ide_type: _Optional[str] = ...) -> None: ...
+    start: StartConfig
+    def __init__(self, ide_type: _Optional[str] = ..., start: _Optional[_Union[StartConfig, _Mapping]] = ...) -> None: ...
+
+class StartConfig(_message.Message):
+    __slots__ = ("command", "prompt")
+    COMMAND_FIELD_NUMBER: _ClassVar[int]
+    PROMPT_FIELD_NUMBER: _ClassVar[int]
+    command: str
+    prompt: str
+    def __init__(self, command: _Optional[str] = ..., prompt: _Optional[str] = ...) -> None: ...

@@ -235,6 +235,7 @@ func (b0 ExecutableRecipe_builder) Build() *ExecutableRecipe {
 type EntryPoint struct {
 	state              protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_IdeType string                 `protobuf:"bytes,1,opt,name=ide_type,json=ideType,proto3"`
+	xxx_hidden_Start   *StartConfig           `protobuf:"bytes,2,opt,name=start,proto3,oneof"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -271,14 +272,37 @@ func (x *EntryPoint) GetIdeType() string {
 	return ""
 }
 
+func (x *EntryPoint) GetStart() *StartConfig {
+	if x != nil {
+		return x.xxx_hidden_Start
+	}
+	return nil
+}
+
 func (x *EntryPoint) SetIdeType(v string) {
 	x.xxx_hidden_IdeType = v
+}
+
+func (x *EntryPoint) SetStart(v *StartConfig) {
+	x.xxx_hidden_Start = v
+}
+
+func (x *EntryPoint) HasStart() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Start != nil
+}
+
+func (x *EntryPoint) ClearStart() {
+	x.xxx_hidden_Start = nil
 }
 
 type EntryPoint_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	IdeType string
+	Start   *StartConfig
 }
 
 func (b0 EntryPoint_builder) Build() *EntryPoint {
@@ -286,8 +310,172 @@ func (b0 EntryPoint_builder) Build() *EntryPoint {
 	b, x := &b0, m0
 	_, _ = b, x
 	x.xxx_hidden_IdeType = b.IdeType
+	x.xxx_hidden_Start = b.Start
 	return m0
 }
+
+type StartConfig struct {
+	state           protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Type isStartConfig_Type     `protobuf_oneof:"type"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *StartConfig) Reset() {
+	*x = StartConfig{}
+	mi := &file_osdd_recipes_recipe_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StartConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StartConfig) ProtoMessage() {}
+
+func (x *StartConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_osdd_recipes_recipe_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (x *StartConfig) GetCommand() string {
+	if x != nil {
+		if x, ok := x.xxx_hidden_Type.(*startConfig_Command); ok {
+			return x.Command
+		}
+	}
+	return ""
+}
+
+func (x *StartConfig) GetPrompt() string {
+	if x != nil {
+		if x, ok := x.xxx_hidden_Type.(*startConfig_Prompt); ok {
+			return x.Prompt
+		}
+	}
+	return ""
+}
+
+func (x *StartConfig) SetCommand(v string) {
+	x.xxx_hidden_Type = &startConfig_Command{v}
+}
+
+func (x *StartConfig) SetPrompt(v string) {
+	x.xxx_hidden_Type = &startConfig_Prompt{v}
+}
+
+func (x *StartConfig) HasType() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Type != nil
+}
+
+func (x *StartConfig) HasCommand() bool {
+	if x == nil {
+		return false
+	}
+	_, ok := x.xxx_hidden_Type.(*startConfig_Command)
+	return ok
+}
+
+func (x *StartConfig) HasPrompt() bool {
+	if x == nil {
+		return false
+	}
+	_, ok := x.xxx_hidden_Type.(*startConfig_Prompt)
+	return ok
+}
+
+func (x *StartConfig) ClearType() {
+	x.xxx_hidden_Type = nil
+}
+
+func (x *StartConfig) ClearCommand() {
+	if _, ok := x.xxx_hidden_Type.(*startConfig_Command); ok {
+		x.xxx_hidden_Type = nil
+	}
+}
+
+func (x *StartConfig) ClearPrompt() {
+	if _, ok := x.xxx_hidden_Type.(*startConfig_Prompt); ok {
+		x.xxx_hidden_Type = nil
+	}
+}
+
+const StartConfig_Type_not_set_case case_StartConfig_Type = 0
+const StartConfig_Command_case case_StartConfig_Type = 100
+const StartConfig_Prompt_case case_StartConfig_Type = 101
+
+func (x *StartConfig) WhichType() case_StartConfig_Type {
+	if x == nil {
+		return StartConfig_Type_not_set_case
+	}
+	switch x.xxx_hidden_Type.(type) {
+	case *startConfig_Command:
+		return StartConfig_Command_case
+	case *startConfig_Prompt:
+		return StartConfig_Prompt_case
+	default:
+		return StartConfig_Type_not_set_case
+	}
+}
+
+type StartConfig_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	// Fields of oneof xxx_hidden_Type:
+	Command *string
+	Prompt  *string
+	// -- end of xxx_hidden_Type
+}
+
+func (b0 StartConfig_builder) Build() *StartConfig {
+	m0 := &StartConfig{}
+	b, x := &b0, m0
+	_, _ = b, x
+	if b.Command != nil {
+		x.xxx_hidden_Type = &startConfig_Command{*b.Command}
+	}
+	if b.Prompt != nil {
+		x.xxx_hidden_Type = &startConfig_Prompt{*b.Prompt}
+	}
+	return m0
+}
+
+type case_StartConfig_Type protoreflect.FieldNumber
+
+func (x case_StartConfig_Type) String() string {
+	md := file_osdd_recipes_recipe_proto_msgTypes[3].Descriptor()
+	if x == 0 {
+		return "not set"
+	}
+	return protoimpl.X.MessageFieldStringOf(md, protoreflect.FieldNumber(x))
+}
+
+type isStartConfig_Type interface {
+	isStartConfig_Type()
+}
+
+type startConfig_Command struct {
+	Command string `protobuf:"bytes,100,opt,name=command,proto3,oneof"`
+}
+
+type startConfig_Prompt struct {
+	Prompt string `protobuf:"bytes,101,opt,name=prompt,proto3,oneof"`
+}
+
+func (*startConfig_Command) isStartConfig_Type() {}
+
+func (*startConfig_Prompt) isStartConfig_Type() {}
 
 var File_osdd_recipes_recipe_proto protoreflect.FileDescriptor
 
@@ -305,31 +493,39 @@ const file_osdd_recipes_recipe_proto_rawDesc = "" +
 	"\x10ExecutableRecipe\x123\n" +
 	"\x06recipe\x18\x01 \x01(\v2\x1b.osdd.recipes.recipe.RecipeR\x06recipe\x12@\n" +
 	"\ventry_point\x18\x02 \x01(\v2\x1f.osdd.recipes.recipe.EntryPointR\n" +
-	"entryPoint\"'\n" +
+	"entryPoint\"n\n" +
 	"\n" +
 	"EntryPoint\x12\x19\n" +
-	"\bide_type\x18\x01 \x01(\tR\aideTypeB5Z3github.com/opensdd/osdd-api/clients/go/osdd/recipesb\x06proto3"
+	"\bide_type\x18\x01 \x01(\tR\aideType\x12;\n" +
+	"\x05start\x18\x02 \x01(\v2 .osdd.recipes.recipe.StartConfigH\x00R\x05start\x88\x01\x01B\b\n" +
+	"\x06_start\"K\n" +
+	"\vStartConfig\x12\x1a\n" +
+	"\acommand\x18d \x01(\tH\x00R\acommand\x12\x18\n" +
+	"\x06prompt\x18e \x01(\tH\x00R\x06promptB\x06\n" +
+	"\x04typeB5Z3github.com/opensdd/osdd-api/clients/go/osdd/recipesb\x06proto3"
 
-var file_osdd_recipes_recipe_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_osdd_recipes_recipe_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_osdd_recipes_recipe_proto_goTypes = []any{
 	(*Recipe)(nil),           // 0: osdd.recipes.recipe.Recipe
 	(*ExecutableRecipe)(nil), // 1: osdd.recipes.recipe.ExecutableRecipe
 	(*EntryPoint)(nil),       // 2: osdd.recipes.recipe.EntryPoint
-	(*osdd.Prefetch)(nil),    // 3: osdd.content.Prefetch
-	(*Context)(nil),          // 4: osdd.recipes.context.Context
-	(*Ide)(nil),              // 5: osdd.recipes.ide.Ide
+	(*StartConfig)(nil),      // 3: osdd.recipes.recipe.StartConfig
+	(*osdd.Prefetch)(nil),    // 4: osdd.content.Prefetch
+	(*Context)(nil),          // 5: osdd.recipes.context.Context
+	(*Ide)(nil),              // 6: osdd.recipes.ide.Ide
 }
 var file_osdd_recipes_recipe_proto_depIdxs = []int32{
-	3, // 0: osdd.recipes.recipe.Recipe.prefetch:type_name -> osdd.content.Prefetch
-	4, // 1: osdd.recipes.recipe.Recipe.context:type_name -> osdd.recipes.context.Context
-	5, // 2: osdd.recipes.recipe.Recipe.ide:type_name -> osdd.recipes.ide.Ide
+	4, // 0: osdd.recipes.recipe.Recipe.prefetch:type_name -> osdd.content.Prefetch
+	5, // 1: osdd.recipes.recipe.Recipe.context:type_name -> osdd.recipes.context.Context
+	6, // 2: osdd.recipes.recipe.Recipe.ide:type_name -> osdd.recipes.ide.Ide
 	0, // 3: osdd.recipes.recipe.ExecutableRecipe.recipe:type_name -> osdd.recipes.recipe.Recipe
 	2, // 4: osdd.recipes.recipe.ExecutableRecipe.entry_point:type_name -> osdd.recipes.recipe.EntryPoint
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	3, // 5: osdd.recipes.recipe.EntryPoint.start:type_name -> osdd.recipes.recipe.StartConfig
+	6, // [6:6] is the sub-list for method output_type
+	6, // [6:6] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	6, // [6:6] is the sub-list for extension extendee
+	0, // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_osdd_recipes_recipe_proto_init() }
@@ -340,13 +536,18 @@ func file_osdd_recipes_recipe_proto_init() {
 	file_osdd_recipes_context_proto_init()
 	file_osdd_recipes_ide_proto_init()
 	file_osdd_recipes_recipe_proto_msgTypes[0].OneofWrappers = []any{}
+	file_osdd_recipes_recipe_proto_msgTypes[2].OneofWrappers = []any{}
+	file_osdd_recipes_recipe_proto_msgTypes[3].OneofWrappers = []any{
+		(*startConfig_Command)(nil),
+		(*startConfig_Prompt)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_osdd_recipes_recipe_proto_rawDesc), len(file_osdd_recipes_recipe_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -1,62 +1,69 @@
 {
-  "context" : {
-    "entries": [
-      {
-        "path": "specs/goal.md",
-        "from": {
-          "github": {
-            "path": "https://github.com/opensdd/recipes/global/agents_md/resources/goal.md"
-          }
-        }
-      },
-      {
-        "path": "specs/parameters.md",
-        "from": {
-          "userInput": {
-            "entries": [
-              {
-                "name": "Repositories to clone",
-                "description": "Comma separated list of repositories to clone"
-              },
-              {
-                "name": "Instructions",
-                "description": "Additional instructions for an agent to focus on",
-                "optional": true
-              }
-            ]
-          }
-        }
-      }
-    ]
+  "entryPoint": {
+    "start": {
+      "command": "agents_md"
+    }
   },
-  "ide": {
-    "commands": {
+  "recipe": {
+    "context": {
       "entries": [
         {
-          "name": "agents_md_plan",
+          "path": "specs/goal.md",
           "from": {
             "github": {
-              "path": "https://github.com/opensdd/recipes/global/agents_md/resources/plan.md"
+              "path": "https://github.com/opensdd/recipes/global/agents_md/resources/goal.md"
             }
           }
         },
         {
-          "name": "agents_md",
+          "path": "specs/parameters.md",
           "from": {
-            "github": {
-              "path": "https://github.com/opensdd/recipes/global/agents_md/resources/agents_md.md"
-            }
-          }
-        },
-        {
-          "name": "agents_md_generate",
-          "from": {
-            "github": {
-              "path": "https://github.com/opensdd/recipes/global/agents_md/resources/generate.md"
+            "userInput": {
+              "entries": [
+                {
+                  "name": "Repositories to clone",
+                  "description": "Comma separated list of repositories to clone"
+                },
+                {
+                  "name": "Instructions",
+                  "description": "Additional instructions for an agent to focus on",
+                  "optional": true
+                }
+              ]
             }
           }
         }
       ]
+    },
+    "ide": {
+      "commands": {
+        "entries": [
+          {
+            "name": "agents_md_plan",
+            "from": {
+              "github": {
+                "path": "https://github.com/opensdd/recipes/global/agents_md/resources/plan.md"
+              }
+            }
+          },
+          {
+            "name": "agents_md",
+            "from": {
+              "github": {
+                "path": "https://github.com/opensdd/recipes/global/agents_md/resources/agents_md.md"
+              }
+            }
+          },
+          {
+            "name": "agents_md_generate",
+            "from": {
+              "github": {
+                "path": "https://github.com/opensdd/recipes/global/agents_md/resources/generate.md"
+              }
+            }
+          }
+        ]
+      }
     }
   }
 }

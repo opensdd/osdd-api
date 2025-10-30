@@ -21,4 +21,12 @@ message ExecutableRecipe {
 
 message EntryPoint {
   string ide_type = 1;
+  optional StartConfig start = 2;
+}
+
+message StartConfig {
+  oneof type {
+    string command = 100;
+    string prompt = 101;
+  }
 }
