@@ -9,10 +9,12 @@ DESCRIPTOR: _descriptor.FileDescriptor
 class MaterializedResult(_message.Message):
     __slots__ = ("entries",)
     class Entry(_message.Message):
-        __slots__ = ("file",)
+        __slots__ = ("file", "directory")
         FILE_FIELD_NUMBER: _ClassVar[int]
+        DIRECTORY_FIELD_NUMBER: _ClassVar[int]
         file: FullFileContent
-        def __init__(self, file: _Optional[_Union[FullFileContent, _Mapping]] = ...) -> None: ...
+        directory: str
+        def __init__(self, file: _Optional[_Union[FullFileContent, _Mapping]] = ..., directory: _Optional[str] = ...) -> None: ...
     ENTRIES_FIELD_NUMBER: _ClassVar[int]
     entries: _containers.RepeatedCompositeFieldContainer[MaterializedResult.Entry]
     def __init__(self, entries: _Optional[_Iterable[_Union[MaterializedResult.Entry, _Mapping]]] = ...) -> None: ...

@@ -14,7 +14,7 @@ export interface MaterializedResult {
 }
 
 export interface MaterializedResult_Entry {
-  type?: { $case: "file"; value: FullFileContent } | undefined;
+  type?: { $case: "file"; value: FullFileContent } | { $case: "directory"; value: string } | undefined;
 }
 
 export interface FullFileContent {
@@ -94,6 +94,9 @@ export const MaterializedResult_Entry: MessageFns<MaterializedResult_Entry> = {
       case "file":
         FullFileContent.encode(message.type.value, writer.uint32(802).fork()).join();
         break;
+      case "directory":
+        writer.uint32(810).string(message.type.value);
+        break;
     }
     return writer;
   },
@@ -113,6 +116,14 @@ export const MaterializedResult_Entry: MessageFns<MaterializedResult_Entry> = {
           message.type = { $case: "file", value: FullFileContent.decode(reader, reader.uint32()) };
           continue;
         }
+        case 101: {
+          if (tag !== 810) {
+            break;
+          }
+
+          message.type = { $case: "directory", value: reader.string() };
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -123,13 +134,21 @@ export const MaterializedResult_Entry: MessageFns<MaterializedResult_Entry> = {
   },
 
   fromJSON(object: any): MaterializedResult_Entry {
-    return { type: isSet(object.file) ? { $case: "file", value: FullFileContent.fromJSON(object.file) } : undefined };
+    return {
+      type: isSet(object.file)
+        ? { $case: "file", value: FullFileContent.fromJSON(object.file) }
+        : isSet(object.directory)
+        ? { $case: "directory", value: gt.String(object.directory) }
+        : undefined,
+    };
   },
 
   toJSON(message: MaterializedResult_Entry): unknown {
     const obj: any = {};
     if (message.type?.$case === "file") {
       obj.file = FullFileContent.toJSON(message.type.value);
+    } else if (message.type?.$case === "directory") {
+      obj.directory = message.type.value;
     }
     return obj;
   },
@@ -143,6 +162,12 @@ export const MaterializedResult_Entry: MessageFns<MaterializedResult_Entry> = {
       case "file": {
         if (object.type?.value !== undefined && object.type?.value !== null) {
           message.type = { $case: "file", value: FullFileContent.fromPartial(object.type.value) };
+        }
+        break;
+      }
+      case "directory": {
+        if (object.type?.value !== undefined && object.type?.value !== null) {
+          message.type = { $case: "directory", value: object.type.value };
         }
         break;
       }

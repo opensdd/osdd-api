@@ -191,12 +191,25 @@ func (x *MaterializedResult_Entry) GetFile() *FullFileContent {
 	return nil
 }
 
+func (x *MaterializedResult_Entry) GetDirectory() string {
+	if x != nil {
+		if x, ok := x.xxx_hidden_Type.(*materializedResult_Entry_Directory); ok {
+			return x.Directory
+		}
+	}
+	return ""
+}
+
 func (x *MaterializedResult_Entry) SetFile(v *FullFileContent) {
 	if v == nil {
 		x.xxx_hidden_Type = nil
 		return
 	}
 	x.xxx_hidden_Type = &materializedResult_Entry_File{v}
+}
+
+func (x *MaterializedResult_Entry) SetDirectory(v string) {
+	x.xxx_hidden_Type = &materializedResult_Entry_Directory{v}
 }
 
 func (x *MaterializedResult_Entry) HasType() bool {
@@ -214,6 +227,14 @@ func (x *MaterializedResult_Entry) HasFile() bool {
 	return ok
 }
 
+func (x *MaterializedResult_Entry) HasDirectory() bool {
+	if x == nil {
+		return false
+	}
+	_, ok := x.xxx_hidden_Type.(*materializedResult_Entry_Directory)
+	return ok
+}
+
 func (x *MaterializedResult_Entry) ClearType() {
 	x.xxx_hidden_Type = nil
 }
@@ -224,8 +245,15 @@ func (x *MaterializedResult_Entry) ClearFile() {
 	}
 }
 
+func (x *MaterializedResult_Entry) ClearDirectory() {
+	if _, ok := x.xxx_hidden_Type.(*materializedResult_Entry_Directory); ok {
+		x.xxx_hidden_Type = nil
+	}
+}
+
 const MaterializedResult_Entry_Type_not_set_case case_MaterializedResult_Entry_Type = 0
 const MaterializedResult_Entry_File_case case_MaterializedResult_Entry_Type = 100
+const MaterializedResult_Entry_Directory_case case_MaterializedResult_Entry_Type = 101
 
 func (x *MaterializedResult_Entry) WhichType() case_MaterializedResult_Entry_Type {
 	if x == nil {
@@ -234,6 +262,8 @@ func (x *MaterializedResult_Entry) WhichType() case_MaterializedResult_Entry_Typ
 	switch x.xxx_hidden_Type.(type) {
 	case *materializedResult_Entry_File:
 		return MaterializedResult_Entry_File_case
+	case *materializedResult_Entry_Directory:
+		return MaterializedResult_Entry_Directory_case
 	default:
 		return MaterializedResult_Entry_Type_not_set_case
 	}
@@ -243,7 +273,8 @@ type MaterializedResult_Entry_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// Fields of oneof xxx_hidden_Type:
-	File *FullFileContent
+	File      *FullFileContent
+	Directory *string
 	// -- end of xxx_hidden_Type
 }
 
@@ -253,6 +284,9 @@ func (b0 MaterializedResult_Entry_builder) Build() *MaterializedResult_Entry {
 	_, _ = b, x
 	if b.File != nil {
 		x.xxx_hidden_Type = &materializedResult_Entry_File{b.File}
+	}
+	if b.Directory != nil {
+		x.xxx_hidden_Type = &materializedResult_Entry_Directory{*b.Directory}
 	}
 	return m0
 }
@@ -275,17 +309,24 @@ type materializedResult_Entry_File struct {
 	File *FullFileContent `protobuf:"bytes,100,opt,name=file,proto3,oneof"`
 }
 
+type materializedResult_Entry_Directory struct {
+	Directory string `protobuf:"bytes,101,opt,name=directory,proto3,oneof"`
+}
+
 func (*materializedResult_Entry_File) isMaterializedResult_Entry_Type() {}
+
+func (*materializedResult_Entry_Directory) isMaterializedResult_Entry_Type() {}
 
 var File_osdd_materialized_proto protoreflect.FileDescriptor
 
 const file_osdd_materialized_proto_rawDesc = "" +
 	"\n" +
-	"\x17osdd/materialized.proto\x12\x11osdd.materialized\"\xa6\x01\n" +
+	"\x17osdd/materialized.proto\x12\x11osdd.materialized\"\xc6\x01\n" +
 	"\x12MaterializedResult\x12E\n" +
-	"\aentries\x18\x01 \x03(\v2+.osdd.materialized.MaterializedResult.EntryR\aentries\x1aI\n" +
+	"\aentries\x18\x01 \x03(\v2+.osdd.materialized.MaterializedResult.EntryR\aentries\x1ai\n" +
 	"\x05Entry\x128\n" +
-	"\x04file\x18d \x01(\v2\".osdd.materialized.FullFileContentH\x00R\x04fileB\x06\n" +
+	"\x04file\x18d \x01(\v2\".osdd.materialized.FullFileContentH\x00R\x04file\x12\x1e\n" +
+	"\tdirectory\x18e \x01(\tH\x00R\tdirectoryB\x06\n" +
 	"\x04type\"?\n" +
 	"\x0fFullFileContent\x12\x12\n" +
 	"\x04path\x18\x01 \x01(\tR\x04path\x12\x18\n" +
@@ -314,6 +355,7 @@ func file_osdd_materialized_proto_init() {
 	}
 	file_osdd_materialized_proto_msgTypes[2].OneofWrappers = []any{
 		(*materializedResult_Entry_File)(nil),
+		(*materializedResult_Entry_Directory)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{

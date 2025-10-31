@@ -10,6 +10,7 @@ message MaterializedResult {
   message Entry {
     oneof type {
       FullFileContent file = 100;
+      string directory = 101;
     }
   }
 }

@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x17osdd/materialized.proto\x12\x11osdd.materialized\"\x97\x01\n\x12MaterializedResult\x12<\n\x07\x65ntries\x18\x01 \x03(\x0b\x32+.osdd.materialized.MaterializedResult.Entry\x1a\x43\n\x05\x45ntry\x12\x32\n\x04\x66ile\x18\x64 \x01(\x0b\x32\".osdd.materialized.FullFileContentH\x00\x42\x06\n\x04type\"0\n\x0f\x46ullFileContent\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x02 \x01(\tB-Z+github.com/opensdd/osdd-api/clients/go/osddb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x17osdd/materialized.proto\x12\x11osdd.materialized\"\xac\x01\n\x12MaterializedResult\x12<\n\x07\x65ntries\x18\x01 \x03(\x0b\x32+.osdd.materialized.MaterializedResult.Entry\x1aX\n\x05\x45ntry\x12\x32\n\x04\x66ile\x18\x64 \x01(\x0b\x32\".osdd.materialized.FullFileContentH\x00\x12\x13\n\tdirectory\x18\x65 \x01(\tH\x00\x42\x06\n\x04type\"0\n\x0f\x46ullFileContent\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x02 \x01(\tB-Z+github.com/opensdd/osdd-api/clients/go/osddb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -33,9 +33,9 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'Z+github.com/opensdd/osdd-api/clients/go/osdd'
   _globals['_MATERIALIZEDRESULT']._serialized_start=47
-  _globals['_MATERIALIZEDRESULT']._serialized_end=198
+  _globals['_MATERIALIZEDRESULT']._serialized_end=219
   _globals['_MATERIALIZEDRESULT_ENTRY']._serialized_start=131
-  _globals['_MATERIALIZEDRESULT_ENTRY']._serialized_end=198
-  _globals['_FULLFILECONTENT']._serialized_start=200
-  _globals['_FULLFILECONTENT']._serialized_end=248
+  _globals['_MATERIALIZEDRESULT_ENTRY']._serialized_end=219
+  _globals['_FULLFILECONTENT']._serialized_start=221
+  _globals['_FULLFILECONTENT']._serialized_end=269
 # @@protoc_insertion_point(module_scope)
