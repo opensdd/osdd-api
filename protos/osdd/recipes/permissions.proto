@@ -4,18 +4,25 @@ package osdd.recipes.permissions;
 
 option go_package = "github.com/opensdd/osdd-api/clients/go/osdd/recipes";
 
+// OperationPermission represents a single capability being granted or denied.
 message OperationPermission {
+  // Type of operation affected by the permission entry.
   oneof type {
+    // Permits running specific shell commands (glob or exact match).
     string bash = 100;
+    // Grants read access to matching file system paths.
     string read = 101;
+    // Grants write access to matching file system paths.
     string write = 102;
     // Currently only Codex specific allowing it to access network by default without extra user prompting.
     bool network = 103;
   }
 }
 
+// Permissions defines allow/deny lists evaluated by the IDE agent runtime.
 message Permissions {
+  // Capabilities explicitly permitted for the recipe.
   repeated OperationPermission allow = 1;
+  // Capabilities explicitly blocked for the recipe.
   repeated OperationPermission deny = 2;
 }
-

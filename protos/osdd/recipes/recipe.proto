@@ -9,26 +9,41 @@ import "osdd/recipes/ide.proto";
 import "osdd/content.proto";
 import "osdd/common.proto";
 
+// Recipe defines the declarative structure for an OpenSDD workflow.
 message Recipe {
+  // Optional prefetch jobs that should run before the workflow starts.
   optional content.Prefetch prefetch = 1;
+  // Context files and inputs made available to the agent.
   optional context.Context context = 2;
+  // IDE integrations exposed when the recipe is launched.
   optional ide.Ide ide = 3;
 }
 
+// ExecutableRecipe bundles a recipe with launch metadata for a specific IDE.
 message ExecutableRecipe {
+  // Declarative recipe content.
   Recipe recipe = 1;
+  // Describes how AI-enabed IDE should be executed.
   EntryPoint entry_point = 2;
 }
 
+// EntryPoint specifies how the recipe should be invoked from an IDE.
 message EntryPoint {
+  // Identifier of the IDE (e.g., "codex", "claude").
   string ide_type = 1;
+  // Configuration describing how to kick off the recipe.
   optional StartConfig start = 2;
+  // Workspace requirements for the recipe run.
   optional WorkspaceConfig workspace = 3;
 }
 
+// StartConfig enumerates supported ways to launch a recipe.
 message StartConfig {
+  // Launch method selected for this recipe.
   oneof type {
+    // IDE should execute the provided command.
     string command = 100;
+    // IDE should prompt the user for additional input.
     string prompt = 101;
   }
 }
@@ -42,5 +57,4 @@ message WorkspaceConfig {
   // Configuration for unique name generation.
   optional common.NameGenConfig unique = 3;
 }
-
 

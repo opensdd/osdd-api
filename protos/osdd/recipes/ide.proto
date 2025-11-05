@@ -7,46 +7,69 @@ option go_package = "github.com/opensdd/osdd-api/clients/go/osdd/recipes";
 import "osdd/common.proto";
 import "osdd/recipes/permissions.proto";
 
+// Ide captures IDE-specific integrations exposed by a recipe.
 message Ide {
+  // Built-in commands that should appear inside the IDE palette.
   optional Commands commands = 1;
+  // MCP (Model Context Protocol) servers to register with the IDE.
   optional Mcp mcp = 2;
+  // Allow/deny policy. Those permissions are converted into IDE-specific instructions where possible.
   optional permissions.Permissions permissions = 3;
 }
 
+// Mcp declares the set of MCP servers that should be launched.
 message Mcp {
+  // Map of server identifier to its transport definition.
   map<string, McpServer> servers = 1;
 }
 
+// McpServer describes how to connect to a remote or local MCP server.
 message McpServer {
+  // Transport information for the server.
   oneof type {
+    // HTTP(S) endpoint implementing the MCP protocol.
     HttpMcpServer http = 100;
+    // Process executed locally where stdin/stdout speak MCP.
     StdioMcpServer stdio = 101;
   }
 }
 
+// HttpMcpServer references an MCP server reachable over HTTP.
 message HttpMcpServer {
+  // Fully qualified URL of the server endpoint.
   string url = 1;
 }
 
+// StdioMcpServer launches a local command that speaks MCP on stdio.
 message StdioMcpServer {
+  // Command (with optional arguments) executed to start the server.
   string command = 1;
 }
 
+// Commands groups IDE command palette entries.
 message Commands {
+  // Individual command definitions.
   repeated Command entries = 1;
 }
 
+// Command defines a command palette entry surfaced to the user.
 message Command {
+  // Human-readable command name shown in the IDE.
   string name = 1;
+  // Source of the command implementation.
   CommandFrom from = 2;
 }
 
+// CommandFrom lists supported sources for a command implementation. A command here is am AI-agent command, e.g. Claude's slash-command.
 message CommandFrom {
+  // Chosen source type containing the command definition.
   oneof type {
+    // Fetch command from a Git repository.
     common.GitReference github = 100;
+    // Execute a local command to fetch commands'content.
     common.Exec cmd = 101;
+    // Inline command contents.
     string text = 102;
   }
 }
-
 

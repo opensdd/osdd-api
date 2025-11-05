@@ -4,40 +4,59 @@ package osdd.common;
 
 option go_package = "github.com/opensdd/osdd-api/clients/go/osdd";
 
+// GitReference identifies a file or directory stored in a Git repository.
 message GitReference {
+  // Relative path within the repository that should be fetched.
   string path = 1;
+  // Optional revision selector (tag or commit SHA) to pin the lookup.
   optional GitVersion version = 2;
 }
 
+// GitVersion specifies the exact revision to use for a Git reference.
 message GitVersion {
+  // Type of revision identifier supplied by the recipe.
   oneof type {
+    // Named Git tag such as v1.2.3.
     string tag = 100;
+    // Commit SHA (full or abbreviated).
     string commit = 101;
   }
 }
 
+// UserInputParameter declares a parameter collected from the end user.
 message UserInputParameter {
+  // Display name presented to the user.
   string name = 1;
+  // Description of how the value is used within the recipe.
   string description = 2;
+  // Whether the parameter may be omitted by the user interface.
   bool optional = 3;
+  // Identifies the input widget or format expected for the parameter.
   oneof type {
-    // Represents a multiline text.
+    // Represents a multiline free-form text box.
     Text text = 100;
   }
 
+  // Text indicates that the UI should prompt for free-form multi-line text.
   message Text {}
 }
 
+// NameGenConfig configures automatic unique-name generation.
 message NameGenConfig {
+  // Desired length of the generated identifier fragment.
   int32 len = 1;
 }
 
+// Exec describes a shell command invocation.
 message Exec {
+  // Executable or script to run.
   string cmd = 1;
+  // Command-line arguments passed in order.
   repeated string args = 2;
 }
 
+// EntryFilter restricts a context entry to specific IDE integrations.
 message EntryFilter {
-  // If set, entry should be applied only to the listed IDEs.
+  // IDE identifiers (e.g., "claude", "codex") for which the entry is applicable.
   repeated string ide = 1;
 }

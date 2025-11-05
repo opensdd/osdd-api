@@ -6,23 +6,37 @@ option go_package = "github.com/opensdd/osdd-api/clients/go/osdd/recipes";
 
 import "osdd/common.proto";
 
+// Context enumerates files that should be injected into the agent workspace.
 message Context {
+  // Ordered list of entries that will be materialized.
   repeated ContextEntry entries = 1;
 }
 
+// ContextEntry associates a logical path with its content source.
 message ContextEntry {
+  // Destination path relative to the workspace root.
   string path = 1;
+  // Definition of where the content should be sourced from.
   ContextFrom from = 2;
+  // Optional filter limiting the entry to specific IDE integrations.
   optional common.EntryFilter filter = 3;
 }
 
+// ContextFrom lists the supported sources for populating a context entry.
 message ContextFrom {
+  // Chosen source type used to resolve the entry.
   oneof type {
+    // Combine multiple sub-sources together.
     CombinedContextSource combined = 100;
+    // Fetch content from a Git repository.
     common.GitReference github = 101;
+    // Execute a command and capture its output.
     common.Exec cmd = 102;
+    // Inline text content embedded in the recipe.
     string text = 103;
+    // Reference to a blob returned by PrefetchResult.
     string prefetch_id = 104;
+    // Prompt user for the content at runtime.
     UserInputContextSource user_input = 105;
     // Local file should be mostly used for tests. If the provided path is relative, then it will be relative to the
     // current working directory.
@@ -30,15 +44,24 @@ message ContextFrom {
   }
 }
 
+// CombinedContextSource merges outputs from several individual sources.
 message CombinedContextSource {
+  // Items that will be concatenated in declaration order.
   repeated Item items = 1;
 
+  // Item represents a single source contributing to the combined content.
   message Item {
+    // Chosen source type used to fetch data.
     oneof type {
+      // Fetch content from a Git repository.
       common.GitReference github = 100;
+      // Execute a command and capture its output.
       common.Exec cmd = 101;
+      // Inline text content embedded in the recipe.
       string text = 102;
+      // Reference to a blob returned by PrefetchResult.
       string prefetch_id = 103;
+      // Prompt user for the content at runtime.
       UserInputContextSource user_input = 104;
       // Local file should be mostly used for tests. If the provided path is relative, then it will be relative to the
       // current working directory.
@@ -47,6 +70,8 @@ message CombinedContextSource {
   }
 }
 
+// UserInputContextSource collects context provided interactively.
 message UserInputContextSource {
+  // Parameters that define the prompts shown to the user.
   repeated common.UserInputParameter entries = 1;
 }

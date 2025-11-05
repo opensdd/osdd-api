@@ -4,19 +4,29 @@ package osdd.materialized;
 
 option go_package = "github.com/opensdd/osdd-api/clients/go/osdd";
 
+// MaterializedResult reports the on-disk assets that should be created for a recipe run.
 message MaterializedResult {
+  // Files or directories that should be materialized.
   repeated Entry entries = 1;
+  // Optional absolute path to the workspace the artifacts should be written into.
   optional string workspace_path = 2;
 
+  // Entry captures the kind of artifact to be created.
   message Entry {
+    // Discriminator for the artifact type.
     oneof type {
+      // Full file contents to write (path plus body).
       FullFileContent file = 100;
+      // Directory path that should be created.
       string directory = 101;
     }
   }
 }
 
+// FullFileContent contains the content for a file that should be written.
 message FullFileContent {
+  // Target path for the file relative to the workspace root.
   string path = 1;
+  // Full text/body to write to the file.
   string content = 2;
 }

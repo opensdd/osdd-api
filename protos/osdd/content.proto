@@ -6,21 +6,30 @@ option go_package = "github.com/opensdd/osdd-api/clients/go/osdd";
 
 import "osdd/common.proto";
 
+// Prefetch requests assets that should be gathered ahead of launching the recipe.
 message Prefetch {
+  // List of commands or other fetch operations to execute.
   repeated PrefetchEntry entries = 1;
 }
 
+// PrefetchEntry defines a single fetch operation.
 message PrefetchEntry {
+  // Operation to run in order to produce cached data.
   oneof type {
     common.Exec cmd = 100;
   }
 }
 
+// PrefetchResult returns the hydrated data from executing prefetch steps.
 message PrefetchResult {
+  // Collected blobs keyed by identifier.
   repeated FetchedData data = 1;
 }
 
+// FetchedData holds the output of a prefetch entry.
 message FetchedData {
+  // Identifier used by the recipe to reference this data.
   string id = 1;
+  // Serialized payload returned by the prefetch command.
   string data = 2;
 }
