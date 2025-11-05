@@ -79,6 +79,15 @@ func (x *OperationPermission) GetWrite() string {
 	return ""
 }
 
+func (x *OperationPermission) GetNetwork() bool {
+	if x != nil {
+		if x, ok := x.xxx_hidden_Type.(*operationPermission_Network); ok {
+			return x.Network
+		}
+	}
+	return false
+}
+
 func (x *OperationPermission) SetBash(v string) {
 	x.xxx_hidden_Type = &operationPermission_Bash{v}
 }
@@ -89,6 +98,10 @@ func (x *OperationPermission) SetRead(v string) {
 
 func (x *OperationPermission) SetWrite(v string) {
 	x.xxx_hidden_Type = &operationPermission_Write{v}
+}
+
+func (x *OperationPermission) SetNetwork(v bool) {
+	x.xxx_hidden_Type = &operationPermission_Network{v}
 }
 
 func (x *OperationPermission) HasType() bool {
@@ -122,6 +135,14 @@ func (x *OperationPermission) HasWrite() bool {
 	return ok
 }
 
+func (x *OperationPermission) HasNetwork() bool {
+	if x == nil {
+		return false
+	}
+	_, ok := x.xxx_hidden_Type.(*operationPermission_Network)
+	return ok
+}
+
 func (x *OperationPermission) ClearType() {
 	x.xxx_hidden_Type = nil
 }
@@ -144,10 +165,17 @@ func (x *OperationPermission) ClearWrite() {
 	}
 }
 
+func (x *OperationPermission) ClearNetwork() {
+	if _, ok := x.xxx_hidden_Type.(*operationPermission_Network); ok {
+		x.xxx_hidden_Type = nil
+	}
+}
+
 const OperationPermission_Type_not_set_case case_OperationPermission_Type = 0
 const OperationPermission_Bash_case case_OperationPermission_Type = 100
 const OperationPermission_Read_case case_OperationPermission_Type = 101
 const OperationPermission_Write_case case_OperationPermission_Type = 102
+const OperationPermission_Network_case case_OperationPermission_Type = 103
 
 func (x *OperationPermission) WhichType() case_OperationPermission_Type {
 	if x == nil {
@@ -160,6 +188,8 @@ func (x *OperationPermission) WhichType() case_OperationPermission_Type {
 		return OperationPermission_Read_case
 	case *operationPermission_Write:
 		return OperationPermission_Write_case
+	case *operationPermission_Network:
+		return OperationPermission_Network_case
 	default:
 		return OperationPermission_Type_not_set_case
 	}
@@ -172,6 +202,8 @@ type OperationPermission_builder struct {
 	Bash  *string
 	Read  *string
 	Write *string
+	// Currently only Codex specific allowing it to access network by default without extra user prompting.
+	Network *bool
 	// -- end of xxx_hidden_Type
 }
 
@@ -187,6 +219,9 @@ func (b0 OperationPermission_builder) Build() *OperationPermission {
 	}
 	if b.Write != nil {
 		x.xxx_hidden_Type = &operationPermission_Write{*b.Write}
+	}
+	if b.Network != nil {
+		x.xxx_hidden_Type = &operationPermission_Network{*b.Network}
 	}
 	return m0
 }
@@ -217,11 +252,18 @@ type operationPermission_Write struct {
 	Write string `protobuf:"bytes,102,opt,name=write,proto3,oneof"`
 }
 
+type operationPermission_Network struct {
+	// Currently only Codex specific allowing it to access network by default without extra user prompting.
+	Network bool `protobuf:"varint,103,opt,name=network,proto3,oneof"`
+}
+
 func (*operationPermission_Bash) isOperationPermission_Type() {}
 
 func (*operationPermission_Read) isOperationPermission_Type() {}
 
 func (*operationPermission_Write) isOperationPermission_Type() {}
+
+func (*operationPermission_Network) isOperationPermission_Type() {}
 
 type Permissions struct {
 	state            protoimpl.MessageState  `protogen:"opaque.v1"`
@@ -302,11 +344,12 @@ var File_osdd_recipes_permissions_proto protoreflect.FileDescriptor
 
 const file_osdd_recipes_permissions_proto_rawDesc = "" +
 	"\n" +
-	"\x1eosdd/recipes/permissions.proto\x12\x18osdd.recipes.permissions\"a\n" +
+	"\x1eosdd/recipes/permissions.proto\x12\x18osdd.recipes.permissions\"}\n" +
 	"\x13OperationPermission\x12\x14\n" +
 	"\x04bash\x18d \x01(\tH\x00R\x04bash\x12\x14\n" +
 	"\x04read\x18e \x01(\tH\x00R\x04read\x12\x16\n" +
-	"\x05write\x18f \x01(\tH\x00R\x05writeB\x06\n" +
+	"\x05write\x18f \x01(\tH\x00R\x05write\x12\x1a\n" +
+	"\anetwork\x18g \x01(\bH\x00R\anetworkB\x06\n" +
 	"\x04type\"\x95\x01\n" +
 	"\vPermissions\x12C\n" +
 	"\x05allow\x18\x01 \x03(\v2-.osdd.recipes.permissions.OperationPermissionR\x05allow\x12A\n" +
@@ -336,6 +379,7 @@ func file_osdd_recipes_permissions_proto_init() {
 		(*operationPermission_Bash)(nil),
 		(*operationPermission_Read)(nil),
 		(*operationPermission_Write)(nil),
+		(*operationPermission_Network)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{

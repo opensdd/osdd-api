@@ -21,10 +21,13 @@ const (
 )
 
 type MaterializedResult struct {
-	state              protoimpl.MessageState       `protogen:"opaque.v1"`
-	xxx_hidden_Entries *[]*MaterializedResult_Entry `protobuf:"bytes,1,rep,name=entries,proto3"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	state                    protoimpl.MessageState       `protogen:"opaque.v1"`
+	xxx_hidden_Entries       *[]*MaterializedResult_Entry `protobuf:"bytes,1,rep,name=entries,proto3"`
+	xxx_hidden_WorkspacePath *string                      `protobuf:"bytes,2,opt,name=workspace_path,json=workspacePath,proto3,oneof"`
+	XXX_raceDetectHookData   protoimpl.RaceDetectHookData
+	XXX_presence             [1]uint32
+	unknownFields            protoimpl.UnknownFields
+	sizeCache                protoimpl.SizeCache
 }
 
 func (x *MaterializedResult) Reset() {
@@ -61,14 +64,42 @@ func (x *MaterializedResult) GetEntries() []*MaterializedResult_Entry {
 	return nil
 }
 
+func (x *MaterializedResult) GetWorkspacePath() string {
+	if x != nil {
+		if x.xxx_hidden_WorkspacePath != nil {
+			return *x.xxx_hidden_WorkspacePath
+		}
+		return ""
+	}
+	return ""
+}
+
 func (x *MaterializedResult) SetEntries(v []*MaterializedResult_Entry) {
 	x.xxx_hidden_Entries = &v
+}
+
+func (x *MaterializedResult) SetWorkspacePath(v string) {
+	x.xxx_hidden_WorkspacePath = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
+}
+
+func (x *MaterializedResult) HasWorkspacePath() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+}
+
+func (x *MaterializedResult) ClearWorkspacePath() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	x.xxx_hidden_WorkspacePath = nil
 }
 
 type MaterializedResult_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	Entries []*MaterializedResult_Entry
+	Entries       []*MaterializedResult_Entry
+	WorkspacePath *string
 }
 
 func (b0 MaterializedResult_builder) Build() *MaterializedResult {
@@ -76,6 +107,10 @@ func (b0 MaterializedResult_builder) Build() *MaterializedResult {
 	b, x := &b0, m0
 	_, _ = b, x
 	x.xxx_hidden_Entries = &b.Entries
+	if b.WorkspacePath != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
+		x.xxx_hidden_WorkspacePath = b.WorkspacePath
+	}
 	return m0
 }
 
@@ -321,13 +356,15 @@ var File_osdd_materialized_proto protoreflect.FileDescriptor
 
 const file_osdd_materialized_proto_rawDesc = "" +
 	"\n" +
-	"\x17osdd/materialized.proto\x12\x11osdd.materialized\"\xc6\x01\n" +
+	"\x17osdd/materialized.proto\x12\x11osdd.materialized\"\x85\x02\n" +
 	"\x12MaterializedResult\x12E\n" +
-	"\aentries\x18\x01 \x03(\v2+.osdd.materialized.MaterializedResult.EntryR\aentries\x1ai\n" +
+	"\aentries\x18\x01 \x03(\v2+.osdd.materialized.MaterializedResult.EntryR\aentries\x12*\n" +
+	"\x0eworkspace_path\x18\x02 \x01(\tH\x00R\rworkspacePath\x88\x01\x01\x1ai\n" +
 	"\x05Entry\x128\n" +
 	"\x04file\x18d \x01(\v2\".osdd.materialized.FullFileContentH\x00R\x04file\x12\x1e\n" +
 	"\tdirectory\x18e \x01(\tH\x00R\tdirectoryB\x06\n" +
-	"\x04type\"?\n" +
+	"\x04typeB\x11\n" +
+	"\x0f_workspace_path\"?\n" +
 	"\x0fFullFileContent\x12\x12\n" +
 	"\x04path\x18\x01 \x01(\tR\x04path\x12\x18\n" +
 	"\acontent\x18\x02 \x01(\tR\acontentB-Z+github.com/opensdd/osdd-api/clients/go/osddb\x06proto3"
@@ -353,6 +390,7 @@ func file_osdd_materialized_proto_init() {
 	if File_osdd_materialized_proto != nil {
 		return
 	}
+	file_osdd_materialized_proto_msgTypes[0].OneofWrappers = []any{}
 	file_osdd_materialized_proto_msgTypes[2].OneofWrappers = []any{
 		(*materializedResult_Entry_File)(nil),
 		(*materializedResult_Entry_Directory)(nil),

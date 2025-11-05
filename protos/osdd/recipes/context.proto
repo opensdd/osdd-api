@@ -13,6 +13,7 @@ message Context {
 message ContextEntry {
   string path = 1;
   ContextFrom from = 2;
+  optional common.EntryFilter filter = 3;
 }
 
 message ContextFrom {
@@ -23,6 +24,9 @@ message ContextFrom {
     string text = 103;
     string prefetch_id = 104;
     UserInputContextSource user_input = 105;
+    // Local file should be mostly used for tests. If the provided path is relative, then it will be relative to the
+    // current working directory.
+    string local_file = 106;
   }
 }
 
@@ -36,6 +40,9 @@ message CombinedContextSource {
       string text = 102;
       string prefetch_id = 103;
       UserInputContextSource user_input = 104;
+      // Local file should be mostly used for tests. If the provided path is relative, then it will be relative to the
+      // current working directory.
+      string local_file = 105;
     }
   }
 }

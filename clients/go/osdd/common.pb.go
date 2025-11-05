@@ -266,10 +266,11 @@ func (*gitVersion_Tag) isGitVersion_Type() {}
 func (*gitVersion_Commit) isGitVersion_Type() {}
 
 type UserInputParameter struct {
-	state                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Name        string                 `protobuf:"bytes,1,opt,name=name,proto3"`
-	xxx_hidden_Description string                 `protobuf:"bytes,2,opt,name=description,proto3"`
-	xxx_hidden_Optional    bool                   `protobuf:"varint,3,opt,name=optional,proto3"`
+	state                  protoimpl.MessageState    `protogen:"opaque.v1"`
+	xxx_hidden_Name        string                    `protobuf:"bytes,1,opt,name=name,proto3"`
+	xxx_hidden_Description string                    `protobuf:"bytes,2,opt,name=description,proto3"`
+	xxx_hidden_Optional    bool                      `protobuf:"varint,3,opt,name=optional,proto3"`
+	xxx_hidden_Type        isUserInputParameter_Type `protobuf_oneof:"type"`
 	unknownFields          protoimpl.UnknownFields
 	sizeCache              protoimpl.SizeCache
 }
@@ -320,6 +321,15 @@ func (x *UserInputParameter) GetOptional() bool {
 	return false
 }
 
+func (x *UserInputParameter) GetText() *UserInputParameter_Text {
+	if x != nil {
+		if x, ok := x.xxx_hidden_Type.(*userInputParameter_Text_); ok {
+			return x.Text
+		}
+	}
+	return nil
+}
+
 func (x *UserInputParameter) SetName(v string) {
 	x.xxx_hidden_Name = v
 }
@@ -332,12 +342,64 @@ func (x *UserInputParameter) SetOptional(v bool) {
 	x.xxx_hidden_Optional = v
 }
 
+func (x *UserInputParameter) SetText(v *UserInputParameter_Text) {
+	if v == nil {
+		x.xxx_hidden_Type = nil
+		return
+	}
+	x.xxx_hidden_Type = &userInputParameter_Text_{v}
+}
+
+func (x *UserInputParameter) HasType() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Type != nil
+}
+
+func (x *UserInputParameter) HasText() bool {
+	if x == nil {
+		return false
+	}
+	_, ok := x.xxx_hidden_Type.(*userInputParameter_Text_)
+	return ok
+}
+
+func (x *UserInputParameter) ClearType() {
+	x.xxx_hidden_Type = nil
+}
+
+func (x *UserInputParameter) ClearText() {
+	if _, ok := x.xxx_hidden_Type.(*userInputParameter_Text_); ok {
+		x.xxx_hidden_Type = nil
+	}
+}
+
+const UserInputParameter_Type_not_set_case case_UserInputParameter_Type = 0
+const UserInputParameter_Text_case case_UserInputParameter_Type = 100
+
+func (x *UserInputParameter) WhichType() case_UserInputParameter_Type {
+	if x == nil {
+		return UserInputParameter_Type_not_set_case
+	}
+	switch x.xxx_hidden_Type.(type) {
+	case *userInputParameter_Text_:
+		return UserInputParameter_Text_case
+	default:
+		return UserInputParameter_Type_not_set_case
+	}
+}
+
 type UserInputParameter_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	Name        string
 	Description string
 	Optional    bool
+	// Fields of oneof xxx_hidden_Type:
+	// Represents a multiline text.
+	Text *UserInputParameter_Text
+	// -- end of xxx_hidden_Type
 }
 
 func (b0 UserInputParameter_builder) Build() *UserInputParameter {
@@ -347,8 +409,32 @@ func (b0 UserInputParameter_builder) Build() *UserInputParameter {
 	x.xxx_hidden_Name = b.Name
 	x.xxx_hidden_Description = b.Description
 	x.xxx_hidden_Optional = b.Optional
+	if b.Text != nil {
+		x.xxx_hidden_Type = &userInputParameter_Text_{b.Text}
+	}
 	return m0
 }
+
+type case_UserInputParameter_Type protoreflect.FieldNumber
+
+func (x case_UserInputParameter_Type) String() string {
+	md := file_osdd_common_proto_msgTypes[2].Descriptor()
+	if x == 0 {
+		return "not set"
+	}
+	return protoimpl.X.MessageFieldStringOf(md, protoreflect.FieldNumber(x))
+}
+
+type isUserInputParameter_Type interface {
+	isUserInputParameter_Type()
+}
+
+type userInputParameter_Text_ struct {
+	// Represents a multiline text.
+	Text *UserInputParameter_Text `protobuf:"bytes,100,opt,name=text,proto3,oneof"`
+}
+
+func (*userInputParameter_Text_) isUserInputParameter_Type() {}
 
 type NameGenConfig struct {
 	state          protoimpl.MessageState `protogen:"opaque.v1"`
@@ -478,6 +564,107 @@ func (b0 Exec_builder) Build() *Exec {
 	return m0
 }
 
+type EntryFilter struct {
+	state          protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Ide []string               `protobuf:"bytes,1,rep,name=ide,proto3"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *EntryFilter) Reset() {
+	*x = EntryFilter{}
+	mi := &file_osdd_common_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EntryFilter) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EntryFilter) ProtoMessage() {}
+
+func (x *EntryFilter) ProtoReflect() protoreflect.Message {
+	mi := &file_osdd_common_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (x *EntryFilter) GetIde() []string {
+	if x != nil {
+		return x.xxx_hidden_Ide
+	}
+	return nil
+}
+
+func (x *EntryFilter) SetIde(v []string) {
+	x.xxx_hidden_Ide = v
+}
+
+type EntryFilter_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	// If set, entry should be applied only to the listed IDEs.
+	Ide []string
+}
+
+func (b0 EntryFilter_builder) Build() *EntryFilter {
+	m0 := &EntryFilter{}
+	b, x := &b0, m0
+	_, _ = b, x
+	x.xxx_hidden_Ide = b.Ide
+	return m0
+}
+
+type UserInputParameter_Text struct {
+	state         protoimpl.MessageState `protogen:"opaque.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserInputParameter_Text) Reset() {
+	*x = UserInputParameter_Text{}
+	mi := &file_osdd_common_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserInputParameter_Text) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserInputParameter_Text) ProtoMessage() {}
+
+func (x *UserInputParameter_Text) ProtoReflect() protoreflect.Message {
+	mi := &file_osdd_common_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+type UserInputParameter_Text_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+}
+
+func (b0 UserInputParameter_Text_builder) Build() *UserInputParameter_Text {
+	m0 := &UserInputParameter_Text{}
+	b, x := &b0, m0
+	_, _ = b, x
+	return m0
+}
+
 var File_osdd_common_proto protoreflect.FileDescriptor
 
 const file_osdd_common_proto_rawDesc = "" +
@@ -492,32 +679,40 @@ const file_osdd_common_proto_rawDesc = "" +
 	"GitVersion\x12\x12\n" +
 	"\x03tag\x18d \x01(\tH\x00R\x03tag\x12\x18\n" +
 	"\x06commit\x18e \x01(\tH\x00R\x06commitB\x06\n" +
-	"\x04type\"f\n" +
+	"\x04type\"\xb2\x01\n" +
 	"\x12UserInputParameter\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x12\x1a\n" +
-	"\boptional\x18\x03 \x01(\bR\boptional\"!\n" +
+	"\boptional\x18\x03 \x01(\bR\boptional\x12:\n" +
+	"\x04text\x18d \x01(\v2$.osdd.common.UserInputParameter.TextH\x00R\x04text\x1a\x06\n" +
+	"\x04TextB\x06\n" +
+	"\x04type\"!\n" +
 	"\rNameGenConfig\x12\x10\n" +
 	"\x03len\x18\x01 \x01(\x05R\x03len\",\n" +
 	"\x04Exec\x12\x10\n" +
 	"\x03cmd\x18\x01 \x01(\tR\x03cmd\x12\x12\n" +
-	"\x04args\x18\x02 \x03(\tR\x04argsB-Z+github.com/opensdd/osdd-api/clients/go/osddb\x06proto3"
+	"\x04args\x18\x02 \x03(\tR\x04args\"\x1f\n" +
+	"\vEntryFilter\x12\x10\n" +
+	"\x03ide\x18\x01 \x03(\tR\x03ideB-Z+github.com/opensdd/osdd-api/clients/go/osddb\x06proto3"
 
-var file_osdd_common_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_osdd_common_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_osdd_common_proto_goTypes = []any{
-	(*GitReference)(nil),       // 0: osdd.common.GitReference
-	(*GitVersion)(nil),         // 1: osdd.common.GitVersion
-	(*UserInputParameter)(nil), // 2: osdd.common.UserInputParameter
-	(*NameGenConfig)(nil),      // 3: osdd.common.NameGenConfig
-	(*Exec)(nil),               // 4: osdd.common.Exec
+	(*GitReference)(nil),            // 0: osdd.common.GitReference
+	(*GitVersion)(nil),              // 1: osdd.common.GitVersion
+	(*UserInputParameter)(nil),      // 2: osdd.common.UserInputParameter
+	(*NameGenConfig)(nil),           // 3: osdd.common.NameGenConfig
+	(*Exec)(nil),                    // 4: osdd.common.Exec
+	(*EntryFilter)(nil),             // 5: osdd.common.EntryFilter
+	(*UserInputParameter_Text)(nil), // 6: osdd.common.UserInputParameter.Text
 }
 var file_osdd_common_proto_depIdxs = []int32{
 	1, // 0: osdd.common.GitReference.version:type_name -> osdd.common.GitVersion
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	6, // 1: osdd.common.UserInputParameter.text:type_name -> osdd.common.UserInputParameter.Text
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_osdd_common_proto_init() }
@@ -530,13 +725,16 @@ func file_osdd_common_proto_init() {
 		(*gitVersion_Tag)(nil),
 		(*gitVersion_Commit)(nil),
 	}
+	file_osdd_common_proto_msgTypes[2].OneofWrappers = []any{
+		(*userInputParameter_Text_)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_osdd_common_proto_rawDesc), len(file_osdd_common_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

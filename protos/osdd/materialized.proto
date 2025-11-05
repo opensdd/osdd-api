@@ -6,6 +6,7 @@ option go_package = "github.com/opensdd/osdd-api/clients/go/osdd";
 
 message MaterializedResult {
   repeated Entry entries = 1;
+  optional string workspace_path = 2;
 
   message Entry {
     oneof type {

@@ -11,6 +11,7 @@ export const protobufPackage = "osdd.materialized";
 
 export interface MaterializedResult {
   entries: MaterializedResult_Entry[];
+  workspacePath?: string | undefined;
 }
 
 export interface MaterializedResult_Entry {
@@ -23,13 +24,16 @@ export interface FullFileContent {
 }
 
 function createBaseMaterializedResult(): MaterializedResult {
-  return { entries: [] };
+  return { entries: [], workspacePath: undefined };
 }
 
 export const MaterializedResult: MessageFns<MaterializedResult> = {
   encode(message: MaterializedResult, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     for (const v of message.entries) {
       MaterializedResult_Entry.encode(v!, writer.uint32(10).fork()).join();
+    }
+    if (message.workspacePath !== undefined) {
+      writer.uint32(18).string(message.workspacePath);
     }
     return writer;
   },
@@ -49,6 +53,14 @@ export const MaterializedResult: MessageFns<MaterializedResult> = {
           message.entries.push(MaterializedResult_Entry.decode(reader, reader.uint32()));
           continue;
         }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.workspacePath = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -63,6 +75,7 @@ export const MaterializedResult: MessageFns<MaterializedResult> = {
       entries: gt.Array.isArray(object?.entries)
         ? object.entries.map((e: any) => MaterializedResult_Entry.fromJSON(e))
         : [],
+      workspacePath: isSet(object.workspacePath) ? gt.String(object.workspacePath) : undefined,
     };
   },
 
@@ -70,6 +83,9 @@ export const MaterializedResult: MessageFns<MaterializedResult> = {
     const obj: any = {};
     if (message.entries?.length) {
       obj.entries = message.entries.map((e) => MaterializedResult_Entry.toJSON(e));
+    }
+    if (message.workspacePath !== undefined) {
+      obj.workspacePath = message.workspacePath;
     }
     return obj;
   },
@@ -80,6 +96,7 @@ export const MaterializedResult: MessageFns<MaterializedResult> = {
   fromPartial(object: DeepPartial<MaterializedResult>): MaterializedResult {
     const message = createBaseMaterializedResult();
     message.entries = object.entries?.map((e) => MaterializedResult_Entry.fromPartial(e)) || [];
+    message.workspacePath = object.workspacePath ?? undefined;
     return message;
   },
 };

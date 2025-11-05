@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x1eosdd/recipes/permissions.proto\x12\x18osdd.recipes.permissions\"N\n\x13OperationPermission\x12\x0e\n\x04\x62\x61sh\x18\x64 \x01(\tH\x00\x12\x0e\n\x04read\x18\x65 \x01(\tH\x00\x12\x0f\n\x05write\x18\x66 \x01(\tH\x00\x42\x06\n\x04type\"\x88\x01\n\x0bPermissions\x12<\n\x05\x61llow\x18\x01 \x03(\x0b\x32-.osdd.recipes.permissions.OperationPermission\x12;\n\x04\x64\x65ny\x18\x02 \x03(\x0b\x32-.osdd.recipes.permissions.OperationPermissionB5Z3github.com/opensdd/osdd-api/clients/go/osdd/recipesb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x1eosdd/recipes/permissions.proto\x12\x18osdd.recipes.permissions\"a\n\x13OperationPermission\x12\x0e\n\x04\x62\x61sh\x18\x64 \x01(\tH\x00\x12\x0e\n\x04read\x18\x65 \x01(\tH\x00\x12\x0f\n\x05write\x18\x66 \x01(\tH\x00\x12\x11\n\x07network\x18g \x01(\x08H\x00\x42\x06\n\x04type\"\x88\x01\n\x0bPermissions\x12<\n\x05\x61llow\x18\x01 \x03(\x0b\x32-.osdd.recipes.permissions.OperationPermission\x12;\n\x04\x64\x65ny\x18\x02 \x03(\x0b\x32-.osdd.recipes.permissions.OperationPermissionB5Z3github.com/opensdd/osdd-api/clients/go/osdd/recipesb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -33,7 +33,7 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'Z3github.com/opensdd/osdd-api/clients/go/osdd/recipes'
   _globals['_OPERATIONPERMISSION']._serialized_start=60
-  _globals['_OPERATIONPERMISSION']._serialized_end=138
-  _globals['_PERMISSIONS']._serialized_start=141
-  _globals['_PERMISSIONS']._serialized_end=277
+  _globals['_OPERATIONPERMISSION']._serialized_end=157
+  _globals['_PERMISSIONS']._serialized_start=160
+  _globals['_PERMISSIONS']._serialized_end=296
 # @@protoc_insertion_point(module_scope)

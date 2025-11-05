@@ -7,14 +7,16 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class OperationPermission(_message.Message):
-    __slots__ = ("bash", "read", "write")
+    __slots__ = ("bash", "read", "write", "network")
     BASH_FIELD_NUMBER: _ClassVar[int]
     READ_FIELD_NUMBER: _ClassVar[int]
     WRITE_FIELD_NUMBER: _ClassVar[int]
+    NETWORK_FIELD_NUMBER: _ClassVar[int]
     bash: str
     read: str
     write: str
-    def __init__(self, bash: _Optional[str] = ..., read: _Optional[str] = ..., write: _Optional[str] = ...) -> None: ...
+    network: bool
+    def __init__(self, bash: _Optional[str] = ..., read: _Optional[str] = ..., write: _Optional[str] = ..., network: bool = ...) -> None: ...
 
 class Permissions(_message.Message):
     __slots__ = ("allow", "deny")

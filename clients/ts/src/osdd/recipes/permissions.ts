@@ -10,11 +10,9 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 export const protobufPackage = "osdd.recipes.permissions";
 
 export interface OperationPermission {
-  type?:
-    | { $case: "bash"; value: string }
-    | { $case: "read"; value: string }
-    | { $case: "write"; value: string }
-    | undefined;
+  type?: { $case: "bash"; value: string } | { $case: "read"; value: string } | { $case: "write"; value: string } | //
+  /** Currently only Codex specific allowing it to access network by default without extra user prompting. */
+  { $case: "network"; value: boolean } | undefined;
 }
 
 export interface Permissions {
@@ -37,6 +35,9 @@ export const OperationPermission: MessageFns<OperationPermission> = {
         break;
       case "write":
         writer.uint32(818).string(message.type.value);
+        break;
+      case "network":
+        writer.uint32(824).bool(message.type.value);
         break;
     }
     return writer;
@@ -73,6 +74,14 @@ export const OperationPermission: MessageFns<OperationPermission> = {
           message.type = { $case: "write", value: reader.string() };
           continue;
         }
+        case 103: {
+          if (tag !== 824) {
+            break;
+          }
+
+          message.type = { $case: "network", value: reader.bool() };
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -90,6 +99,8 @@ export const OperationPermission: MessageFns<OperationPermission> = {
         ? { $case: "read", value: gt.String(object.read) }
         : isSet(object.write)
         ? { $case: "write", value: gt.String(object.write) }
+        : isSet(object.network)
+        ? { $case: "network", value: gt.Boolean(object.network) }
         : undefined,
     };
   },
@@ -102,6 +113,8 @@ export const OperationPermission: MessageFns<OperationPermission> = {
       obj.read = message.type.value;
     } else if (message.type?.$case === "write") {
       obj.write = message.type.value;
+    } else if (message.type?.$case === "network") {
+      obj.network = message.type.value;
     }
     return obj;
   },
@@ -127,6 +140,12 @@ export const OperationPermission: MessageFns<OperationPermission> = {
       case "write": {
         if (object.type?.value !== undefined && object.type?.value !== null) {
           message.type = { $case: "write", value: object.type.value };
+        }
+        break;
+      }
+      case "network": {
+        if (object.type?.value !== undefined && object.type?.value !== null) {
+          message.type = { $case: "network", value: object.type.value };
         }
         break;
       }

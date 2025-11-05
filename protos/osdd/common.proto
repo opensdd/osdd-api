@@ -20,6 +20,12 @@ message UserInputParameter {
   string name = 1;
   string description = 2;
   bool optional = 3;
+  oneof type {
+    // Represents a multiline text.
+    Text text = 100;
+  }
+
+  message Text {}
 }
 
 message NameGenConfig {
@@ -29,4 +35,9 @@ message NameGenConfig {
 message Exec {
   string cmd = 1;
   repeated string args = 2;
+}
+
+message EntryFilter {
+  // If set, entry should be applied only to the listed IDEs.
+  repeated string ide = 1;
 }

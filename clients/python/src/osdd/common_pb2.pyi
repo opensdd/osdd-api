@@ -23,14 +23,19 @@ class GitVersion(_message.Message):
     def __init__(self, tag: _Optional[str] = ..., commit: _Optional[str] = ...) -> None: ...
 
 class UserInputParameter(_message.Message):
-    __slots__ = ("name", "description", "optional")
+    __slots__ = ("name", "description", "optional", "text")
+    class Text(_message.Message):
+        __slots__ = ()
+        def __init__(self) -> None: ...
     NAME_FIELD_NUMBER: _ClassVar[int]
     DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
     OPTIONAL_FIELD_NUMBER: _ClassVar[int]
+    TEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     description: str
     optional: bool
-    def __init__(self, name: _Optional[str] = ..., description: _Optional[str] = ..., optional: bool = ...) -> None: ...
+    text: UserInputParameter.Text
+    def __init__(self, name: _Optional[str] = ..., description: _Optional[str] = ..., optional: bool = ..., text: _Optional[_Union[UserInputParameter.Text, _Mapping]] = ...) -> None: ...
 
 class NameGenConfig(_message.Message):
     __slots__ = ("len",)
@@ -45,3 +50,9 @@ class Exec(_message.Message):
     cmd: str
     args: _containers.RepeatedScalarFieldContainer[str]
     def __init__(self, cmd: _Optional[str] = ..., args: _Optional[_Iterable[str]] = ...) -> None: ...
+
+class EntryFilter(_message.Message):
+    __slots__ = ("ide",)
+    IDE_FIELD_NUMBER: _ClassVar[int]
+    ide: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(self, ide: _Optional[_Iterable[str]] = ...) -> None: ...

@@ -14,43 +14,49 @@ class Context(_message.Message):
     def __init__(self, entries: _Optional[_Iterable[_Union[ContextEntry, _Mapping]]] = ...) -> None: ...
 
 class ContextEntry(_message.Message):
-    __slots__ = ("path",)
+    __slots__ = ("path", "filter")
     PATH_FIELD_NUMBER: _ClassVar[int]
     FROM_FIELD_NUMBER: _ClassVar[int]
+    FILTER_FIELD_NUMBER: _ClassVar[int]
     path: str
-    def __init__(self, path: _Optional[str] = ..., **kwargs) -> None: ...
+    filter: _common_pb2.EntryFilter
+    def __init__(self, path: _Optional[str] = ..., filter: _Optional[_Union[_common_pb2.EntryFilter, _Mapping]] = ..., **kwargs) -> None: ...
 
 class ContextFrom(_message.Message):
-    __slots__ = ("combined", "github", "cmd", "text", "prefetch_id", "user_input")
+    __slots__ = ("combined", "github", "cmd", "text", "prefetch_id", "user_input", "local_file")
     COMBINED_FIELD_NUMBER: _ClassVar[int]
     GITHUB_FIELD_NUMBER: _ClassVar[int]
     CMD_FIELD_NUMBER: _ClassVar[int]
     TEXT_FIELD_NUMBER: _ClassVar[int]
     PREFETCH_ID_FIELD_NUMBER: _ClassVar[int]
     USER_INPUT_FIELD_NUMBER: _ClassVar[int]
+    LOCAL_FILE_FIELD_NUMBER: _ClassVar[int]
     combined: CombinedContextSource
     github: _common_pb2.GitReference
     cmd: _common_pb2.Exec
     text: str
     prefetch_id: str
     user_input: UserInputContextSource
-    def __init__(self, combined: _Optional[_Union[CombinedContextSource, _Mapping]] = ..., github: _Optional[_Union[_common_pb2.GitReference, _Mapping]] = ..., cmd: _Optional[_Union[_common_pb2.Exec, _Mapping]] = ..., text: _Optional[str] = ..., prefetch_id: _Optional[str] = ..., user_input: _Optional[_Union[UserInputContextSource, _Mapping]] = ...) -> None: ...
+    local_file: str
+    def __init__(self, combined: _Optional[_Union[CombinedContextSource, _Mapping]] = ..., github: _Optional[_Union[_common_pb2.GitReference, _Mapping]] = ..., cmd: _Optional[_Union[_common_pb2.Exec, _Mapping]] = ..., text: _Optional[str] = ..., prefetch_id: _Optional[str] = ..., user_input: _Optional[_Union[UserInputContextSource, _Mapping]] = ..., local_file: _Optional[str] = ...) -> None: ...
 
 class CombinedContextSource(_message.Message):
     __slots__ = ("items",)
     class Item(_message.Message):
-        __slots__ = ("github", "cmd", "text", "prefetch_id", "user_input")
+        __slots__ = ("github", "cmd", "text", "prefetch_id", "user_input", "local_file")
         GITHUB_FIELD_NUMBER: _ClassVar[int]
         CMD_FIELD_NUMBER: _ClassVar[int]
         TEXT_FIELD_NUMBER: _ClassVar[int]
         PREFETCH_ID_FIELD_NUMBER: _ClassVar[int]
         USER_INPUT_FIELD_NUMBER: _ClassVar[int]
+        LOCAL_FILE_FIELD_NUMBER: _ClassVar[int]
         github: _common_pb2.GitReference
         cmd: _common_pb2.Exec
         text: str
         prefetch_id: str
         user_input: UserInputContextSource
-        def __init__(self, github: _Optional[_Union[_common_pb2.GitReference, _Mapping]] = ..., cmd: _Optional[_Union[_common_pb2.Exec, _Mapping]] = ..., text: _Optional[str] = ..., prefetch_id: _Optional[str] = ..., user_input: _Optional[_Union[UserInputContextSource, _Mapping]] = ...) -> None: ...
+        local_file: str
+        def __init__(self, github: _Optional[_Union[_common_pb2.GitReference, _Mapping]] = ..., cmd: _Optional[_Union[_common_pb2.Exec, _Mapping]] = ..., text: _Optional[str] = ..., prefetch_id: _Optional[str] = ..., user_input: _Optional[_Union[UserInputContextSource, _Mapping]] = ..., local_file: _Optional[str] = ...) -> None: ...
     ITEMS_FIELD_NUMBER: _ClassVar[int]
     items: _containers.RepeatedCompositeFieldContainer[CombinedContextSource.Item]
     def __init__(self, items: _Optional[_Iterable[_Union[CombinedContextSource.Item, _Mapping]]] = ...) -> None: ...

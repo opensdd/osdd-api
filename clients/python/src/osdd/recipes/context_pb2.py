@@ -25,7 +25,7 @@ _sym_db = _symbol_database.Default()
 from osdd import common_pb2 as osdd_dot_common__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x1aosdd/recipes/context.proto\x12\x14osdd.recipes.context\x1a\x11osdd/common.proto\">\n\x07\x43ontext\x12\x33\n\x07\x65ntries\x18\x01 \x03(\x0b\x32\".osdd.recipes.context.ContextEntry\"M\n\x0c\x43ontextEntry\x12\x0c\n\x04path\x18\x01 \x01(\t\x12/\n\x04\x66rom\x18\x02 \x01(\x0b\x32!.osdd.recipes.context.ContextFrom\"\x90\x02\n\x0b\x43ontextFrom\x12?\n\x08\x63ombined\x18\x64 \x01(\x0b\x32+.osdd.recipes.context.CombinedContextSourceH\x00\x12+\n\x06github\x18\x65 \x01(\x0b\x32\x19.osdd.common.GitReferenceH\x00\x12 \n\x03\x63md\x18\x66 \x01(\x0b\x32\x11.osdd.common.ExecH\x00\x12\x0e\n\x04text\x18g \x01(\tH\x00\x12\x15\n\x0bprefetch_id\x18h \x01(\tH\x00\x12\x42\n\nuser_input\x18i \x01(\x0b\x32,.osdd.recipes.context.UserInputContextSourceH\x00\x42\x06\n\x04type\"\xa3\x02\n\x15\x43ombinedContextSource\x12?\n\x05items\x18\x01 \x03(\x0b\x32\x30.osdd.recipes.context.CombinedContextSource.Item\x1a\xc8\x01\n\x04Item\x12+\n\x06github\x18\x64 \x01(\x0b\x32\x19.osdd.common.GitReferenceH\x00\x12 \n\x03\x63md\x18\x65 \x01(\x0b\x32\x11.osdd.common.ExecH\x00\x12\x0e\n\x04text\x18\x66 \x01(\tH\x00\x12\x15\n\x0bprefetch_id\x18g \x01(\tH\x00\x12\x42\n\nuser_input\x18h \x01(\x0b\x32,.osdd.recipes.context.UserInputContextSourceH\x00\x42\x06\n\x04type\"J\n\x16UserInputContextSource\x12\x30\n\x07\x65ntries\x18\x01 \x03(\x0b\x32\x1f.osdd.common.UserInputParameterB5Z3github.com/opensdd/osdd-api/clients/go/osdd/recipesb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x1aosdd/recipes/context.proto\x12\x14osdd.recipes.context\x1a\x11osdd/common.proto\">\n\x07\x43ontext\x12\x33\n\x07\x65ntries\x18\x01 \x03(\x0b\x32\".osdd.recipes.context.ContextEntry\"\x87\x01\n\x0c\x43ontextEntry\x12\x0c\n\x04path\x18\x01 \x01(\t\x12/\n\x04\x66rom\x18\x02 \x01(\x0b\x32!.osdd.recipes.context.ContextFrom\x12-\n\x06\x66ilter\x18\x03 \x01(\x0b\x32\x18.osdd.common.EntryFilterH\x00\x88\x01\x01\x42\t\n\x07_filter\"\xa6\x02\n\x0b\x43ontextFrom\x12?\n\x08\x63ombined\x18\x64 \x01(\x0b\x32+.osdd.recipes.context.CombinedContextSourceH\x00\x12+\n\x06github\x18\x65 \x01(\x0b\x32\x19.osdd.common.GitReferenceH\x00\x12 \n\x03\x63md\x18\x66 \x01(\x0b\x32\x11.osdd.common.ExecH\x00\x12\x0e\n\x04text\x18g \x01(\tH\x00\x12\x15\n\x0bprefetch_id\x18h \x01(\tH\x00\x12\x42\n\nuser_input\x18i \x01(\x0b\x32,.osdd.recipes.context.UserInputContextSourceH\x00\x12\x14\n\nlocal_file\x18j \x01(\tH\x00\x42\x06\n\x04type\"\xb9\x02\n\x15\x43ombinedContextSource\x12?\n\x05items\x18\x01 \x03(\x0b\x32\x30.osdd.recipes.context.CombinedContextSource.Item\x1a\xde\x01\n\x04Item\x12+\n\x06github\x18\x64 \x01(\x0b\x32\x19.osdd.common.GitReferenceH\x00\x12 \n\x03\x63md\x18\x65 \x01(\x0b\x32\x11.osdd.common.ExecH\x00\x12\x0e\n\x04text\x18\x66 \x01(\tH\x00\x12\x15\n\x0bprefetch_id\x18g \x01(\tH\x00\x12\x42\n\nuser_input\x18h \x01(\x0b\x32,.osdd.recipes.context.UserInputContextSourceH\x00\x12\x14\n\nlocal_file\x18i \x01(\tH\x00\x42\x06\n\x04type\"J\n\x16UserInputContextSource\x12\x30\n\x07\x65ntries\x18\x01 \x03(\x0b\x32\x1f.osdd.common.UserInputParameterB5Z3github.com/opensdd/osdd-api/clients/go/osdd/recipesb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -35,14 +35,14 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._serialized_options = b'Z3github.com/opensdd/osdd-api/clients/go/osdd/recipes'
   _globals['_CONTEXT']._serialized_start=71
   _globals['_CONTEXT']._serialized_end=133
-  _globals['_CONTEXTENTRY']._serialized_start=135
-  _globals['_CONTEXTENTRY']._serialized_end=212
-  _globals['_CONTEXTFROM']._serialized_start=215
-  _globals['_CONTEXTFROM']._serialized_end=487
-  _globals['_COMBINEDCONTEXTSOURCE']._serialized_start=490
-  _globals['_COMBINEDCONTEXTSOURCE']._serialized_end=781
-  _globals['_COMBINEDCONTEXTSOURCE_ITEM']._serialized_start=581
-  _globals['_COMBINEDCONTEXTSOURCE_ITEM']._serialized_end=781
-  _globals['_USERINPUTCONTEXTSOURCE']._serialized_start=783
-  _globals['_USERINPUTCONTEXTSOURCE']._serialized_end=857
+  _globals['_CONTEXTENTRY']._serialized_start=136
+  _globals['_CONTEXTENTRY']._serialized_end=271
+  _globals['_CONTEXTFROM']._serialized_start=274
+  _globals['_CONTEXTFROM']._serialized_end=568
+  _globals['_COMBINEDCONTEXTSOURCE']._serialized_start=571
+  _globals['_COMBINEDCONTEXTSOURCE']._serialized_end=884
+  _globals['_COMBINEDCONTEXTSOURCE_ITEM']._serialized_start=662
+  _globals['_COMBINEDCONTEXTSOURCE_ITEM']._serialized_end=884
+  _globals['_USERINPUTCONTEXTSOURCE']._serialized_start=886
+  _globals['_USERINPUTCONTEXTSOURCE']._serialized_end=960
 # @@protoc_insertion_point(module_scope)

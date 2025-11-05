@@ -9,6 +9,8 @@ message OperationPermission {
     string bash = 100;
     string read = 101;
     string write = 102;
+    // Currently only Codex specific allowing it to access network by default without extra user prompting.
+    bool network = 103;
   }
 }
 

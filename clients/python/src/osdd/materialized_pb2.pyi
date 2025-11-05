@@ -7,7 +7,7 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class MaterializedResult(_message.Message):
-    __slots__ = ("entries",)
+    __slots__ = ("entries", "workspace_path")
     class Entry(_message.Message):
         __slots__ = ("file", "directory")
         FILE_FIELD_NUMBER: _ClassVar[int]
@@ -16,8 +16,10 @@ class MaterializedResult(_message.Message):
         directory: str
         def __init__(self, file: _Optional[_Union[FullFileContent, _Mapping]] = ..., directory: _Optional[str] = ...) -> None: ...
     ENTRIES_FIELD_NUMBER: _ClassVar[int]
+    WORKSPACE_PATH_FIELD_NUMBER: _ClassVar[int]
     entries: _containers.RepeatedCompositeFieldContainer[MaterializedResult.Entry]
-    def __init__(self, entries: _Optional[_Iterable[_Union[MaterializedResult.Entry, _Mapping]]] = ...) -> None: ...
+    workspace_path: str
+    def __init__(self, entries: _Optional[_Iterable[_Union[MaterializedResult.Entry, _Mapping]]] = ..., workspace_path: _Optional[str] = ...) -> None: ...
 
 class FullFileContent(_message.Message):
     __slots__ = ("path", "content")

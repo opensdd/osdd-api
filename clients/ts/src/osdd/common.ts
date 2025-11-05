@@ -22,6 +22,14 @@ export interface UserInputParameter {
   name: string;
   description: string;
   optional: boolean;
+  type?:
+    | //
+    /** Represents a multiline text. */
+    { $case: "text"; value: UserInputParameter_Text }
+    | undefined;
+}
+
+export interface UserInputParameter_Text {
 }
 
 export interface NameGenConfig {
@@ -31,6 +39,11 @@ export interface NameGenConfig {
 export interface Exec {
   cmd: string;
   args: string[];
+}
+
+export interface EntryFilter {
+  /** If set, entry should be applied only to the listed IDEs. */
+  ide: string[];
 }
 
 function createBaseGitReference(): GitReference {
@@ -204,7 +217,7 @@ export const GitVersion: MessageFns<GitVersion> = {
 };
 
 function createBaseUserInputParameter(): UserInputParameter {
-  return { name: "", description: "", optional: false };
+  return { name: "", description: "", optional: false, type: undefined };
 }
 
 export const UserInputParameter: MessageFns<UserInputParameter> = {
@@ -217,6 +230,11 @@ export const UserInputParameter: MessageFns<UserInputParameter> = {
     }
     if (message.optional !== false) {
       writer.uint32(24).bool(message.optional);
+    }
+    switch (message.type?.$case) {
+      case "text":
+        UserInputParameter_Text.encode(message.type.value, writer.uint32(802).fork()).join();
+        break;
     }
     return writer;
   },
@@ -252,6 +270,14 @@ export const UserInputParameter: MessageFns<UserInputParameter> = {
           message.optional = reader.bool();
           continue;
         }
+        case 100: {
+          if (tag !== 802) {
+            break;
+          }
+
+          message.type = { $case: "text", value: UserInputParameter_Text.decode(reader, reader.uint32()) };
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -266,6 +292,7 @@ export const UserInputParameter: MessageFns<UserInputParameter> = {
       name: isSet(object.name) ? gt.String(object.name) : "",
       description: isSet(object.description) ? gt.String(object.description) : "",
       optional: isSet(object.optional) ? gt.Boolean(object.optional) : false,
+      type: isSet(object.text) ? { $case: "text", value: UserInputParameter_Text.fromJSON(object.text) } : undefined,
     };
   },
 
@@ -280,6 +307,9 @@ export const UserInputParameter: MessageFns<UserInputParameter> = {
     if (message.optional !== false) {
       obj.optional = message.optional;
     }
+    if (message.type?.$case === "text") {
+      obj.text = UserInputParameter_Text.toJSON(message.type.value);
+    }
     return obj;
   },
 
@@ -291,6 +321,57 @@ export const UserInputParameter: MessageFns<UserInputParameter> = {
     message.name = object.name ?? "";
     message.description = object.description ?? "";
     message.optional = object.optional ?? false;
+    switch (object.type?.$case) {
+      case "text": {
+        if (object.type?.value !== undefined && object.type?.value !== null) {
+          message.type = { $case: "text", value: UserInputParameter_Text.fromPartial(object.type.value) };
+        }
+        break;
+      }
+    }
+    return message;
+  },
+};
+
+function createBaseUserInputParameter_Text(): UserInputParameter_Text {
+  return {};
+}
+
+export const UserInputParameter_Text: MessageFns<UserInputParameter_Text> = {
+  encode(_: UserInputParameter_Text, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UserInputParameter_Text {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUserInputParameter_Text();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): UserInputParameter_Text {
+    return {};
+  },
+
+  toJSON(_: UserInputParameter_Text): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create(base?: DeepPartial<UserInputParameter_Text>): UserInputParameter_Text {
+    return UserInputParameter_Text.fromPartial(base ?? {});
+  },
+  fromPartial(_: DeepPartial<UserInputParameter_Text>): UserInputParameter_Text {
+    const message = createBaseUserInputParameter_Text();
     return message;
   },
 };
@@ -425,6 +506,64 @@ export const Exec: MessageFns<Exec> = {
     const message = createBaseExec();
     message.cmd = object.cmd ?? "";
     message.args = object.args?.map((e) => e) || [];
+    return message;
+  },
+};
+
+function createBaseEntryFilter(): EntryFilter {
+  return { ide: [] };
+}
+
+export const EntryFilter: MessageFns<EntryFilter> = {
+  encode(message: EntryFilter, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.ide) {
+      writer.uint32(10).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): EntryFilter {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEntryFilter();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.ide.push(reader.string());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): EntryFilter {
+    return { ide: gt.Array.isArray(object?.ide) ? object.ide.map((e: any) => gt.String(e)) : [] };
+  },
+
+  toJSON(message: EntryFilter): unknown {
+    const obj: any = {};
+    if (message.ide?.length) {
+      obj.ide = message.ide;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<EntryFilter>): EntryFilter {
+    return EntryFilter.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<EntryFilter>): EntryFilter {
+    const message = createBaseEntryFilter();
+    message.ide = object.ide?.map((e) => e) || [];
     return message;
   },
 };

@@ -6,7 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { Exec, GitReference, UserInputParameter } from "../common";
+import { EntryFilter, Exec, GitReference, UserInputParameter } from "../common";
 
 export const protobufPackage = "osdd.recipes.context";
 
@@ -17,6 +17,7 @@ export interface Context {
 export interface ContextEntry {
   path: string;
   from: ContextFrom | undefined;
+  filter?: EntryFilter | undefined;
 }
 
 export interface ContextFrom {
@@ -27,6 +28,12 @@ export interface ContextFrom {
     | { $case: "text"; value: string }
     | { $case: "prefetchId"; value: string }
     | { $case: "userInput"; value: UserInputContextSource }
+    | //
+    /**
+     * Local file should be mostly used for tests. If the provided path is relative, then it will be relative to the
+     * current working directory.
+     */
+    { $case: "localFile"; value: string }
     | undefined;
 }
 
@@ -41,6 +48,12 @@ export interface CombinedContextSource_Item {
     | { $case: "text"; value: string }
     | { $case: "prefetchId"; value: string }
     | { $case: "userInput"; value: UserInputContextSource }
+    | //
+    /**
+     * Local file should be mostly used for tests. If the provided path is relative, then it will be relative to the
+     * current working directory.
+     */
+    { $case: "localFile"; value: string }
     | undefined;
 }
 
@@ -109,7 +122,7 @@ export const Context: MessageFns<Context> = {
 };
 
 function createBaseContextEntry(): ContextEntry {
-  return { path: "", from: undefined };
+  return { path: "", from: undefined, filter: undefined };
 }
 
 export const ContextEntry: MessageFns<ContextEntry> = {
@@ -119,6 +132,9 @@ export const ContextEntry: MessageFns<ContextEntry> = {
     }
     if (message.from !== undefined) {
       ContextFrom.encode(message.from, writer.uint32(18).fork()).join();
+    }
+    if (message.filter !== undefined) {
+      EntryFilter.encode(message.filter, writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -146,6 +162,14 @@ export const ContextEntry: MessageFns<ContextEntry> = {
           message.from = ContextFrom.decode(reader, reader.uint32());
           continue;
         }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.filter = EntryFilter.decode(reader, reader.uint32());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -159,6 +183,7 @@ export const ContextEntry: MessageFns<ContextEntry> = {
     return {
       path: isSet(object.path) ? gt.String(object.path) : "",
       from: isSet(object.from) ? ContextFrom.fromJSON(object.from) : undefined,
+      filter: isSet(object.filter) ? EntryFilter.fromJSON(object.filter) : undefined,
     };
   },
 
@@ -169,6 +194,9 @@ export const ContextEntry: MessageFns<ContextEntry> = {
     }
     if (message.from !== undefined) {
       obj.from = ContextFrom.toJSON(message.from);
+    }
+    if (message.filter !== undefined) {
+      obj.filter = EntryFilter.toJSON(message.filter);
     }
     return obj;
   },
@@ -181,6 +209,9 @@ export const ContextEntry: MessageFns<ContextEntry> = {
     message.path = object.path ?? "";
     message.from = (object.from !== undefined && object.from !== null)
       ? ContextFrom.fromPartial(object.from)
+      : undefined;
+    message.filter = (object.filter !== undefined && object.filter !== null)
+      ? EntryFilter.fromPartial(object.filter)
       : undefined;
     return message;
   },
@@ -210,6 +241,9 @@ export const ContextFrom: MessageFns<ContextFrom> = {
         break;
       case "userInput":
         UserInputContextSource.encode(message.type.value, writer.uint32(842).fork()).join();
+        break;
+      case "localFile":
+        writer.uint32(850).string(message.type.value);
         break;
     }
     return writer;
@@ -270,6 +304,14 @@ export const ContextFrom: MessageFns<ContextFrom> = {
           message.type = { $case: "userInput", value: UserInputContextSource.decode(reader, reader.uint32()) };
           continue;
         }
+        case 106: {
+          if (tag !== 850) {
+            break;
+          }
+
+          message.type = { $case: "localFile", value: reader.string() };
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -293,6 +335,8 @@ export const ContextFrom: MessageFns<ContextFrom> = {
         ? { $case: "prefetchId", value: gt.String(object.prefetchId) }
         : isSet(object.userInput)
         ? { $case: "userInput", value: UserInputContextSource.fromJSON(object.userInput) }
+        : isSet(object.localFile)
+        ? { $case: "localFile", value: gt.String(object.localFile) }
         : undefined,
     };
   },
@@ -311,6 +355,8 @@ export const ContextFrom: MessageFns<ContextFrom> = {
       obj.prefetchId = message.type.value;
     } else if (message.type?.$case === "userInput") {
       obj.userInput = UserInputContextSource.toJSON(message.type.value);
+    } else if (message.type?.$case === "localFile") {
+      obj.localFile = message.type.value;
     }
     return obj;
   },
@@ -354,6 +400,12 @@ export const ContextFrom: MessageFns<ContextFrom> = {
       case "userInput": {
         if (object.type?.value !== undefined && object.type?.value !== null) {
           message.type = { $case: "userInput", value: UserInputContextSource.fromPartial(object.type.value) };
+        }
+        break;
+      }
+      case "localFile": {
+        if (object.type?.value !== undefined && object.type?.value !== null) {
+          message.type = { $case: "localFile", value: object.type.value };
         }
         break;
       }
@@ -446,6 +498,9 @@ export const CombinedContextSource_Item: MessageFns<CombinedContextSource_Item> 
       case "userInput":
         UserInputContextSource.encode(message.type.value, writer.uint32(834).fork()).join();
         break;
+      case "localFile":
+        writer.uint32(842).string(message.type.value);
+        break;
     }
     return writer;
   },
@@ -497,6 +552,14 @@ export const CombinedContextSource_Item: MessageFns<CombinedContextSource_Item> 
           message.type = { $case: "userInput", value: UserInputContextSource.decode(reader, reader.uint32()) };
           continue;
         }
+        case 105: {
+          if (tag !== 842) {
+            break;
+          }
+
+          message.type = { $case: "localFile", value: reader.string() };
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -518,6 +581,8 @@ export const CombinedContextSource_Item: MessageFns<CombinedContextSource_Item> 
         ? { $case: "prefetchId", value: gt.String(object.prefetchId) }
         : isSet(object.userInput)
         ? { $case: "userInput", value: UserInputContextSource.fromJSON(object.userInput) }
+        : isSet(object.localFile)
+        ? { $case: "localFile", value: gt.String(object.localFile) }
         : undefined,
     };
   },
@@ -534,6 +599,8 @@ export const CombinedContextSource_Item: MessageFns<CombinedContextSource_Item> 
       obj.prefetchId = message.type.value;
     } else if (message.type?.$case === "userInput") {
       obj.userInput = UserInputContextSource.toJSON(message.type.value);
+    } else if (message.type?.$case === "localFile") {
+      obj.localFile = message.type.value;
     }
     return obj;
   },
@@ -571,6 +638,12 @@ export const CombinedContextSource_Item: MessageFns<CombinedContextSource_Item> 
       case "userInput": {
         if (object.type?.value !== undefined && object.type?.value !== null) {
           message.type = { $case: "userInput", value: UserInputContextSource.fromPartial(object.type.value) };
+        }
+        break;
+      }
+      case "localFile": {
+        if (object.type?.value !== undefined && object.type?.value !== null) {
+          message.type = { $case: "localFile", value: object.type.value };
         }
         break;
       }
