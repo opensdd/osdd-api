@@ -8,11 +8,8 @@ permissions:
   contents: read
 
 jobs:
-  release-ts:
-    name: Bump minor and publish TS to npm
+  publish:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     defaults:
       run:
         working-directory: clients/ts
@@ -22,10 +19,9 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Use Node.js 20
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: '20'
           registry-url: 'https://registry.npmjs.org'
           cache: npm
           cache-dependency-path: clients/ts/package-lock.json
