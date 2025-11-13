@@ -3,6 +3,10 @@ name: Release TS
 on:
   workflow_dispatch:
 
+permissions:
+  id-token: write  # Required for OIDC
+  contents: read
+
 jobs:
   release-ts:
     name: Bump minor and publish TS to npm
