@@ -10,6 +10,7 @@ export {
   ContextFrom,
   CombinedContextSource,
   CombinedContextSource_Item,
+  UserInputContextSource,
   protobufPackage as context_protobufPackage,
 } from './osdd/recipes/context';
 
@@ -36,6 +37,10 @@ export {
 
 export {
   Recipe,
+  StartConfig,
+  EntryPoint,
+  ExecutableRecipe,
+  WorkspaceConfig,
   protobufPackage as recipe_protobufPackage,
 } from './osdd/recipes/recipe';
 
