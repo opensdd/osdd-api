@@ -46,11 +46,13 @@ class StartConfig(_message.Message):
     def __init__(self, command: _Optional[str] = ..., prompt: _Optional[str] = ...) -> None: ...
 
 class WorkspaceConfig(_message.Message):
-    __slots__ = ("enabled", "path", "unique")
+    __slots__ = ("enabled", "path", "unique", "absolute")
     ENABLED_FIELD_NUMBER: _ClassVar[int]
     PATH_FIELD_NUMBER: _ClassVar[int]
     UNIQUE_FIELD_NUMBER: _ClassVar[int]
+    ABSOLUTE_FIELD_NUMBER: _ClassVar[int]
     enabled: bool
     path: str
     unique: _common_pb2.NameGenConfig
-    def __init__(self, enabled: bool = ..., path: _Optional[str] = ..., unique: _Optional[_Union[_common_pb2.NameGenConfig, _Mapping]] = ...) -> None: ...
+    absolute: bool
+    def __init__(self, enabled: bool = ..., path: _Optional[str] = ..., unique: _Optional[_Union[_common_pb2.NameGenConfig, _Mapping]] = ..., absolute: bool = ...) -> None: ...

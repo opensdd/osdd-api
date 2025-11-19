@@ -69,7 +69,11 @@ export interface WorkspaceConfig {
   /** Path to the workspace relative to the home directory root. */
   path: string;
   /** Configuration for unique name generation. */
-  unique?: NameGenConfig | undefined;
+  unique?:
+    | NameGenConfig
+    | undefined;
+  /** If set to true, then the path is absolute. Should mostly be used for locally generated recipes. */
+  absolute: boolean;
 }
 
 function createBaseRecipe(): Recipe {
@@ -437,7 +441,7 @@ export const StartConfig: MessageFns<StartConfig> = {
 };
 
 function createBaseWorkspaceConfig(): WorkspaceConfig {
-  return { enabled: false, path: "", unique: undefined };
+  return { enabled: false, path: "", unique: undefined, absolute: false };
 }
 
 export const WorkspaceConfig: MessageFns<WorkspaceConfig> = {
@@ -450,6 +454,9 @@ export const WorkspaceConfig: MessageFns<WorkspaceConfig> = {
     }
     if (message.unique !== undefined) {
       NameGenConfig.encode(message.unique, writer.uint32(26).fork()).join();
+    }
+    if (message.absolute !== false) {
+      writer.uint32(32).bool(message.absolute);
     }
     return writer;
   },
@@ -485,6 +492,14 @@ export const WorkspaceConfig: MessageFns<WorkspaceConfig> = {
           message.unique = NameGenConfig.decode(reader, reader.uint32());
           continue;
         }
+        case 4: {
+          if (tag !== 32) {
+            break;
+          }
+
+          message.absolute = reader.bool();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -499,6 +514,7 @@ export const WorkspaceConfig: MessageFns<WorkspaceConfig> = {
       enabled: isSet(object.enabled) ? gt.Boolean(object.enabled) : false,
       path: isSet(object.path) ? gt.String(object.path) : "",
       unique: isSet(object.unique) ? NameGenConfig.fromJSON(object.unique) : undefined,
+      absolute: isSet(object.absolute) ? gt.Boolean(object.absolute) : false,
     };
   },
 
@@ -513,6 +529,9 @@ export const WorkspaceConfig: MessageFns<WorkspaceConfig> = {
     if (message.unique !== undefined) {
       obj.unique = NameGenConfig.toJSON(message.unique);
     }
+    if (message.absolute !== false) {
+      obj.absolute = message.absolute;
+    }
     return obj;
   },
 
@@ -526,6 +545,7 @@ export const WorkspaceConfig: MessageFns<WorkspaceConfig> = {
     message.unique = (object.unique !== undefined && object.unique !== null)
       ? NameGenConfig.fromPartial(object.unique)
       : undefined;
+    message.absolute = object.absolute ?? false;
     return message;
   },
 };

@@ -56,5 +56,7 @@ message WorkspaceConfig {
   string path = 2;
   // Configuration for unique name generation.
   optional common.NameGenConfig unique = 3;
+  // If set to true, then the path is absolute. Should mostly be used for locally generated recipes.
+  bool absolute = 4;
 }
 
