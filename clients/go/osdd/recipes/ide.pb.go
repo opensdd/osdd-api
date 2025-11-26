@@ -443,6 +443,7 @@ func (b0 HttpMcpServer_builder) Build() *HttpMcpServer {
 type StdioMcpServer struct {
 	state              protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Command string                 `protobuf:"bytes,1,opt,name=command,proto3"`
+	xxx_hidden_Args    []string               `protobuf:"bytes,2,rep,name=args,proto3"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -479,15 +480,28 @@ func (x *StdioMcpServer) GetCommand() string {
 	return ""
 }
 
+func (x *StdioMcpServer) GetArgs() []string {
+	if x != nil {
+		return x.xxx_hidden_Args
+	}
+	return nil
+}
+
 func (x *StdioMcpServer) SetCommand(v string) {
 	x.xxx_hidden_Command = v
+}
+
+func (x *StdioMcpServer) SetArgs(v []string) {
+	x.xxx_hidden_Args = v
 }
 
 type StdioMcpServer_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// Command (with optional arguments) executed to start the server.
+	// Command executed to start the server.
 	Command string
+	// Args for the command
+	Args []string
 }
 
 func (b0 StdioMcpServer_builder) Build() *StdioMcpServer {
@@ -495,6 +509,7 @@ func (b0 StdioMcpServer_builder) Build() *StdioMcpServer {
 	b, x := &b0, m0
 	_, _ = b, x
 	x.xxx_hidden_Command = b.Command
+	x.xxx_hidden_Args = b.Args
 	return m0
 }
 
@@ -886,9 +901,10 @@ const file_osdd_recipes_ide_proto_rawDesc = "" +
 	"\x05stdio\x18e \x01(\v2 .osdd.recipes.ide.StdioMcpServerH\x00R\x05stdioB\x06\n" +
 	"\x04type\"!\n" +
 	"\rHttpMcpServer\x12\x10\n" +
-	"\x03url\x18\x01 \x01(\tR\x03url\"*\n" +
+	"\x03url\x18\x01 \x01(\tR\x03url\">\n" +
 	"\x0eStdioMcpServer\x12\x18\n" +
-	"\acommand\x18\x01 \x01(\tR\acommand\"?\n" +
+	"\acommand\x18\x01 \x01(\tR\acommand\x12\x12\n" +
+	"\x04args\x18\x02 \x03(\tR\x04args\"?\n" +
 	"\bCommands\x123\n" +
 	"\aentries\x18\x01 \x03(\v2\x19.osdd.recipes.ide.CommandR\aentries\"P\n" +
 	"\aCommand\x12\x12\n" +

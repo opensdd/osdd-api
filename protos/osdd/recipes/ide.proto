@@ -42,8 +42,10 @@ message HttpMcpServer {
 
 // StdioMcpServer launches a local command that speaks MCP on stdio.
 message StdioMcpServer {
-  // Command (with optional arguments) executed to start the server.
+  // Command executed to start the server.
   string command = 1;
+  // Args for the command
+  repeated string args = 2;
 }
 
 // Commands groups IDE command palette entries.

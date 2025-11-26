@@ -57,8 +57,10 @@ export interface HttpMcpServer {
 
 /** StdioMcpServer launches a local command that speaks MCP on stdio. */
 export interface StdioMcpServer {
-  /** Command (with optional arguments) executed to start the server. */
+  /** Command executed to start the server. */
   command: string;
+  /** Args for the command */
+  args: string[];
 }
 
 /** Commands groups IDE command palette entries. */
@@ -495,13 +497,16 @@ export const HttpMcpServer: MessageFns<HttpMcpServer> = {
 };
 
 function createBaseStdioMcpServer(): StdioMcpServer {
-  return { command: "" };
+  return { command: "", args: [] };
 }
 
 export const StdioMcpServer: MessageFns<StdioMcpServer> = {
   encode(message: StdioMcpServer, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.command !== "") {
       writer.uint32(10).string(message.command);
+    }
+    for (const v of message.args) {
+      writer.uint32(18).string(v!);
     }
     return writer;
   },
@@ -521,6 +526,14 @@ export const StdioMcpServer: MessageFns<StdioMcpServer> = {
           message.command = reader.string();
           continue;
         }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.args.push(reader.string());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -531,13 +544,19 @@ export const StdioMcpServer: MessageFns<StdioMcpServer> = {
   },
 
   fromJSON(object: any): StdioMcpServer {
-    return { command: isSet(object.command) ? gt.String(object.command) : "" };
+    return {
+      command: isSet(object.command) ? gt.String(object.command) : "",
+      args: gt.Array.isArray(object?.args) ? object.args.map((e: any) => gt.String(e)) : [],
+    };
   },
 
   toJSON(message: StdioMcpServer): unknown {
     const obj: any = {};
     if (message.command !== "") {
       obj.command = message.command;
+    }
+    if (message.args?.length) {
+      obj.args = message.args;
     }
     return obj;
   },
@@ -548,6 +567,7 @@ export const StdioMcpServer: MessageFns<StdioMcpServer> = {
   fromPartial(object: DeepPartial<StdioMcpServer>): StdioMcpServer {
     const message = createBaseStdioMcpServer();
     message.command = object.command ?? "";
+    message.args = object.args?.map((e) => e) || [];
     return message;
   },
 };

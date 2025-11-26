@@ -46,10 +46,12 @@ class HttpMcpServer(_message.Message):
     def __init__(self, url: _Optional[str] = ...) -> None: ...
 
 class StdioMcpServer(_message.Message):
-    __slots__ = ("command",)
+    __slots__ = ("command", "args")
     COMMAND_FIELD_NUMBER: _ClassVar[int]
+    ARGS_FIELD_NUMBER: _ClassVar[int]
     command: str
-    def __init__(self, command: _Optional[str] = ...) -> None: ...
+    args: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(self, command: _Optional[str] = ..., args: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class Commands(_message.Message):
     __slots__ = ("entries",)
