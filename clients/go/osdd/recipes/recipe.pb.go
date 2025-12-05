@@ -522,13 +522,14 @@ func (*startConfig_Prompt) isStartConfig_Type() {}
 
 // Describes workspace from which the recipe should be executed.
 type WorkspaceConfig struct {
-	state               protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Enabled  bool                   `protobuf:"varint,1,opt,name=enabled,proto3"`
-	xxx_hidden_Path     string                 `protobuf:"bytes,2,opt,name=path,proto3"`
-	xxx_hidden_Unique   *osdd.NameGenConfig    `protobuf:"bytes,3,opt,name=unique,proto3,oneof"`
-	xxx_hidden_Absolute bool                   `protobuf:"varint,4,opt,name=absolute,proto3"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
+	state                           protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Enabled              bool                   `protobuf:"varint,1,opt,name=enabled,proto3"`
+	xxx_hidden_Path                 string                 `protobuf:"bytes,2,opt,name=path,proto3"`
+	xxx_hidden_Unique               *osdd.NameGenConfig    `protobuf:"bytes,3,opt,name=unique,proto3,oneof"`
+	xxx_hidden_Absolute             bool                   `protobuf:"varint,4,opt,name=absolute,proto3"`
+	xxx_hidden_RelativeToWorkingDir bool                   `protobuf:"varint,5,opt,name=relativeToWorkingDir,proto3"`
+	unknownFields                   protoimpl.UnknownFields
+	sizeCache                       protoimpl.SizeCache
 }
 
 func (x *WorkspaceConfig) Reset() {
@@ -584,6 +585,13 @@ func (x *WorkspaceConfig) GetAbsolute() bool {
 	return false
 }
 
+func (x *WorkspaceConfig) GetRelativeToWorkingDir() bool {
+	if x != nil {
+		return x.xxx_hidden_RelativeToWorkingDir
+	}
+	return false
+}
+
 func (x *WorkspaceConfig) SetEnabled(v bool) {
 	x.xxx_hidden_Enabled = v
 }
@@ -598,6 +606,10 @@ func (x *WorkspaceConfig) SetUnique(v *osdd.NameGenConfig) {
 
 func (x *WorkspaceConfig) SetAbsolute(v bool) {
 	x.xxx_hidden_Absolute = v
+}
+
+func (x *WorkspaceConfig) SetRelativeToWorkingDir(v bool) {
+	x.xxx_hidden_RelativeToWorkingDir = v
 }
 
 func (x *WorkspaceConfig) HasUnique() bool {
@@ -622,6 +634,8 @@ type WorkspaceConfig_builder struct {
 	Unique *osdd.NameGenConfig
 	// If set to true, then the path is absolute. Should mostly be used for locally generated recipes.
 	Absolute bool
+	// If set to true, path is relative to the current working directory.
+	RelativeToWorkingDir bool
 }
 
 func (b0 WorkspaceConfig_builder) Build() *WorkspaceConfig {
@@ -632,6 +646,7 @@ func (b0 WorkspaceConfig_builder) Build() *WorkspaceConfig {
 	x.xxx_hidden_Path = b.Path
 	x.xxx_hidden_Unique = b.Unique
 	x.xxx_hidden_Absolute = b.Absolute
+	x.xxx_hidden_RelativeToWorkingDir = b.RelativeToWorkingDir
 	return m0
 }
 
@@ -663,12 +678,13 @@ const file_osdd_recipes_recipe_proto_rawDesc = "" +
 	"\vStartConfig\x12\x1a\n" +
 	"\acommand\x18d \x01(\tH\x00R\acommand\x12\x18\n" +
 	"\x06prompt\x18e \x01(\tH\x00R\x06promptB\x06\n" +
-	"\x04type\"\x9f\x01\n" +
+	"\x04type\"\xd3\x01\n" +
 	"\x0fWorkspaceConfig\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x12\n" +
 	"\x04path\x18\x02 \x01(\tR\x04path\x127\n" +
 	"\x06unique\x18\x03 \x01(\v2\x1a.osdd.common.NameGenConfigH\x00R\x06unique\x88\x01\x01\x12\x1a\n" +
-	"\babsolute\x18\x04 \x01(\bR\babsoluteB\t\n" +
+	"\babsolute\x18\x04 \x01(\bR\babsolute\x122\n" +
+	"\x14relativeToWorkingDir\x18\x05 \x01(\bR\x14relativeToWorkingDirB\t\n" +
 	"\a_uniqueB5Z3github.com/opensdd/osdd-api/clients/go/osdd/recipesb\x06proto3"
 
 var file_osdd_recipes_recipe_proto_msgTypes = make([]protoimpl.MessageInfo, 5)

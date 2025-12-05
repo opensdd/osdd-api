@@ -74,6 +74,8 @@ export interface WorkspaceConfig {
     | undefined;
   /** If set to true, then the path is absolute. Should mostly be used for locally generated recipes. */
   absolute: boolean;
+  /** If set to true, path is relative to the current working directory. */
+  relativeToWorkingDir: boolean;
 }
 
 function createBaseRecipe(): Recipe {
@@ -441,7 +443,7 @@ export const StartConfig: MessageFns<StartConfig> = {
 };
 
 function createBaseWorkspaceConfig(): WorkspaceConfig {
-  return { enabled: false, path: "", unique: undefined, absolute: false };
+  return { enabled: false, path: "", unique: undefined, absolute: false, relativeToWorkingDir: false };
 }
 
 export const WorkspaceConfig: MessageFns<WorkspaceConfig> = {
@@ -457,6 +459,9 @@ export const WorkspaceConfig: MessageFns<WorkspaceConfig> = {
     }
     if (message.absolute !== false) {
       writer.uint32(32).bool(message.absolute);
+    }
+    if (message.relativeToWorkingDir !== false) {
+      writer.uint32(40).bool(message.relativeToWorkingDir);
     }
     return writer;
   },
@@ -500,6 +505,14 @@ export const WorkspaceConfig: MessageFns<WorkspaceConfig> = {
           message.absolute = reader.bool();
           continue;
         }
+        case 5: {
+          if (tag !== 40) {
+            break;
+          }
+
+          message.relativeToWorkingDir = reader.bool();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -515,6 +528,7 @@ export const WorkspaceConfig: MessageFns<WorkspaceConfig> = {
       path: isSet(object.path) ? gt.String(object.path) : "",
       unique: isSet(object.unique) ? NameGenConfig.fromJSON(object.unique) : undefined,
       absolute: isSet(object.absolute) ? gt.Boolean(object.absolute) : false,
+      relativeToWorkingDir: isSet(object.relativeToWorkingDir) ? gt.Boolean(object.relativeToWorkingDir) : false,
     };
   },
 
@@ -532,6 +546,9 @@ export const WorkspaceConfig: MessageFns<WorkspaceConfig> = {
     if (message.absolute !== false) {
       obj.absolute = message.absolute;
     }
+    if (message.relativeToWorkingDir !== false) {
+      obj.relativeToWorkingDir = message.relativeToWorkingDir;
+    }
     return obj;
   },
 
@@ -546,6 +563,7 @@ export const WorkspaceConfig: MessageFns<WorkspaceConfig> = {
       ? NameGenConfig.fromPartial(object.unique)
       : undefined;
     message.absolute = object.absolute ?? false;
+    message.relativeToWorkingDir = object.relativeToWorkingDir ?? false;
     return message;
   },
 };

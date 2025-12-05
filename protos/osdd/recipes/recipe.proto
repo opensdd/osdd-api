@@ -58,5 +58,7 @@ message WorkspaceConfig {
   optional common.NameGenConfig unique = 3;
   // If set to true, then the path is absolute. Should mostly be used for locally generated recipes.
   bool absolute = 4;
+  // If set to true, path is relative to the current working directory.
+  bool relativeToWorkingDir = 5;
 }
 
