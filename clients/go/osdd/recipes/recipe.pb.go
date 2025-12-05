@@ -527,7 +527,7 @@ type WorkspaceConfig struct {
 	xxx_hidden_Path                 string                 `protobuf:"bytes,2,opt,name=path,proto3"`
 	xxx_hidden_Unique               *osdd.NameGenConfig    `protobuf:"bytes,3,opt,name=unique,proto3,oneof"`
 	xxx_hidden_Absolute             bool                   `protobuf:"varint,4,opt,name=absolute,proto3"`
-	xxx_hidden_RelativeToWorkingDir bool                   `protobuf:"varint,5,opt,name=relativeToWorkingDir,proto3"`
+	xxx_hidden_RelativeToWorkingDir bool                   `protobuf:"varint,5,opt,name=relative_to_working_dir,json=relativeToWorkingDir,proto3"`
 	unknownFields                   protoimpl.UnknownFields
 	sizeCache                       protoimpl.SizeCache
 }
@@ -678,13 +678,13 @@ const file_osdd_recipes_recipe_proto_rawDesc = "" +
 	"\vStartConfig\x12\x1a\n" +
 	"\acommand\x18d \x01(\tH\x00R\acommand\x12\x18\n" +
 	"\x06prompt\x18e \x01(\tH\x00R\x06promptB\x06\n" +
-	"\x04type\"\xd3\x01\n" +
+	"\x04type\"\xd6\x01\n" +
 	"\x0fWorkspaceConfig\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x12\n" +
 	"\x04path\x18\x02 \x01(\tR\x04path\x127\n" +
 	"\x06unique\x18\x03 \x01(\v2\x1a.osdd.common.NameGenConfigH\x00R\x06unique\x88\x01\x01\x12\x1a\n" +
-	"\babsolute\x18\x04 \x01(\bR\babsolute\x122\n" +
-	"\x14relativeToWorkingDir\x18\x05 \x01(\bR\x14relativeToWorkingDirB\t\n" +
+	"\babsolute\x18\x04 \x01(\bR\babsolute\x125\n" +
+	"\x17relative_to_working_dir\x18\x05 \x01(\bR\x14relativeToWorkingDirB\t\n" +
 	"\a_uniqueB5Z3github.com/opensdd/osdd-api/clients/go/osdd/recipesb\x06proto3"
 
 var file_osdd_recipes_recipe_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
