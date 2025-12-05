@@ -75,3 +75,11 @@ class CommandFrom(_message.Message):
     cmd: _common_pb2.Exec
     text: str
     def __init__(self, github: _Optional[_Union[_common_pb2.GitReference, _Mapping]] = ..., cmd: _Optional[_Union[_common_pb2.Exec, _Mapping]] = ..., text: _Optional[str] = ...) -> None: ...
+
+class LaunchDetails(_message.Message):
+    __slots__ = ("cmd", "dir")
+    CMD_FIELD_NUMBER: _ClassVar[int]
+    DIR_FIELD_NUMBER: _ClassVar[int]
+    cmd: _common_pb2.Exec
+    dir: str
+    def __init__(self, cmd: _Optional[_Union[_common_pb2.Exec, _Mapping]] = ..., dir: _Optional[str] = ...) -> None: ...

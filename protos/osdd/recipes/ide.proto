@@ -75,3 +75,11 @@ message CommandFrom {
   }
 }
 
+// Details of how IDE should be executed.
+message LaunchDetails {
+  // Command to start an IDE.
+  common.Exec cmd = 1;
+  // Directory from which IDE should be started.
+  string dir = 2;
+}
+
