@@ -23,7 +23,7 @@ class ContextEntry(_message.Message):
     def __init__(self, path: _Optional[str] = ..., filter: _Optional[_Union[_common_pb2.EntryFilter, _Mapping]] = ..., **kwargs) -> None: ...
 
 class ContextFrom(_message.Message):
-    __slots__ = ("combined", "github", "cmd", "text", "prefetch_id", "user_input", "local_file")
+    __slots__ = ("combined", "github", "cmd", "text", "prefetch_id", "user_input", "local_file", "git_repo")
     COMBINED_FIELD_NUMBER: _ClassVar[int]
     GITHUB_FIELD_NUMBER: _ClassVar[int]
     CMD_FIELD_NUMBER: _ClassVar[int]
@@ -31,6 +31,7 @@ class ContextFrom(_message.Message):
     PREFETCH_ID_FIELD_NUMBER: _ClassVar[int]
     USER_INPUT_FIELD_NUMBER: _ClassVar[int]
     LOCAL_FILE_FIELD_NUMBER: _ClassVar[int]
+    GIT_REPO_FIELD_NUMBER: _ClassVar[int]
     combined: CombinedContextSource
     github: _common_pb2.GitReference
     cmd: _common_pb2.Exec
@@ -38,7 +39,8 @@ class ContextFrom(_message.Message):
     prefetch_id: str
     user_input: UserInputContextSource
     local_file: str
-    def __init__(self, combined: _Optional[_Union[CombinedContextSource, _Mapping]] = ..., github: _Optional[_Union[_common_pb2.GitReference, _Mapping]] = ..., cmd: _Optional[_Union[_common_pb2.Exec, _Mapping]] = ..., text: _Optional[str] = ..., prefetch_id: _Optional[str] = ..., user_input: _Optional[_Union[UserInputContextSource, _Mapping]] = ..., local_file: _Optional[str] = ...) -> None: ...
+    git_repo: _common_pb2.GitRepository
+    def __init__(self, combined: _Optional[_Union[CombinedContextSource, _Mapping]] = ..., github: _Optional[_Union[_common_pb2.GitReference, _Mapping]] = ..., cmd: _Optional[_Union[_common_pb2.Exec, _Mapping]] = ..., text: _Optional[str] = ..., prefetch_id: _Optional[str] = ..., user_input: _Optional[_Union[UserInputContextSource, _Mapping]] = ..., local_file: _Optional[str] = ..., git_repo: _Optional[_Union[_common_pb2.GitRepository, _Mapping]] = ...) -> None: ...
 
 class CombinedContextSource(_message.Message):
     __slots__ = ("items",)

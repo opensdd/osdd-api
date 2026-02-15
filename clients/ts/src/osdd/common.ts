@@ -17,6 +17,15 @@ export interface GitReference {
   version?: GitVersion | undefined;
 }
 
+export interface GitRepository {
+  /** Full name of the repository in the format "owner/name". */
+  fullName: string;
+  /** Supported github, bitbucket. */
+  provider: string;
+  /** Name of the env var containing auth token for the repository. May be empty, then no token is used. */
+  authTokenEnvVar?: string | undefined;
+}
+
 /** GitVersion specifies the exact revision to use for a Git reference. */
 export interface GitVersion {
   /** Type of revision identifier supplied by the recipe. */
@@ -144,6 +153,98 @@ export const GitReference: MessageFns<GitReference> = {
     message.version = (object.version !== undefined && object.version !== null)
       ? GitVersion.fromPartial(object.version)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseGitRepository(): GitRepository {
+  return { fullName: "", provider: "", authTokenEnvVar: undefined };
+}
+
+export const GitRepository: MessageFns<GitRepository> = {
+  encode(message: GitRepository, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.fullName !== "") {
+      writer.uint32(10).string(message.fullName);
+    }
+    if (message.provider !== "") {
+      writer.uint32(18).string(message.provider);
+    }
+    if (message.authTokenEnvVar !== undefined) {
+      writer.uint32(26).string(message.authTokenEnvVar);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GitRepository {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGitRepository();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.fullName = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.provider = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.authTokenEnvVar = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GitRepository {
+    return {
+      fullName: isSet(object.fullName) ? gt.String(object.fullName) : "",
+      provider: isSet(object.provider) ? gt.String(object.provider) : "",
+      authTokenEnvVar: isSet(object.authTokenEnvVar) ? gt.String(object.authTokenEnvVar) : undefined,
+    };
+  },
+
+  toJSON(message: GitRepository): unknown {
+    const obj: any = {};
+    if (message.fullName !== "") {
+      obj.fullName = message.fullName;
+    }
+    if (message.provider !== "") {
+      obj.provider = message.provider;
+    }
+    if (message.authTokenEnvVar !== undefined) {
+      obj.authTokenEnvVar = message.authTokenEnvVar;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<GitRepository>): GitRepository {
+    return GitRepository.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<GitRepository>): GitRepository {
+    const message = createBaseGitRepository();
+    message.fullName = object.fullName ?? "";
+    message.provider = object.provider ?? "";
+    message.authTokenEnvVar = object.authTokenEnvVar ?? undefined;
     return message;
   },
 };

@@ -6,7 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { EntryFilter, Exec, GitReference, UserInputParameter } from "../common";
+import { EntryFilter, Exec, GitReference, GitRepository, UserInputParameter } from "../common";
 
 export const protobufPackage = "osdd.recipes.context";
 
@@ -56,6 +56,9 @@ export interface ContextFrom {
      * current working directory.
      */
     { $case: "localFile"; value: string }
+    | //
+    /** Git repository that needs to be checked out in its entirety. */
+    { $case: "gitRepo"; value: GitRepository }
     | undefined;
 }
 
@@ -283,6 +286,9 @@ export const ContextFrom: MessageFns<ContextFrom> = {
       case "localFile":
         writer.uint32(850).string(message.type.value);
         break;
+      case "gitRepo":
+        GitRepository.encode(message.type.value, writer.uint32(858).fork()).join();
+        break;
     }
     return writer;
   },
@@ -350,6 +356,14 @@ export const ContextFrom: MessageFns<ContextFrom> = {
           message.type = { $case: "localFile", value: reader.string() };
           continue;
         }
+        case 107: {
+          if (tag !== 858) {
+            break;
+          }
+
+          message.type = { $case: "gitRepo", value: GitRepository.decode(reader, reader.uint32()) };
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -375,6 +389,8 @@ export const ContextFrom: MessageFns<ContextFrom> = {
         ? { $case: "userInput", value: UserInputContextSource.fromJSON(object.userInput) }
         : isSet(object.localFile)
         ? { $case: "localFile", value: gt.String(object.localFile) }
+        : isSet(object.gitRepo)
+        ? { $case: "gitRepo", value: GitRepository.fromJSON(object.gitRepo) }
         : undefined,
     };
   },
@@ -395,6 +411,8 @@ export const ContextFrom: MessageFns<ContextFrom> = {
       obj.userInput = UserInputContextSource.toJSON(message.type.value);
     } else if (message.type?.$case === "localFile") {
       obj.localFile = message.type.value;
+    } else if (message.type?.$case === "gitRepo") {
+      obj.gitRepo = GitRepository.toJSON(message.type.value);
     }
     return obj;
   },
@@ -444,6 +462,12 @@ export const ContextFrom: MessageFns<ContextFrom> = {
       case "localFile": {
         if (object.type?.value !== undefined && object.type?.value !== null) {
           message.type = { $case: "localFile", value: object.type.value };
+        }
+        break;
+      }
+      case "gitRepo": {
+        if (object.type?.value !== undefined && object.type?.value !== null) {
+          message.type = { $case: "gitRepo", value: GitRepository.fromPartial(object.type.value) };
         }
         break;
       }

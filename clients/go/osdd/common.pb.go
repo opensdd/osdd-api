@@ -105,6 +105,115 @@ func (b0 GitReference_builder) Build() *GitReference {
 	return m0
 }
 
+type GitRepository struct {
+	state                      protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_FullName        string                 `protobuf:"bytes,1,opt,name=full_name,json=fullName,proto3"`
+	xxx_hidden_Provider        string                 `protobuf:"bytes,2,opt,name=provider,proto3"`
+	xxx_hidden_AuthTokenEnvVar *string                `protobuf:"bytes,3,opt,name=auth_token_env_var,json=authTokenEnvVar,proto3,oneof"`
+	XXX_raceDetectHookData     protoimpl.RaceDetectHookData
+	XXX_presence               [1]uint32
+	unknownFields              protoimpl.UnknownFields
+	sizeCache                  protoimpl.SizeCache
+}
+
+func (x *GitRepository) Reset() {
+	*x = GitRepository{}
+	mi := &file_osdd_common_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GitRepository) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GitRepository) ProtoMessage() {}
+
+func (x *GitRepository) ProtoReflect() protoreflect.Message {
+	mi := &file_osdd_common_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (x *GitRepository) GetFullName() string {
+	if x != nil {
+		return x.xxx_hidden_FullName
+	}
+	return ""
+}
+
+func (x *GitRepository) GetProvider() string {
+	if x != nil {
+		return x.xxx_hidden_Provider
+	}
+	return ""
+}
+
+func (x *GitRepository) GetAuthTokenEnvVar() string {
+	if x != nil {
+		if x.xxx_hidden_AuthTokenEnvVar != nil {
+			return *x.xxx_hidden_AuthTokenEnvVar
+		}
+		return ""
+	}
+	return ""
+}
+
+func (x *GitRepository) SetFullName(v string) {
+	x.xxx_hidden_FullName = v
+}
+
+func (x *GitRepository) SetProvider(v string) {
+	x.xxx_hidden_Provider = v
+}
+
+func (x *GitRepository) SetAuthTokenEnvVar(v string) {
+	x.xxx_hidden_AuthTokenEnvVar = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
+}
+
+func (x *GitRepository) HasAuthTokenEnvVar() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
+func (x *GitRepository) ClearAuthTokenEnvVar() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_AuthTokenEnvVar = nil
+}
+
+type GitRepository_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	// Full name of the repository in the format "owner/name".
+	FullName string
+	// Supported github, bitbucket.
+	Provider string
+	// Name of the env var containing auth token for the repository. May be empty, then no token is used.
+	AuthTokenEnvVar *string
+}
+
+func (b0 GitRepository_builder) Build() *GitRepository {
+	m0 := &GitRepository{}
+	b, x := &b0, m0
+	_, _ = b, x
+	x.xxx_hidden_FullName = b.FullName
+	x.xxx_hidden_Provider = b.Provider
+	if b.AuthTokenEnvVar != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
+		x.xxx_hidden_AuthTokenEnvVar = b.AuthTokenEnvVar
+	}
+	return m0
+}
+
 // GitVersion specifies the exact revision to use for a Git reference.
 type GitVersion struct {
 	state           protoimpl.MessageState `protogen:"opaque.v1"`
@@ -115,7 +224,7 @@ type GitVersion struct {
 
 func (x *GitVersion) Reset() {
 	*x = GitVersion{}
-	mi := &file_osdd_common_proto_msgTypes[1]
+	mi := &file_osdd_common_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -127,7 +236,7 @@ func (x *GitVersion) String() string {
 func (*GitVersion) ProtoMessage() {}
 
 func (x *GitVersion) ProtoReflect() protoreflect.Message {
-	mi := &file_osdd_common_proto_msgTypes[1]
+	mi := &file_osdd_common_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -250,7 +359,7 @@ func (b0 GitVersion_builder) Build() *GitVersion {
 type case_GitVersion_Type protoreflect.FieldNumber
 
 func (x case_GitVersion_Type) String() string {
-	md := file_osdd_common_proto_msgTypes[1].Descriptor()
+	md := file_osdd_common_proto_msgTypes[2].Descriptor()
 	if x == 0 {
 		return "not set"
 	}
@@ -288,7 +397,7 @@ type UserInputParameter struct {
 
 func (x *UserInputParameter) Reset() {
 	*x = UserInputParameter{}
-	mi := &file_osdd_common_proto_msgTypes[2]
+	mi := &file_osdd_common_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -300,7 +409,7 @@ func (x *UserInputParameter) String() string {
 func (*UserInputParameter) ProtoMessage() {}
 
 func (x *UserInputParameter) ProtoReflect() protoreflect.Message {
-	mi := &file_osdd_common_proto_msgTypes[2]
+	mi := &file_osdd_common_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -434,7 +543,7 @@ func (b0 UserInputParameter_builder) Build() *UserInputParameter {
 type case_UserInputParameter_Type protoreflect.FieldNumber
 
 func (x case_UserInputParameter_Type) String() string {
-	md := file_osdd_common_proto_msgTypes[2].Descriptor()
+	md := file_osdd_common_proto_msgTypes[3].Descriptor()
 	if x == 0 {
 		return "not set"
 	}
@@ -462,7 +571,7 @@ type NameGenConfig struct {
 
 func (x *NameGenConfig) Reset() {
 	*x = NameGenConfig{}
-	mi := &file_osdd_common_proto_msgTypes[3]
+	mi := &file_osdd_common_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -474,7 +583,7 @@ func (x *NameGenConfig) String() string {
 func (*NameGenConfig) ProtoMessage() {}
 
 func (x *NameGenConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_osdd_common_proto_msgTypes[3]
+	mi := &file_osdd_common_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -522,7 +631,7 @@ type Exec struct {
 
 func (x *Exec) Reset() {
 	*x = Exec{}
-	mi := &file_osdd_common_proto_msgTypes[4]
+	mi := &file_osdd_common_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -534,7 +643,7 @@ func (x *Exec) String() string {
 func (*Exec) ProtoMessage() {}
 
 func (x *Exec) ProtoReflect() protoreflect.Message {
-	mi := &file_osdd_common_proto_msgTypes[4]
+	mi := &file_osdd_common_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -595,7 +704,7 @@ type EntryFilter struct {
 
 func (x *EntryFilter) Reset() {
 	*x = EntryFilter{}
-	mi := &file_osdd_common_proto_msgTypes[5]
+	mi := &file_osdd_common_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -607,7 +716,7 @@ func (x *EntryFilter) String() string {
 func (*EntryFilter) ProtoMessage() {}
 
 func (x *EntryFilter) ProtoReflect() protoreflect.Message {
-	mi := &file_osdd_common_proto_msgTypes[5]
+	mi := &file_osdd_common_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -653,7 +762,7 @@ type UserInputParameter_Text struct {
 
 func (x *UserInputParameter_Text) Reset() {
 	*x = UserInputParameter_Text{}
-	mi := &file_osdd_common_proto_msgTypes[6]
+	mi := &file_osdd_common_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -665,7 +774,7 @@ func (x *UserInputParameter_Text) String() string {
 func (*UserInputParameter_Text) ProtoMessage() {}
 
 func (x *UserInputParameter_Text) ProtoReflect() protoreflect.Message {
-	mi := &file_osdd_common_proto_msgTypes[6]
+	mi := &file_osdd_common_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -697,7 +806,12 @@ const file_osdd_common_proto_rawDesc = "" +
 	"\x04path\x18\x01 \x01(\tR\x04path\x126\n" +
 	"\aversion\x18\x02 \x01(\v2\x17.osdd.common.GitVersionH\x00R\aversion\x88\x01\x01B\n" +
 	"\n" +
-	"\b_version\"B\n" +
+	"\b_version\"\x91\x01\n" +
+	"\rGitRepository\x12\x1b\n" +
+	"\tfull_name\x18\x01 \x01(\tR\bfullName\x12\x1a\n" +
+	"\bprovider\x18\x02 \x01(\tR\bprovider\x120\n" +
+	"\x12auth_token_env_var\x18\x03 \x01(\tH\x00R\x0fauthTokenEnvVar\x88\x01\x01B\x15\n" +
+	"\x13_auth_token_env_var\"B\n" +
 	"\n" +
 	"GitVersion\x12\x12\n" +
 	"\x03tag\x18d \x01(\tH\x00R\x03tag\x12\x18\n" +
@@ -718,19 +832,20 @@ const file_osdd_common_proto_rawDesc = "" +
 	"\vEntryFilter\x12\x10\n" +
 	"\x03ide\x18\x01 \x03(\tR\x03ideB-Z+github.com/opensdd/osdd-api/clients/go/osddb\x06proto3"
 
-var file_osdd_common_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_osdd_common_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_osdd_common_proto_goTypes = []any{
 	(*GitReference)(nil),            // 0: osdd.common.GitReference
-	(*GitVersion)(nil),              // 1: osdd.common.GitVersion
-	(*UserInputParameter)(nil),      // 2: osdd.common.UserInputParameter
-	(*NameGenConfig)(nil),           // 3: osdd.common.NameGenConfig
-	(*Exec)(nil),                    // 4: osdd.common.Exec
-	(*EntryFilter)(nil),             // 5: osdd.common.EntryFilter
-	(*UserInputParameter_Text)(nil), // 6: osdd.common.UserInputParameter.Text
+	(*GitRepository)(nil),           // 1: osdd.common.GitRepository
+	(*GitVersion)(nil),              // 2: osdd.common.GitVersion
+	(*UserInputParameter)(nil),      // 3: osdd.common.UserInputParameter
+	(*NameGenConfig)(nil),           // 4: osdd.common.NameGenConfig
+	(*Exec)(nil),                    // 5: osdd.common.Exec
+	(*EntryFilter)(nil),             // 6: osdd.common.EntryFilter
+	(*UserInputParameter_Text)(nil), // 7: osdd.common.UserInputParameter.Text
 }
 var file_osdd_common_proto_depIdxs = []int32{
-	1, // 0: osdd.common.GitReference.version:type_name -> osdd.common.GitVersion
-	6, // 1: osdd.common.UserInputParameter.text:type_name -> osdd.common.UserInputParameter.Text
+	2, // 0: osdd.common.GitReference.version:type_name -> osdd.common.GitVersion
+	7, // 1: osdd.common.UserInputParameter.text:type_name -> osdd.common.UserInputParameter.Text
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name
@@ -744,11 +859,12 @@ func file_osdd_common_proto_init() {
 		return
 	}
 	file_osdd_common_proto_msgTypes[0].OneofWrappers = []any{}
-	file_osdd_common_proto_msgTypes[1].OneofWrappers = []any{
+	file_osdd_common_proto_msgTypes[1].OneofWrappers = []any{}
+	file_osdd_common_proto_msgTypes[2].OneofWrappers = []any{
 		(*gitVersion_Tag)(nil),
 		(*gitVersion_Commit)(nil),
 	}
-	file_osdd_common_proto_msgTypes[2].OneofWrappers = []any{
+	file_osdd_common_proto_msgTypes[3].OneofWrappers = []any{
 		(*userInputParameter_Text_)(nil),
 	}
 	type x struct{}
@@ -757,7 +873,7 @@ func file_osdd_common_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_osdd_common_proto_rawDesc), len(file_osdd_common_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   7,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

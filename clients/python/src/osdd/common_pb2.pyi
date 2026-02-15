@@ -14,6 +14,16 @@ class GitReference(_message.Message):
     version: GitVersion
     def __init__(self, path: _Optional[str] = ..., version: _Optional[_Union[GitVersion, _Mapping]] = ...) -> None: ...
 
+class GitRepository(_message.Message):
+    __slots__ = ("full_name", "provider", "auth_token_env_var")
+    FULL_NAME_FIELD_NUMBER: _ClassVar[int]
+    PROVIDER_FIELD_NUMBER: _ClassVar[int]
+    AUTH_TOKEN_ENV_VAR_FIELD_NUMBER: _ClassVar[int]
+    full_name: str
+    provider: str
+    auth_token_env_var: str
+    def __init__(self, full_name: _Optional[str] = ..., provider: _Optional[str] = ..., auth_token_env_var: _Optional[str] = ...) -> None: ...
+
 class GitVersion(_message.Message):
     __slots__ = ("tag", "commit")
     TAG_FIELD_NUMBER: _ClassVar[int]

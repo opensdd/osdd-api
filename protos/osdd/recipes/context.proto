@@ -41,6 +41,8 @@ message ContextFrom {
     // Local file should be mostly used for tests. If the provided path is relative, then it will be relative to the
     // current working directory.
     string local_file = 106;
+    // Git repository that needs to be checked out in its entirety.
+    common.GitRepository git_repo = 107;
   }
 }
 

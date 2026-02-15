@@ -289,6 +289,15 @@ func (x *ContextFrom) GetLocalFile() string {
 	return ""
 }
 
+func (x *ContextFrom) GetGitRepo() *osdd.GitRepository {
+	if x != nil {
+		if x, ok := x.xxx_hidden_Type.(*contextFrom_GitRepo); ok {
+			return x.GitRepo
+		}
+	}
+	return nil
+}
+
 func (x *ContextFrom) SetCombined(v *CombinedContextSource) {
 	if v == nil {
 		x.xxx_hidden_Type = nil
@@ -331,6 +340,14 @@ func (x *ContextFrom) SetUserInput(v *UserInputContextSource) {
 
 func (x *ContextFrom) SetLocalFile(v string) {
 	x.xxx_hidden_Type = &contextFrom_LocalFile{v}
+}
+
+func (x *ContextFrom) SetGitRepo(v *osdd.GitRepository) {
+	if v == nil {
+		x.xxx_hidden_Type = nil
+		return
+	}
+	x.xxx_hidden_Type = &contextFrom_GitRepo{v}
 }
 
 func (x *ContextFrom) HasType() bool {
@@ -396,6 +413,14 @@ func (x *ContextFrom) HasLocalFile() bool {
 	return ok
 }
 
+func (x *ContextFrom) HasGitRepo() bool {
+	if x == nil {
+		return false
+	}
+	_, ok := x.xxx_hidden_Type.(*contextFrom_GitRepo)
+	return ok
+}
+
 func (x *ContextFrom) ClearType() {
 	x.xxx_hidden_Type = nil
 }
@@ -442,6 +467,12 @@ func (x *ContextFrom) ClearLocalFile() {
 	}
 }
 
+func (x *ContextFrom) ClearGitRepo() {
+	if _, ok := x.xxx_hidden_Type.(*contextFrom_GitRepo); ok {
+		x.xxx_hidden_Type = nil
+	}
+}
+
 const ContextFrom_Type_not_set_case case_ContextFrom_Type = 0
 const ContextFrom_Combined_case case_ContextFrom_Type = 100
 const ContextFrom_Github_case case_ContextFrom_Type = 101
@@ -450,6 +481,7 @@ const ContextFrom_Text_case case_ContextFrom_Type = 103
 const ContextFrom_PrefetchId_case case_ContextFrom_Type = 104
 const ContextFrom_UserInput_case case_ContextFrom_Type = 105
 const ContextFrom_LocalFile_case case_ContextFrom_Type = 106
+const ContextFrom_GitRepo_case case_ContextFrom_Type = 107
 
 func (x *ContextFrom) WhichType() case_ContextFrom_Type {
 	if x == nil {
@@ -470,6 +502,8 @@ func (x *ContextFrom) WhichType() case_ContextFrom_Type {
 		return ContextFrom_UserInput_case
 	case *contextFrom_LocalFile:
 		return ContextFrom_LocalFile_case
+	case *contextFrom_GitRepo:
+		return ContextFrom_GitRepo_case
 	default:
 		return ContextFrom_Type_not_set_case
 	}
@@ -496,6 +530,8 @@ type ContextFrom_builder struct {
 	// Local file should be mostly used for tests. If the provided path is relative, then it will be relative to the
 	// current working directory.
 	LocalFile *string
+	// Git repository that needs to be checked out in its entirety.
+	GitRepo *osdd.GitRepository
 	// -- end of xxx_hidden_Type
 }
 
@@ -523,6 +559,9 @@ func (b0 ContextFrom_builder) Build() *ContextFrom {
 	}
 	if b.LocalFile != nil {
 		x.xxx_hidden_Type = &contextFrom_LocalFile{*b.LocalFile}
+	}
+	if b.GitRepo != nil {
+		x.xxx_hidden_Type = &contextFrom_GitRepo{b.GitRepo}
 	}
 	return m0
 }
@@ -577,6 +616,11 @@ type contextFrom_LocalFile struct {
 	LocalFile string `protobuf:"bytes,106,opt,name=local_file,json=localFile,proto3,oneof"`
 }
 
+type contextFrom_GitRepo struct {
+	// Git repository that needs to be checked out in its entirety.
+	GitRepo *osdd.GitRepository `protobuf:"bytes,107,opt,name=git_repo,json=gitRepo,proto3,oneof"`
+}
+
 func (*contextFrom_Combined) isContextFrom_Type() {}
 
 func (*contextFrom_Github) isContextFrom_Type() {}
@@ -590,6 +634,8 @@ func (*contextFrom_PrefetchId) isContextFrom_Type() {}
 func (*contextFrom_UserInput) isContextFrom_Type() {}
 
 func (*contextFrom_LocalFile) isContextFrom_Type() {}
+
+func (*contextFrom_GitRepo) isContextFrom_Type() {}
 
 // CombinedContextSource merges outputs from several individual sources.
 type CombinedContextSource struct {
@@ -1076,7 +1122,7 @@ const file_osdd_recipes_context_proto_rawDesc = "" +
 	"\x04path\x18\x01 \x01(\tR\x04path\x125\n" +
 	"\x04from\x18\x02 \x01(\v2!.osdd.recipes.context.ContextFromR\x04from\x125\n" +
 	"\x06filter\x18\x03 \x01(\v2\x18.osdd.common.EntryFilterH\x00R\x06filter\x88\x01\x01B\t\n" +
-	"\a_filter\"\xe5\x02\n" +
+	"\a_filter\"\x9e\x03\n" +
 	"\vContextFrom\x12I\n" +
 	"\bcombined\x18d \x01(\v2+.osdd.recipes.context.CombinedContextSourceH\x00R\bcombined\x123\n" +
 	"\x06github\x18e \x01(\v2\x19.osdd.common.GitReferenceH\x00R\x06github\x12%\n" +
@@ -1087,7 +1133,8 @@ const file_osdd_recipes_context_proto_rawDesc = "" +
 	"\n" +
 	"user_input\x18i \x01(\v2,.osdd.recipes.context.UserInputContextSourceH\x00R\tuserInput\x12\x1f\n" +
 	"\n" +
-	"local_file\x18j \x01(\tH\x00R\tlocalFileB\x06\n" +
+	"local_file\x18j \x01(\tH\x00R\tlocalFile\x127\n" +
+	"\bgit_repo\x18k \x01(\v2\x1a.osdd.common.GitRepositoryH\x00R\agitRepoB\x06\n" +
 	"\x04type\"\xf5\x02\n" +
 	"\x15CombinedContextSource\x12F\n" +
 	"\x05items\x18\x01 \x03(\v20.osdd.recipes.context.CombinedContextSource.ItemR\x05items\x1a\x93\x02\n" +
@@ -1116,7 +1163,8 @@ var file_osdd_recipes_context_proto_goTypes = []any{
 	(*osdd.EntryFilter)(nil),           // 6: osdd.common.EntryFilter
 	(*osdd.GitReference)(nil),          // 7: osdd.common.GitReference
 	(*osdd.Exec)(nil),                  // 8: osdd.common.Exec
-	(*osdd.UserInputParameter)(nil),    // 9: osdd.common.UserInputParameter
+	(*osdd.GitRepository)(nil),         // 9: osdd.common.GitRepository
+	(*osdd.UserInputParameter)(nil),    // 10: osdd.common.UserInputParameter
 }
 var file_osdd_recipes_context_proto_depIdxs = []int32{
 	1,  // 0: osdd.recipes.context.Context.entries:type_name -> osdd.recipes.context.ContextEntry
@@ -1126,16 +1174,17 @@ var file_osdd_recipes_context_proto_depIdxs = []int32{
 	7,  // 4: osdd.recipes.context.ContextFrom.github:type_name -> osdd.common.GitReference
 	8,  // 5: osdd.recipes.context.ContextFrom.cmd:type_name -> osdd.common.Exec
 	4,  // 6: osdd.recipes.context.ContextFrom.user_input:type_name -> osdd.recipes.context.UserInputContextSource
-	5,  // 7: osdd.recipes.context.CombinedContextSource.items:type_name -> osdd.recipes.context.CombinedContextSource.Item
-	9,  // 8: osdd.recipes.context.UserInputContextSource.entries:type_name -> osdd.common.UserInputParameter
-	7,  // 9: osdd.recipes.context.CombinedContextSource.Item.github:type_name -> osdd.common.GitReference
-	8,  // 10: osdd.recipes.context.CombinedContextSource.Item.cmd:type_name -> osdd.common.Exec
-	4,  // 11: osdd.recipes.context.CombinedContextSource.Item.user_input:type_name -> osdd.recipes.context.UserInputContextSource
-	12, // [12:12] is the sub-list for method output_type
-	12, // [12:12] is the sub-list for method input_type
-	12, // [12:12] is the sub-list for extension type_name
-	12, // [12:12] is the sub-list for extension extendee
-	0,  // [0:12] is the sub-list for field type_name
+	9,  // 7: osdd.recipes.context.ContextFrom.git_repo:type_name -> osdd.common.GitRepository
+	5,  // 8: osdd.recipes.context.CombinedContextSource.items:type_name -> osdd.recipes.context.CombinedContextSource.Item
+	10, // 9: osdd.recipes.context.UserInputContextSource.entries:type_name -> osdd.common.UserInputParameter
+	7,  // 10: osdd.recipes.context.CombinedContextSource.Item.github:type_name -> osdd.common.GitReference
+	8,  // 11: osdd.recipes.context.CombinedContextSource.Item.cmd:type_name -> osdd.common.Exec
+	4,  // 12: osdd.recipes.context.CombinedContextSource.Item.user_input:type_name -> osdd.recipes.context.UserInputContextSource
+	13, // [13:13] is the sub-list for method output_type
+	13, // [13:13] is the sub-list for method input_type
+	13, // [13:13] is the sub-list for extension type_name
+	13, // [13:13] is the sub-list for extension extendee
+	0,  // [0:13] is the sub-list for field type_name
 }
 
 func init() { file_osdd_recipes_context_proto_init() }
@@ -1152,6 +1201,7 @@ func file_osdd_recipes_context_proto_init() {
 		(*contextFrom_PrefetchId)(nil),
 		(*contextFrom_UserInput)(nil),
 		(*contextFrom_LocalFile)(nil),
+		(*contextFrom_GitRepo)(nil),
 	}
 	file_osdd_recipes_context_proto_msgTypes[5].OneofWrappers = []any{
 		(*combinedContextSource_Item_Github)(nil),

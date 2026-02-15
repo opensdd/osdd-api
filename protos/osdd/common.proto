@@ -12,6 +12,15 @@ message GitReference {
   optional GitVersion version = 2;
 }
 
+message GitRepository {
+  // Full name of the repository in the format "owner/name".
+  string full_name = 1;
+  // Supported github, bitbucket.
+  string provider = 2;
+  // Name of the env var containing auth token for the repository. May be empty, then no token is used.
+  optional string auth_token_env_var = 3;
+}
+
 // GitVersion specifies the exact revision to use for a Git reference.
 message GitVersion {
   // Type of revision identifier supplied by the recipe.

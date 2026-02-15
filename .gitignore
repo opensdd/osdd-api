@@ -328,3 +328,4 @@ cython_debug/
 /.idea/vcs.xml
 /clients/go/bin/protoc-gen-go
 /clients/go/bin/
+/.idea/go.imports.xml
