@@ -1,3 +1,6 @@
+import datetime
+
+from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
@@ -66,3 +69,10 @@ class EntryFilter(_message.Message):
     IDE_FIELD_NUMBER: _ClassVar[int]
     ide: _containers.RepeatedScalarFieldContainer[str]
     def __init__(self, ide: _Optional[_Iterable[str]] = ...) -> None: ...
+
+class DatesFilter(_message.Message):
+    __slots__ = ("to",)
+    FROM_FIELD_NUMBER: _ClassVar[int]
+    TO_FIELD_NUMBER: _ClassVar[int]
+    to: _timestamp_pb2.Timestamp
+    def __init__(self, to: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., **kwargs) -> None: ...

@@ -43,6 +43,8 @@ message ContextFrom {
     string local_file = 106;
     // Git repository that needs to be checked out in its entirety.
     common.GitRepository git_repo = 107;
+    JiraIssuesSource jira_issues = 108;
+    LinearIssuesSource linear_issues = 109;
   }
 }
 
@@ -76,4 +78,25 @@ message CombinedContextSource {
 message UserInputContextSource {
   // Parameters that define the prompts shown to the user.
   repeated common.UserInputParameter entries = 1;
+}
+
+message JiraIssuesSource {
+  string organization = 1;
+  repeated string projects = 2;
+  optional IssuesFilter filter = 3;
+  // Name of the env var containing auth token for the organization. May be empty, then no token is used.
+  optional string auth_token_env_var = 4;
+}
+
+message LinearIssuesSource {
+  string workspace = 1;
+  repeated string teams = 2;
+  optional IssuesFilter filter = 3;
+  // Name of the env var containing auth token for the organization. May be empty, then no token is used.
+  optional string auth_token_env_var = 4;
+}
+
+message IssuesFilter {
+  optional common.DatesFilter created_at_filter = 1;
+  optional common.DatesFilter updated_at_filter = 2;
 }

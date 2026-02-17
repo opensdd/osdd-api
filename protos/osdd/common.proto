@@ -4,6 +4,8 @@ package osdd.common;
 
 option go_package = "github.com/opensdd/osdd-api/clients/go/osdd";
 
+import "google/protobuf/timestamp.proto";
+
 // GitReference identifies a file or directory stored in a Git repository.
 message GitReference {
   // Relative path within the repository that should be fetched.
@@ -68,4 +70,9 @@ message Exec {
 message EntryFilter {
   // IDE identifiers (e.g., "claude", "codex") for which the entry is applicable.
   repeated string ide = 1;
+}
+
+message DatesFilter {
+  optional google.protobuf.Timestamp from = 1;
+  optional google.protobuf.Timestamp to = 2;
 }

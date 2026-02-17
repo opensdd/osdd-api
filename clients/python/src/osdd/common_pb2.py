@@ -22,9 +22,10 @@ _runtime_version.ValidateProtobufRuntimeVersion(
 _sym_db = _symbol_database.Default()
 
 
+from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11osdd/common.proto\x12\x0bosdd.common\"W\n\x0cGitReference\x12\x0c\n\x04path\x18\x01 \x01(\t\x12-\n\x07version\x18\x02 \x01(\x0b\x32\x17.osdd.common.GitVersionH\x00\x88\x01\x01\x42\n\n\x08_version\"l\n\rGitRepository\x12\x11\n\tfull_name\x18\x01 \x01(\t\x12\x10\n\x08provider\x18\x02 \x01(\t\x12\x1f\n\x12\x61uth_token_env_var\x18\x03 \x01(\tH\x00\x88\x01\x01\x42\x15\n\x13_auth_token_env_var\"5\n\nGitVersion\x12\r\n\x03tag\x18\x64 \x01(\tH\x00\x12\x10\n\x06\x63ommit\x18\x65 \x01(\tH\x00\x42\x06\n\x04type\"\x8f\x01\n\x12UserInputParameter\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x10\n\x08optional\x18\x03 \x01(\x08\x12\x34\n\x04text\x18\x64 \x01(\x0b\x32$.osdd.common.UserInputParameter.TextH\x00\x1a\x06\n\x04TextB\x06\n\x04type\"\x1c\n\rNameGenConfig\x12\x0b\n\x03len\x18\x01 \x01(\x05\"!\n\x04\x45xec\x12\x0b\n\x03\x63md\x18\x01 \x01(\t\x12\x0c\n\x04\x61rgs\x18\x02 \x03(\t\"\x1a\n\x0b\x45ntryFilter\x12\x0b\n\x03ide\x18\x01 \x03(\tB-Z+github.com/opensdd/osdd-api/clients/go/osddb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11osdd/common.proto\x12\x0bosdd.common\x1a\x1fgoogle/protobuf/timestamp.proto\"W\n\x0cGitReference\x12\x0c\n\x04path\x18\x01 \x01(\t\x12-\n\x07version\x18\x02 \x01(\x0b\x32\x17.osdd.common.GitVersionH\x00\x88\x01\x01\x42\n\n\x08_version\"l\n\rGitRepository\x12\x11\n\tfull_name\x18\x01 \x01(\t\x12\x10\n\x08provider\x18\x02 \x01(\t\x12\x1f\n\x12\x61uth_token_env_var\x18\x03 \x01(\tH\x00\x88\x01\x01\x42\x15\n\x13_auth_token_env_var\"5\n\nGitVersion\x12\r\n\x03tag\x18\x64 \x01(\tH\x00\x12\x10\n\x06\x63ommit\x18\x65 \x01(\tH\x00\x42\x06\n\x04type\"\x8f\x01\n\x12UserInputParameter\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x10\n\x08optional\x18\x03 \x01(\x08\x12\x34\n\x04text\x18\x64 \x01(\x0b\x32$.osdd.common.UserInputParameter.TextH\x00\x1a\x06\n\x04TextB\x06\n\x04type\"\x1c\n\rNameGenConfig\x12\x0b\n\x03len\x18\x01 \x01(\x05\"!\n\x04\x45xec\x12\x0b\n\x03\x63md\x18\x01 \x01(\t\x12\x0c\n\x04\x61rgs\x18\x02 \x03(\t\"\x1a\n\x0b\x45ntryFilter\x12\x0b\n\x03ide\x18\x01 \x03(\t\"y\n\x0b\x44\x61tesFilter\x12-\n\x04\x66rom\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x00\x88\x01\x01\x12+\n\x02to\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x01\x88\x01\x01\x42\x07\n\x05_fromB\x05\n\x03_toB-Z+github.com/opensdd/osdd-api/clients/go/osddb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -32,20 +33,22 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'osdd.common_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'Z+github.com/opensdd/osdd-api/clients/go/osdd'
-  _globals['_GITREFERENCE']._serialized_start=34
-  _globals['_GITREFERENCE']._serialized_end=121
-  _globals['_GITREPOSITORY']._serialized_start=123
-  _globals['_GITREPOSITORY']._serialized_end=231
-  _globals['_GITVERSION']._serialized_start=233
-  _globals['_GITVERSION']._serialized_end=286
-  _globals['_USERINPUTPARAMETER']._serialized_start=289
-  _globals['_USERINPUTPARAMETER']._serialized_end=432
-  _globals['_USERINPUTPARAMETER_TEXT']._serialized_start=418
-  _globals['_USERINPUTPARAMETER_TEXT']._serialized_end=424
-  _globals['_NAMEGENCONFIG']._serialized_start=434
-  _globals['_NAMEGENCONFIG']._serialized_end=462
-  _globals['_EXEC']._serialized_start=464
-  _globals['_EXEC']._serialized_end=497
-  _globals['_ENTRYFILTER']._serialized_start=499
-  _globals['_ENTRYFILTER']._serialized_end=525
+  _globals['_GITREFERENCE']._serialized_start=67
+  _globals['_GITREFERENCE']._serialized_end=154
+  _globals['_GITREPOSITORY']._serialized_start=156
+  _globals['_GITREPOSITORY']._serialized_end=264
+  _globals['_GITVERSION']._serialized_start=266
+  _globals['_GITVERSION']._serialized_end=319
+  _globals['_USERINPUTPARAMETER']._serialized_start=322
+  _globals['_USERINPUTPARAMETER']._serialized_end=465
+  _globals['_USERINPUTPARAMETER_TEXT']._serialized_start=451
+  _globals['_USERINPUTPARAMETER_TEXT']._serialized_end=457
+  _globals['_NAMEGENCONFIG']._serialized_start=467
+  _globals['_NAMEGENCONFIG']._serialized_end=495
+  _globals['_EXEC']._serialized_start=497
+  _globals['_EXEC']._serialized_end=530
+  _globals['_ENTRYFILTER']._serialized_start=532
+  _globals['_ENTRYFILTER']._serialized_end=558
+  _globals['_DATESFILTER']._serialized_start=560
+  _globals['_DATESFILTER']._serialized_end=681
 # @@protoc_insertion_point(module_scope)

@@ -6,7 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { EntryFilter, Exec, GitReference, GitRepository, UserInputParameter } from "../common";
+import { DatesFilter, EntryFilter, Exec, GitReference, GitRepository, UserInputParameter } from "../common";
 
 export const protobufPackage = "osdd.recipes.context";
 
@@ -59,6 +59,8 @@ export interface ContextFrom {
     | //
     /** Git repository that needs to be checked out in its entirety. */
     { $case: "gitRepo"; value: GitRepository }
+    | { $case: "jiraIssues"; value: JiraIssuesSource }
+    | { $case: "linearIssues"; value: LinearIssuesSource }
     | undefined;
 }
 
@@ -100,6 +102,31 @@ export interface CombinedContextSource_Item {
 export interface UserInputContextSource {
   /** Parameters that define the prompts shown to the user. */
   entries: UserInputParameter[];
+}
+
+export interface JiraIssuesSource {
+  organization: string;
+  projects: string[];
+  filter?:
+    | IssuesFilter
+    | undefined;
+  /** Name of the env var containing auth token for the organization. May be empty, then no token is used. */
+  authTokenEnvVar?: string | undefined;
+}
+
+export interface LinearIssuesSource {
+  workspace: string;
+  teams: string[];
+  filter?:
+    | IssuesFilter
+    | undefined;
+  /** Name of the env var containing auth token for the organization. May be empty, then no token is used. */
+  authTokenEnvVar?: string | undefined;
+}
+
+export interface IssuesFilter {
+  createdAtFilter?: DatesFilter | undefined;
+  updatedAtFilter?: DatesFilter | undefined;
 }
 
 function createBaseContext(): Context {
@@ -289,6 +316,12 @@ export const ContextFrom: MessageFns<ContextFrom> = {
       case "gitRepo":
         GitRepository.encode(message.type.value, writer.uint32(858).fork()).join();
         break;
+      case "jiraIssues":
+        JiraIssuesSource.encode(message.type.value, writer.uint32(866).fork()).join();
+        break;
+      case "linearIssues":
+        LinearIssuesSource.encode(message.type.value, writer.uint32(874).fork()).join();
+        break;
     }
     return writer;
   },
@@ -364,6 +397,22 @@ export const ContextFrom: MessageFns<ContextFrom> = {
           message.type = { $case: "gitRepo", value: GitRepository.decode(reader, reader.uint32()) };
           continue;
         }
+        case 108: {
+          if (tag !== 866) {
+            break;
+          }
+
+          message.type = { $case: "jiraIssues", value: JiraIssuesSource.decode(reader, reader.uint32()) };
+          continue;
+        }
+        case 109: {
+          if (tag !== 874) {
+            break;
+          }
+
+          message.type = { $case: "linearIssues", value: LinearIssuesSource.decode(reader, reader.uint32()) };
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -391,6 +440,10 @@ export const ContextFrom: MessageFns<ContextFrom> = {
         ? { $case: "localFile", value: gt.String(object.localFile) }
         : isSet(object.gitRepo)
         ? { $case: "gitRepo", value: GitRepository.fromJSON(object.gitRepo) }
+        : isSet(object.jiraIssues)
+        ? { $case: "jiraIssues", value: JiraIssuesSource.fromJSON(object.jiraIssues) }
+        : isSet(object.linearIssues)
+        ? { $case: "linearIssues", value: LinearIssuesSource.fromJSON(object.linearIssues) }
         : undefined,
     };
   },
@@ -413,6 +466,10 @@ export const ContextFrom: MessageFns<ContextFrom> = {
       obj.localFile = message.type.value;
     } else if (message.type?.$case === "gitRepo") {
       obj.gitRepo = GitRepository.toJSON(message.type.value);
+    } else if (message.type?.$case === "jiraIssues") {
+      obj.jiraIssues = JiraIssuesSource.toJSON(message.type.value);
+    } else if (message.type?.$case === "linearIssues") {
+      obj.linearIssues = LinearIssuesSource.toJSON(message.type.value);
     }
     return obj;
   },
@@ -468,6 +525,18 @@ export const ContextFrom: MessageFns<ContextFrom> = {
       case "gitRepo": {
         if (object.type?.value !== undefined && object.type?.value !== null) {
           message.type = { $case: "gitRepo", value: GitRepository.fromPartial(object.type.value) };
+        }
+        break;
+      }
+      case "jiraIssues": {
+        if (object.type?.value !== undefined && object.type?.value !== null) {
+          message.type = { $case: "jiraIssues", value: JiraIssuesSource.fromPartial(object.type.value) };
+        }
+        break;
+      }
+      case "linearIssues": {
+        if (object.type?.value !== undefined && object.type?.value !== null) {
+          message.type = { $case: "linearIssues", value: LinearIssuesSource.fromPartial(object.type.value) };
         }
         break;
       }
@@ -770,6 +839,306 @@ export const UserInputContextSource: MessageFns<UserInputContextSource> = {
   fromPartial(object: DeepPartial<UserInputContextSource>): UserInputContextSource {
     const message = createBaseUserInputContextSource();
     message.entries = object.entries?.map((e) => UserInputParameter.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseJiraIssuesSource(): JiraIssuesSource {
+  return { organization: "", projects: [], filter: undefined, authTokenEnvVar: undefined };
+}
+
+export const JiraIssuesSource: MessageFns<JiraIssuesSource> = {
+  encode(message: JiraIssuesSource, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.organization !== "") {
+      writer.uint32(10).string(message.organization);
+    }
+    for (const v of message.projects) {
+      writer.uint32(18).string(v!);
+    }
+    if (message.filter !== undefined) {
+      IssuesFilter.encode(message.filter, writer.uint32(26).fork()).join();
+    }
+    if (message.authTokenEnvVar !== undefined) {
+      writer.uint32(34).string(message.authTokenEnvVar);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): JiraIssuesSource {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseJiraIssuesSource();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.organization = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.projects.push(reader.string());
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.filter = IssuesFilter.decode(reader, reader.uint32());
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.authTokenEnvVar = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): JiraIssuesSource {
+    return {
+      organization: isSet(object.organization) ? gt.String(object.organization) : "",
+      projects: gt.Array.isArray(object?.projects) ? object.projects.map((e: any) => gt.String(e)) : [],
+      filter: isSet(object.filter) ? IssuesFilter.fromJSON(object.filter) : undefined,
+      authTokenEnvVar: isSet(object.authTokenEnvVar) ? gt.String(object.authTokenEnvVar) : undefined,
+    };
+  },
+
+  toJSON(message: JiraIssuesSource): unknown {
+    const obj: any = {};
+    if (message.organization !== "") {
+      obj.organization = message.organization;
+    }
+    if (message.projects?.length) {
+      obj.projects = message.projects;
+    }
+    if (message.filter !== undefined) {
+      obj.filter = IssuesFilter.toJSON(message.filter);
+    }
+    if (message.authTokenEnvVar !== undefined) {
+      obj.authTokenEnvVar = message.authTokenEnvVar;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<JiraIssuesSource>): JiraIssuesSource {
+    return JiraIssuesSource.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<JiraIssuesSource>): JiraIssuesSource {
+    const message = createBaseJiraIssuesSource();
+    message.organization = object.organization ?? "";
+    message.projects = object.projects?.map((e) => e) || [];
+    message.filter = (object.filter !== undefined && object.filter !== null)
+      ? IssuesFilter.fromPartial(object.filter)
+      : undefined;
+    message.authTokenEnvVar = object.authTokenEnvVar ?? undefined;
+    return message;
+  },
+};
+
+function createBaseLinearIssuesSource(): LinearIssuesSource {
+  return { workspace: "", teams: [], filter: undefined, authTokenEnvVar: undefined };
+}
+
+export const LinearIssuesSource: MessageFns<LinearIssuesSource> = {
+  encode(message: LinearIssuesSource, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.workspace !== "") {
+      writer.uint32(10).string(message.workspace);
+    }
+    for (const v of message.teams) {
+      writer.uint32(18).string(v!);
+    }
+    if (message.filter !== undefined) {
+      IssuesFilter.encode(message.filter, writer.uint32(26).fork()).join();
+    }
+    if (message.authTokenEnvVar !== undefined) {
+      writer.uint32(34).string(message.authTokenEnvVar);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): LinearIssuesSource {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLinearIssuesSource();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.workspace = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.teams.push(reader.string());
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.filter = IssuesFilter.decode(reader, reader.uint32());
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.authTokenEnvVar = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): LinearIssuesSource {
+    return {
+      workspace: isSet(object.workspace) ? gt.String(object.workspace) : "",
+      teams: gt.Array.isArray(object?.teams) ? object.teams.map((e: any) => gt.String(e)) : [],
+      filter: isSet(object.filter) ? IssuesFilter.fromJSON(object.filter) : undefined,
+      authTokenEnvVar: isSet(object.authTokenEnvVar) ? gt.String(object.authTokenEnvVar) : undefined,
+    };
+  },
+
+  toJSON(message: LinearIssuesSource): unknown {
+    const obj: any = {};
+    if (message.workspace !== "") {
+      obj.workspace = message.workspace;
+    }
+    if (message.teams?.length) {
+      obj.teams = message.teams;
+    }
+    if (message.filter !== undefined) {
+      obj.filter = IssuesFilter.toJSON(message.filter);
+    }
+    if (message.authTokenEnvVar !== undefined) {
+      obj.authTokenEnvVar = message.authTokenEnvVar;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<LinearIssuesSource>): LinearIssuesSource {
+    return LinearIssuesSource.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<LinearIssuesSource>): LinearIssuesSource {
+    const message = createBaseLinearIssuesSource();
+    message.workspace = object.workspace ?? "";
+    message.teams = object.teams?.map((e) => e) || [];
+    message.filter = (object.filter !== undefined && object.filter !== null)
+      ? IssuesFilter.fromPartial(object.filter)
+      : undefined;
+    message.authTokenEnvVar = object.authTokenEnvVar ?? undefined;
+    return message;
+  },
+};
+
+function createBaseIssuesFilter(): IssuesFilter {
+  return { createdAtFilter: undefined, updatedAtFilter: undefined };
+}
+
+export const IssuesFilter: MessageFns<IssuesFilter> = {
+  encode(message: IssuesFilter, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.createdAtFilter !== undefined) {
+      DatesFilter.encode(message.createdAtFilter, writer.uint32(10).fork()).join();
+    }
+    if (message.updatedAtFilter !== undefined) {
+      DatesFilter.encode(message.updatedAtFilter, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): IssuesFilter {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseIssuesFilter();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.createdAtFilter = DatesFilter.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.updatedAtFilter = DatesFilter.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): IssuesFilter {
+    return {
+      createdAtFilter: isSet(object.createdAtFilter) ? DatesFilter.fromJSON(object.createdAtFilter) : undefined,
+      updatedAtFilter: isSet(object.updatedAtFilter) ? DatesFilter.fromJSON(object.updatedAtFilter) : undefined,
+    };
+  },
+
+  toJSON(message: IssuesFilter): unknown {
+    const obj: any = {};
+    if (message.createdAtFilter !== undefined) {
+      obj.createdAtFilter = DatesFilter.toJSON(message.createdAtFilter);
+    }
+    if (message.updatedAtFilter !== undefined) {
+      obj.updatedAtFilter = DatesFilter.toJSON(message.updatedAtFilter);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<IssuesFilter>): IssuesFilter {
+    return IssuesFilter.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<IssuesFilter>): IssuesFilter {
+    const message = createBaseIssuesFilter();
+    message.createdAtFilter = (object.createdAtFilter !== undefined && object.createdAtFilter !== null)
+      ? DatesFilter.fromPartial(object.createdAtFilter)
+      : undefined;
+    message.updatedAtFilter = (object.updatedAtFilter !== undefined && object.updatedAtFilter !== null)
+      ? DatesFilter.fromPartial(object.updatedAtFilter)
+      : undefined;
     return message;
   },
 };

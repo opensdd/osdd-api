@@ -23,7 +23,7 @@ class ContextEntry(_message.Message):
     def __init__(self, path: _Optional[str] = ..., filter: _Optional[_Union[_common_pb2.EntryFilter, _Mapping]] = ..., **kwargs) -> None: ...
 
 class ContextFrom(_message.Message):
-    __slots__ = ("combined", "github", "cmd", "text", "prefetch_id", "user_input", "local_file", "git_repo")
+    __slots__ = ("combined", "github", "cmd", "text", "prefetch_id", "user_input", "local_file", "git_repo", "jira_issues", "linear_issues")
     COMBINED_FIELD_NUMBER: _ClassVar[int]
     GITHUB_FIELD_NUMBER: _ClassVar[int]
     CMD_FIELD_NUMBER: _ClassVar[int]
@@ -32,6 +32,8 @@ class ContextFrom(_message.Message):
     USER_INPUT_FIELD_NUMBER: _ClassVar[int]
     LOCAL_FILE_FIELD_NUMBER: _ClassVar[int]
     GIT_REPO_FIELD_NUMBER: _ClassVar[int]
+    JIRA_ISSUES_FIELD_NUMBER: _ClassVar[int]
+    LINEAR_ISSUES_FIELD_NUMBER: _ClassVar[int]
     combined: CombinedContextSource
     github: _common_pb2.GitReference
     cmd: _common_pb2.Exec
@@ -40,7 +42,9 @@ class ContextFrom(_message.Message):
     user_input: UserInputContextSource
     local_file: str
     git_repo: _common_pb2.GitRepository
-    def __init__(self, combined: _Optional[_Union[CombinedContextSource, _Mapping]] = ..., github: _Optional[_Union[_common_pb2.GitReference, _Mapping]] = ..., cmd: _Optional[_Union[_common_pb2.Exec, _Mapping]] = ..., text: _Optional[str] = ..., prefetch_id: _Optional[str] = ..., user_input: _Optional[_Union[UserInputContextSource, _Mapping]] = ..., local_file: _Optional[str] = ..., git_repo: _Optional[_Union[_common_pb2.GitRepository, _Mapping]] = ...) -> None: ...
+    jira_issues: JiraIssuesSource
+    linear_issues: LinearIssuesSource
+    def __init__(self, combined: _Optional[_Union[CombinedContextSource, _Mapping]] = ..., github: _Optional[_Union[_common_pb2.GitReference, _Mapping]] = ..., cmd: _Optional[_Union[_common_pb2.Exec, _Mapping]] = ..., text: _Optional[str] = ..., prefetch_id: _Optional[str] = ..., user_input: _Optional[_Union[UserInputContextSource, _Mapping]] = ..., local_file: _Optional[str] = ..., git_repo: _Optional[_Union[_common_pb2.GitRepository, _Mapping]] = ..., jira_issues: _Optional[_Union[JiraIssuesSource, _Mapping]] = ..., linear_issues: _Optional[_Union[LinearIssuesSource, _Mapping]] = ...) -> None: ...
 
 class CombinedContextSource(_message.Message):
     __slots__ = ("items",)
@@ -68,3 +72,35 @@ class UserInputContextSource(_message.Message):
     ENTRIES_FIELD_NUMBER: _ClassVar[int]
     entries: _containers.RepeatedCompositeFieldContainer[_common_pb2.UserInputParameter]
     def __init__(self, entries: _Optional[_Iterable[_Union[_common_pb2.UserInputParameter, _Mapping]]] = ...) -> None: ...
+
+class JiraIssuesSource(_message.Message):
+    __slots__ = ("organization", "projects", "filter", "auth_token_env_var")
+    ORGANIZATION_FIELD_NUMBER: _ClassVar[int]
+    PROJECTS_FIELD_NUMBER: _ClassVar[int]
+    FILTER_FIELD_NUMBER: _ClassVar[int]
+    AUTH_TOKEN_ENV_VAR_FIELD_NUMBER: _ClassVar[int]
+    organization: str
+    projects: _containers.RepeatedScalarFieldContainer[str]
+    filter: IssuesFilter
+    auth_token_env_var: str
+    def __init__(self, organization: _Optional[str] = ..., projects: _Optional[_Iterable[str]] = ..., filter: _Optional[_Union[IssuesFilter, _Mapping]] = ..., auth_token_env_var: _Optional[str] = ...) -> None: ...
+
+class LinearIssuesSource(_message.Message):
+    __slots__ = ("workspace", "teams", "filter", "auth_token_env_var")
+    WORKSPACE_FIELD_NUMBER: _ClassVar[int]
+    TEAMS_FIELD_NUMBER: _ClassVar[int]
+    FILTER_FIELD_NUMBER: _ClassVar[int]
+    AUTH_TOKEN_ENV_VAR_FIELD_NUMBER: _ClassVar[int]
+    workspace: str
+    teams: _containers.RepeatedScalarFieldContainer[str]
+    filter: IssuesFilter
+    auth_token_env_var: str
+    def __init__(self, workspace: _Optional[str] = ..., teams: _Optional[_Iterable[str]] = ..., filter: _Optional[_Union[IssuesFilter, _Mapping]] = ..., auth_token_env_var: _Optional[str] = ...) -> None: ...
+
+class IssuesFilter(_message.Message):
+    __slots__ = ("created_at_filter", "updated_at_filter")
+    CREATED_AT_FILTER_FIELD_NUMBER: _ClassVar[int]
+    UPDATED_AT_FILTER_FIELD_NUMBER: _ClassVar[int]
+    created_at_filter: _common_pb2.DatesFilter
+    updated_at_filter: _common_pb2.DatesFilter
+    def __init__(self, created_at_filter: _Optional[_Union[_common_pb2.DatesFilter, _Mapping]] = ..., updated_at_filter: _Optional[_Union[_common_pb2.DatesFilter, _Mapping]] = ...) -> None: ...

@@ -6,6 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { Timestamp } from "../google/protobuf/timestamp";
 
 export const protobufPackage = "osdd.common";
 
@@ -77,6 +78,11 @@ export interface Exec {
 export interface EntryFilter {
   /** IDE identifiers (e.g., "claude", "codex") for which the entry is applicable. */
   ide: string[];
+}
+
+export interface DatesFilter {
+  from?: Date | undefined;
+  to?: Date | undefined;
 }
 
 function createBaseGitReference(): GitReference {
@@ -693,6 +699,82 @@ export const EntryFilter: MessageFns<EntryFilter> = {
   },
 };
 
+function createBaseDatesFilter(): DatesFilter {
+  return { from: undefined, to: undefined };
+}
+
+export const DatesFilter: MessageFns<DatesFilter> = {
+  encode(message: DatesFilter, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.from !== undefined) {
+      Timestamp.encode(toTimestamp(message.from), writer.uint32(10).fork()).join();
+    }
+    if (message.to !== undefined) {
+      Timestamp.encode(toTimestamp(message.to), writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DatesFilter {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDatesFilter();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.from = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.to = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DatesFilter {
+    return {
+      from: isSet(object.from) ? fromJsonTimestamp(object.from) : undefined,
+      to: isSet(object.to) ? fromJsonTimestamp(object.to) : undefined,
+    };
+  },
+
+  toJSON(message: DatesFilter): unknown {
+    const obj: any = {};
+    if (message.from !== undefined) {
+      obj.from = message.from.toISOString();
+    }
+    if (message.to !== undefined) {
+      obj.to = message.to.toISOString();
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<DatesFilter>): DatesFilter {
+    return DatesFilter.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<DatesFilter>): DatesFilter {
+    const message = createBaseDatesFilter();
+    message.from = object.from ?? undefined;
+    message.to = object.to ?? undefined;
+    return message;
+  },
+};
+
 declare const self: any | undefined;
 declare const window: any | undefined;
 declare const global: any | undefined;
@@ -720,6 +802,28 @@ export type DeepPartial<T> = T extends Builtin ? T
   : T extends { $case: string; value: unknown } ? { $case: T["$case"]; value?: DeepPartial<T["value"]> }
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
+
+function toTimestamp(date: Date): Timestamp {
+  const seconds = Math.trunc(date.getTime() / 1_000);
+  const nanos = (date.getTime() % 1_000) * 1_000_000;
+  return { seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+  let millis = (t.seconds || 0) * 1_000;
+  millis += (t.nanos || 0) / 1_000_000;
+  return new gt.Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+  if (o instanceof gt.Date) {
+    return o;
+  } else if (typeof o === "string") {
+    return new gt.Date(o);
+  } else {
+    return fromTimestamp(Timestamp.fromJSON(o));
+  }
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

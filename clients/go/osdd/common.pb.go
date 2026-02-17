@@ -9,6 +9,7 @@ package osdd
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	unsafe "unsafe"
 )
@@ -753,6 +754,99 @@ func (b0 EntryFilter_builder) Build() *EntryFilter {
 	return m0
 }
 
+type DatesFilter struct {
+	state           protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_From *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=from,proto3,oneof"`
+	xxx_hidden_To   *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=to,proto3,oneof"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *DatesFilter) Reset() {
+	*x = DatesFilter{}
+	mi := &file_osdd_common_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DatesFilter) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DatesFilter) ProtoMessage() {}
+
+func (x *DatesFilter) ProtoReflect() protoreflect.Message {
+	mi := &file_osdd_common_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (x *DatesFilter) GetFrom() *timestamppb.Timestamp {
+	if x != nil {
+		return x.xxx_hidden_From
+	}
+	return nil
+}
+
+func (x *DatesFilter) GetTo() *timestamppb.Timestamp {
+	if x != nil {
+		return x.xxx_hidden_To
+	}
+	return nil
+}
+
+func (x *DatesFilter) SetFrom(v *timestamppb.Timestamp) {
+	x.xxx_hidden_From = v
+}
+
+func (x *DatesFilter) SetTo(v *timestamppb.Timestamp) {
+	x.xxx_hidden_To = v
+}
+
+func (x *DatesFilter) HasFrom() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_From != nil
+}
+
+func (x *DatesFilter) HasTo() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_To != nil
+}
+
+func (x *DatesFilter) ClearFrom() {
+	x.xxx_hidden_From = nil
+}
+
+func (x *DatesFilter) ClearTo() {
+	x.xxx_hidden_To = nil
+}
+
+type DatesFilter_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	From *timestamppb.Timestamp
+	To   *timestamppb.Timestamp
+}
+
+func (b0 DatesFilter_builder) Build() *DatesFilter {
+	m0 := &DatesFilter{}
+	b, x := &b0, m0
+	_, _ = b, x
+	x.xxx_hidden_From = b.From
+	x.xxx_hidden_To = b.To
+	return m0
+}
+
 // Text indicates that the UI should prompt for free-form multi-line text.
 type UserInputParameter_Text struct {
 	state         protoimpl.MessageState `protogen:"opaque.v1"`
@@ -762,7 +856,7 @@ type UserInputParameter_Text struct {
 
 func (x *UserInputParameter_Text) Reset() {
 	*x = UserInputParameter_Text{}
-	mi := &file_osdd_common_proto_msgTypes[7]
+	mi := &file_osdd_common_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -774,7 +868,7 @@ func (x *UserInputParameter_Text) String() string {
 func (*UserInputParameter_Text) ProtoMessage() {}
 
 func (x *UserInputParameter_Text) ProtoReflect() protoreflect.Message {
-	mi := &file_osdd_common_proto_msgTypes[7]
+	mi := &file_osdd_common_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -801,7 +895,7 @@ var File_osdd_common_proto protoreflect.FileDescriptor
 
 const file_osdd_common_proto_rawDesc = "" +
 	"\n" +
-	"\x11osdd/common.proto\x12\vosdd.common\"f\n" +
+	"\x11osdd/common.proto\x12\vosdd.common\x1a\x1fgoogle/protobuf/timestamp.proto\"f\n" +
 	"\fGitReference\x12\x12\n" +
 	"\x04path\x18\x01 \x01(\tR\x04path\x126\n" +
 	"\aversion\x18\x02 \x01(\v2\x17.osdd.common.GitVersionH\x00R\aversion\x88\x01\x01B\n" +
@@ -830,9 +924,14 @@ const file_osdd_common_proto_rawDesc = "" +
 	"\x03cmd\x18\x01 \x01(\tR\x03cmd\x12\x12\n" +
 	"\x04args\x18\x02 \x03(\tR\x04args\"\x1f\n" +
 	"\vEntryFilter\x12\x10\n" +
-	"\x03ide\x18\x01 \x03(\tR\x03ideB-Z+github.com/opensdd/osdd-api/clients/go/osddb\x06proto3"
+	"\x03ide\x18\x01 \x03(\tR\x03ide\"\x83\x01\n" +
+	"\vDatesFilter\x123\n" +
+	"\x04from\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampH\x00R\x04from\x88\x01\x01\x12/\n" +
+	"\x02to\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampH\x01R\x02to\x88\x01\x01B\a\n" +
+	"\x05_fromB\x05\n" +
+	"\x03_toB-Z+github.com/opensdd/osdd-api/clients/go/osddb\x06proto3"
 
-var file_osdd_common_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_osdd_common_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_osdd_common_proto_goTypes = []any{
 	(*GitReference)(nil),            // 0: osdd.common.GitReference
 	(*GitRepository)(nil),           // 1: osdd.common.GitRepository
@@ -841,16 +940,20 @@ var file_osdd_common_proto_goTypes = []any{
 	(*NameGenConfig)(nil),           // 4: osdd.common.NameGenConfig
 	(*Exec)(nil),                    // 5: osdd.common.Exec
 	(*EntryFilter)(nil),             // 6: osdd.common.EntryFilter
-	(*UserInputParameter_Text)(nil), // 7: osdd.common.UserInputParameter.Text
+	(*DatesFilter)(nil),             // 7: osdd.common.DatesFilter
+	(*UserInputParameter_Text)(nil), // 8: osdd.common.UserInputParameter.Text
+	(*timestamppb.Timestamp)(nil),   // 9: google.protobuf.Timestamp
 }
 var file_osdd_common_proto_depIdxs = []int32{
 	2, // 0: osdd.common.GitReference.version:type_name -> osdd.common.GitVersion
-	7, // 1: osdd.common.UserInputParameter.text:type_name -> osdd.common.UserInputParameter.Text
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	8, // 1: osdd.common.UserInputParameter.text:type_name -> osdd.common.UserInputParameter.Text
+	9, // 2: osdd.common.DatesFilter.from:type_name -> google.protobuf.Timestamp
+	9, // 3: osdd.common.DatesFilter.to:type_name -> google.protobuf.Timestamp
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_osdd_common_proto_init() }
@@ -867,13 +970,14 @@ func file_osdd_common_proto_init() {
 	file_osdd_common_proto_msgTypes[3].OneofWrappers = []any{
 		(*userInputParameter_Text_)(nil),
 	}
+	file_osdd_common_proto_msgTypes[7].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_osdd_common_proto_rawDesc), len(file_osdd_common_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
