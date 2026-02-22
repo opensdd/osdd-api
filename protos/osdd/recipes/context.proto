@@ -81,10 +81,12 @@ message UserInputContextSource {
 }
 
 message JiraIssuesSource {
-  string organization = 1;
+  // Jira Cloud site ID (UUID). Used to construct the API gateway URL:
+  // https://api.atlassian.com/ex/jira/{site_id}
+  string site_id = 1;
   repeated string projects = 2;
   optional IssuesFilter filter = 3;
-  // Name of the env var containing auth token for the organization. May be empty, then no token is used.
+  // Name of the env var containing auth token. May be empty, then no token is used.
   optional string auth_token_env_var = 4;
 }
 

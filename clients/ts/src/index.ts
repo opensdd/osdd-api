@@ -1,7 +1,17 @@
 // Public API: export only symbols declared in proto files (no DeepPartial, MessageFns, etc.)
 
 // osdd.common
-export { GitReference, GitVersion, protobufPackage as common_protobufPackage } from './osdd/common';
+export {
+  GitReference,
+  GitVersion,
+  DatesFilter,
+  Exec,
+  EntryFilter,
+  GitRepository,
+  NameGenConfig,
+  UserInputParameter,
+  UserInputParameter_Text,
+  protobufPackage as common_protobufPackage } from './osdd/common';
 
 // osdd.context
 export {
@@ -11,6 +21,9 @@ export {
   CombinedContextSource,
   CombinedContextSource_Item,
   UserInputContextSource,
+  JiraIssuesSource,
+  LinearIssuesSource,
+  IssuesFilter,
   protobufPackage as context_protobufPackage,
 } from './osdd/recipes/context';
 
@@ -25,6 +38,7 @@ export {
   Commands,
   Command,
   CommandFrom,
+  LaunchDetails,
   protobufPackage as ide_protobufPackage,
 } from './osdd/recipes/ide';
 

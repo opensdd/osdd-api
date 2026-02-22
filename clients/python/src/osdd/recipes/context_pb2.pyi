@@ -74,16 +74,16 @@ class UserInputContextSource(_message.Message):
     def __init__(self, entries: _Optional[_Iterable[_Union[_common_pb2.UserInputParameter, _Mapping]]] = ...) -> None: ...
 
 class JiraIssuesSource(_message.Message):
-    __slots__ = ("organization", "projects", "filter", "auth_token_env_var")
-    ORGANIZATION_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ("site_id", "projects", "filter", "auth_token_env_var")
+    SITE_ID_FIELD_NUMBER: _ClassVar[int]
     PROJECTS_FIELD_NUMBER: _ClassVar[int]
     FILTER_FIELD_NUMBER: _ClassVar[int]
     AUTH_TOKEN_ENV_VAR_FIELD_NUMBER: _ClassVar[int]
-    organization: str
+    site_id: str
     projects: _containers.RepeatedScalarFieldContainer[str]
     filter: IssuesFilter
     auth_token_env_var: str
-    def __init__(self, organization: _Optional[str] = ..., projects: _Optional[_Iterable[str]] = ..., filter: _Optional[_Union[IssuesFilter, _Mapping]] = ..., auth_token_env_var: _Optional[str] = ...) -> None: ...
+    def __init__(self, site_id: _Optional[str] = ..., projects: _Optional[_Iterable[str]] = ..., filter: _Optional[_Union[IssuesFilter, _Mapping]] = ..., auth_token_env_var: _Optional[str] = ...) -> None: ...
 
 class LinearIssuesSource(_message.Message):
     __slots__ = ("workspace", "teams", "filter", "auth_token_env_var")

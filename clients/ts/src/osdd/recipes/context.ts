@@ -105,12 +105,16 @@ export interface UserInputContextSource {
 }
 
 export interface JiraIssuesSource {
-  organization: string;
+  /**
+   * Jira Cloud site ID (UUID). Used to construct the API gateway URL:
+   * https://api.atlassian.com/ex/jira/{site_id}
+   */
+  siteId: string;
   projects: string[];
   filter?:
     | IssuesFilter
     | undefined;
-  /** Name of the env var containing auth token for the organization. May be empty, then no token is used. */
+  /** Name of the env var containing auth token. May be empty, then no token is used. */
   authTokenEnvVar?: string | undefined;
 }
 
@@ -844,13 +848,13 @@ export const UserInputContextSource: MessageFns<UserInputContextSource> = {
 };
 
 function createBaseJiraIssuesSource(): JiraIssuesSource {
-  return { organization: "", projects: [], filter: undefined, authTokenEnvVar: undefined };
+  return { siteId: "", projects: [], filter: undefined, authTokenEnvVar: undefined };
 }
 
 export const JiraIssuesSource: MessageFns<JiraIssuesSource> = {
   encode(message: JiraIssuesSource, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.organization !== "") {
-      writer.uint32(10).string(message.organization);
+    if (message.siteId !== "") {
+      writer.uint32(10).string(message.siteId);
     }
     for (const v of message.projects) {
       writer.uint32(18).string(v!);
@@ -876,7 +880,7 @@ export const JiraIssuesSource: MessageFns<JiraIssuesSource> = {
             break;
           }
 
-          message.organization = reader.string();
+          message.siteId = reader.string();
           continue;
         }
         case 2: {
@@ -914,7 +918,7 @@ export const JiraIssuesSource: MessageFns<JiraIssuesSource> = {
 
   fromJSON(object: any): JiraIssuesSource {
     return {
-      organization: isSet(object.organization) ? gt.String(object.organization) : "",
+      siteId: isSet(object.siteId) ? gt.String(object.siteId) : "",
       projects: gt.Array.isArray(object?.projects) ? object.projects.map((e: any) => gt.String(e)) : [],
       filter: isSet(object.filter) ? IssuesFilter.fromJSON(object.filter) : undefined,
       authTokenEnvVar: isSet(object.authTokenEnvVar) ? gt.String(object.authTokenEnvVar) : undefined,
@@ -923,8 +927,8 @@ export const JiraIssuesSource: MessageFns<JiraIssuesSource> = {
 
   toJSON(message: JiraIssuesSource): unknown {
     const obj: any = {};
-    if (message.organization !== "") {
-      obj.organization = message.organization;
+    if (message.siteId !== "") {
+      obj.siteId = message.siteId;
     }
     if (message.projects?.length) {
       obj.projects = message.projects;
@@ -943,7 +947,7 @@ export const JiraIssuesSource: MessageFns<JiraIssuesSource> = {
   },
   fromPartial(object: DeepPartial<JiraIssuesSource>): JiraIssuesSource {
     const message = createBaseJiraIssuesSource();
-    message.organization = object.organization ?? "";
+    message.siteId = object.siteId ?? "";
     message.projects = object.projects?.map((e) => e) || [];
     message.filter = (object.filter !== undefined && object.filter !== null)
       ? IssuesFilter.fromPartial(object.filter)

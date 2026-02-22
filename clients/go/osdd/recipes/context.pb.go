@@ -849,7 +849,7 @@ func (b0 UserInputContextSource_builder) Build() *UserInputContextSource {
 
 type JiraIssuesSource struct {
 	state                      protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Organization    string                 `protobuf:"bytes,1,opt,name=organization,proto3"`
+	xxx_hidden_SiteId          string                 `protobuf:"bytes,1,opt,name=site_id,json=siteId,proto3"`
 	xxx_hidden_Projects        []string               `protobuf:"bytes,2,rep,name=projects,proto3"`
 	xxx_hidden_Filter          *IssuesFilter          `protobuf:"bytes,3,opt,name=filter,proto3,oneof"`
 	xxx_hidden_AuthTokenEnvVar *string                `protobuf:"bytes,4,opt,name=auth_token_env_var,json=authTokenEnvVar,proto3,oneof"`
@@ -884,9 +884,9 @@ func (x *JiraIssuesSource) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *JiraIssuesSource) GetOrganization() string {
+func (x *JiraIssuesSource) GetSiteId() string {
 	if x != nil {
-		return x.xxx_hidden_Organization
+		return x.xxx_hidden_SiteId
 	}
 	return ""
 }
@@ -915,8 +915,8 @@ func (x *JiraIssuesSource) GetAuthTokenEnvVar() string {
 	return ""
 }
 
-func (x *JiraIssuesSource) SetOrganization(v string) {
-	x.xxx_hidden_Organization = v
+func (x *JiraIssuesSource) SetSiteId(v string) {
+	x.xxx_hidden_SiteId = v
 }
 
 func (x *JiraIssuesSource) SetProjects(v []string) {
@@ -958,10 +958,12 @@ func (x *JiraIssuesSource) ClearAuthTokenEnvVar() {
 type JiraIssuesSource_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	Organization string
-	Projects     []string
-	Filter       *IssuesFilter
-	// Name of the env var containing auth token for the organization. May be empty, then no token is used.
+	// Jira Cloud site ID (UUID). Used to construct the API gateway URL:
+	// https://api.atlassian.com/ex/jira/{site_id}
+	SiteId   string
+	Projects []string
+	Filter   *IssuesFilter
+	// Name of the env var containing auth token. May be empty, then no token is used.
 	AuthTokenEnvVar *string
 }
 
@@ -969,7 +971,7 @@ func (b0 JiraIssuesSource_builder) Build() *JiraIssuesSource {
 	m0 := &JiraIssuesSource{}
 	b, x := &b0, m0
 	_, _ = b, x
-	x.xxx_hidden_Organization = b.Organization
+	x.xxx_hidden_SiteId = b.SiteId
 	x.xxx_hidden_Projects = b.Projects
 	x.xxx_hidden_Filter = b.Filter
 	if b.AuthTokenEnvVar != nil {
@@ -1598,9 +1600,9 @@ const file_osdd_recipes_context_proto_rawDesc = "" +
 	"local_file\x18i \x01(\tH\x00R\tlocalFileB\x06\n" +
 	"\x04type\"S\n" +
 	"\x16UserInputContextSource\x129\n" +
-	"\aentries\x18\x01 \x03(\v2\x1f.osdd.common.UserInputParameterR\aentries\"\xe7\x01\n" +
-	"\x10JiraIssuesSource\x12\"\n" +
-	"\forganization\x18\x01 \x01(\tR\forganization\x12\x1a\n" +
+	"\aentries\x18\x01 \x03(\v2\x1f.osdd.common.UserInputParameterR\aentries\"\xdc\x01\n" +
+	"\x10JiraIssuesSource\x12\x17\n" +
+	"\asite_id\x18\x01 \x01(\tR\x06siteId\x12\x1a\n" +
 	"\bprojects\x18\x02 \x03(\tR\bprojects\x12?\n" +
 	"\x06filter\x18\x03 \x01(\v2\".osdd.recipes.context.IssuesFilterH\x00R\x06filter\x88\x01\x01\x120\n" +
 	"\x12auth_token_env_var\x18\x04 \x01(\tH\x01R\x0fauthTokenEnvVar\x88\x01\x01B\t\n" +
