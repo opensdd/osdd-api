@@ -316,6 +316,15 @@ func (x *ContextFrom) GetLinearIssues() *LinearIssuesSource {
 	return nil
 }
 
+func (x *ContextFrom) GetGitHistory() *GitHistorySource {
+	if x != nil {
+		if x, ok := x.xxx_hidden_Type.(*contextFrom_GitHistory); ok {
+			return x.GitHistory
+		}
+	}
+	return nil
+}
+
 func (x *ContextFrom) SetCombined(v *CombinedContextSource) {
 	if v == nil {
 		x.xxx_hidden_Type = nil
@@ -382,6 +391,14 @@ func (x *ContextFrom) SetLinearIssues(v *LinearIssuesSource) {
 		return
 	}
 	x.xxx_hidden_Type = &contextFrom_LinearIssues{v}
+}
+
+func (x *ContextFrom) SetGitHistory(v *GitHistorySource) {
+	if v == nil {
+		x.xxx_hidden_Type = nil
+		return
+	}
+	x.xxx_hidden_Type = &contextFrom_GitHistory{v}
 }
 
 func (x *ContextFrom) HasType() bool {
@@ -471,6 +488,14 @@ func (x *ContextFrom) HasLinearIssues() bool {
 	return ok
 }
 
+func (x *ContextFrom) HasGitHistory() bool {
+	if x == nil {
+		return false
+	}
+	_, ok := x.xxx_hidden_Type.(*contextFrom_GitHistory)
+	return ok
+}
+
 func (x *ContextFrom) ClearType() {
 	x.xxx_hidden_Type = nil
 }
@@ -535,6 +560,12 @@ func (x *ContextFrom) ClearLinearIssues() {
 	}
 }
 
+func (x *ContextFrom) ClearGitHistory() {
+	if _, ok := x.xxx_hidden_Type.(*contextFrom_GitHistory); ok {
+		x.xxx_hidden_Type = nil
+	}
+}
+
 const ContextFrom_Type_not_set_case case_ContextFrom_Type = 0
 const ContextFrom_Combined_case case_ContextFrom_Type = 100
 const ContextFrom_Github_case case_ContextFrom_Type = 101
@@ -546,6 +577,7 @@ const ContextFrom_LocalFile_case case_ContextFrom_Type = 106
 const ContextFrom_GitRepo_case case_ContextFrom_Type = 107
 const ContextFrom_JiraIssues_case case_ContextFrom_Type = 108
 const ContextFrom_LinearIssues_case case_ContextFrom_Type = 109
+const ContextFrom_GitHistory_case case_ContextFrom_Type = 110
 
 func (x *ContextFrom) WhichType() case_ContextFrom_Type {
 	if x == nil {
@@ -572,6 +604,8 @@ func (x *ContextFrom) WhichType() case_ContextFrom_Type {
 		return ContextFrom_JiraIssues_case
 	case *contextFrom_LinearIssues:
 		return ContextFrom_LinearIssues_case
+	case *contextFrom_GitHistory:
+		return ContextFrom_GitHistory_case
 	default:
 		return ContextFrom_Type_not_set_case
 	}
@@ -602,6 +636,7 @@ type ContextFrom_builder struct {
 	GitRepo      *osdd.GitRepository
 	JiraIssues   *JiraIssuesSource
 	LinearIssues *LinearIssuesSource
+	GitHistory   *GitHistorySource
 	// -- end of xxx_hidden_Type
 }
 
@@ -638,6 +673,9 @@ func (b0 ContextFrom_builder) Build() *ContextFrom {
 	}
 	if b.LinearIssues != nil {
 		x.xxx_hidden_Type = &contextFrom_LinearIssues{b.LinearIssues}
+	}
+	if b.GitHistory != nil {
+		x.xxx_hidden_Type = &contextFrom_GitHistory{b.GitHistory}
 	}
 	return m0
 }
@@ -705,6 +743,10 @@ type contextFrom_LinearIssues struct {
 	LinearIssues *LinearIssuesSource `protobuf:"bytes,109,opt,name=linear_issues,json=linearIssues,proto3,oneof"`
 }
 
+type contextFrom_GitHistory struct {
+	GitHistory *GitHistorySource `protobuf:"bytes,110,opt,name=git_history,json=gitHistory,proto3,oneof"`
+}
+
 func (*contextFrom_Combined) isContextFrom_Type() {}
 
 func (*contextFrom_Github) isContextFrom_Type() {}
@@ -724,6 +766,8 @@ func (*contextFrom_GitRepo) isContextFrom_Type() {}
 func (*contextFrom_JiraIssues) isContextFrom_Type() {}
 
 func (*contextFrom_LinearIssues) isContextFrom_Type() {}
+
+func (*contextFrom_GitHistory) isContextFrom_Type() {}
 
 // CombinedContextSource merges outputs from several individual sources.
 type CombinedContextSource struct {
@@ -1206,6 +1250,135 @@ func (b0 IssuesFilter_builder) Build() *IssuesFilter {
 	return m0
 }
 
+type GitHistorySource struct {
+	state                    protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Repo          *osdd.GitRepository    `protobuf:"bytes,1,opt,name=repo,proto3"`
+	xxx_hidden_DateFilter    *osdd.DatesFilter      `protobuf:"bytes,2,opt,name=date_filter,json=dateFilter,proto3,oneof"`
+	xxx_hidden_MaxFileTokens int32                  `protobuf:"varint,3,opt,name=max_file_tokens,json=maxFileTokens,proto3,oneof"`
+	XXX_raceDetectHookData   protoimpl.RaceDetectHookData
+	XXX_presence             [1]uint32
+	unknownFields            protoimpl.UnknownFields
+	sizeCache                protoimpl.SizeCache
+}
+
+func (x *GitHistorySource) Reset() {
+	*x = GitHistorySource{}
+	mi := &file_osdd_recipes_context_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GitHistorySource) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GitHistorySource) ProtoMessage() {}
+
+func (x *GitHistorySource) ProtoReflect() protoreflect.Message {
+	mi := &file_osdd_recipes_context_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (x *GitHistorySource) GetRepo() *osdd.GitRepository {
+	if x != nil {
+		return x.xxx_hidden_Repo
+	}
+	return nil
+}
+
+func (x *GitHistorySource) GetDateFilter() *osdd.DatesFilter {
+	if x != nil {
+		return x.xxx_hidden_DateFilter
+	}
+	return nil
+}
+
+func (x *GitHistorySource) GetMaxFileTokens() int32 {
+	if x != nil {
+		return x.xxx_hidden_MaxFileTokens
+	}
+	return 0
+}
+
+func (x *GitHistorySource) SetRepo(v *osdd.GitRepository) {
+	x.xxx_hidden_Repo = v
+}
+
+func (x *GitHistorySource) SetDateFilter(v *osdd.DatesFilter) {
+	x.xxx_hidden_DateFilter = v
+}
+
+func (x *GitHistorySource) SetMaxFileTokens(v int32) {
+	x.xxx_hidden_MaxFileTokens = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
+}
+
+func (x *GitHistorySource) HasRepo() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Repo != nil
+}
+
+func (x *GitHistorySource) HasDateFilter() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_DateFilter != nil
+}
+
+func (x *GitHistorySource) HasMaxFileTokens() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
+func (x *GitHistorySource) ClearRepo() {
+	x.xxx_hidden_Repo = nil
+}
+
+func (x *GitHistorySource) ClearDateFilter() {
+	x.xxx_hidden_DateFilter = nil
+}
+
+func (x *GitHistorySource) ClearMaxFileTokens() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_MaxFileTokens = 0
+}
+
+type GitHistorySource_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	// Repository to fetch history from (cloned temporarily).
+	Repo *osdd.GitRepository
+	// Date range for commits and PRs. Both from and to are inclusive.
+	DateFilter *osdd.DatesFilter
+	// Maximum estimated tokens per output file. Content is split at
+	// commit/PR boundaries when this limit is exceeded. Default: 50000.
+	MaxFileTokens *int32
+}
+
+func (b0 GitHistorySource_builder) Build() *GitHistorySource {
+	m0 := &GitHistorySource{}
+	b, x := &b0, m0
+	_, _ = b, x
+	x.xxx_hidden_Repo = b.Repo
+	x.xxx_hidden_DateFilter = b.DateFilter
+	if b.MaxFileTokens != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
+		x.xxx_hidden_MaxFileTokens = *b.MaxFileTokens
+	}
+	return m0
+}
+
 // Item represents a single source contributing to the combined content.
 type CombinedContextSource_Item struct {
 	state           protoimpl.MessageState            `protogen:"opaque.v1"`
@@ -1216,7 +1389,7 @@ type CombinedContextSource_Item struct {
 
 func (x *CombinedContextSource_Item) Reset() {
 	*x = CombinedContextSource_Item{}
-	mi := &file_osdd_recipes_context_proto_msgTypes[8]
+	mi := &file_osdd_recipes_context_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1228,7 +1401,7 @@ func (x *CombinedContextSource_Item) String() string {
 func (*CombinedContextSource_Item) ProtoMessage() {}
 
 func (x *CombinedContextSource_Item) ProtoReflect() protoreflect.Message {
-	mi := &file_osdd_recipes_context_proto_msgTypes[8]
+	mi := &file_osdd_recipes_context_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1504,7 +1677,7 @@ func (b0 CombinedContextSource_Item_builder) Build() *CombinedContextSource_Item
 type case_CombinedContextSource_Item_Type protoreflect.FieldNumber
 
 func (x case_CombinedContextSource_Item_Type) String() string {
-	md := file_osdd_recipes_context_proto_msgTypes[8].Descriptor()
+	md := file_osdd_recipes_context_proto_msgTypes[9].Descriptor()
 	if x == 0 {
 		return "not set"
 	}
@@ -1569,7 +1742,7 @@ const file_osdd_recipes_context_proto_rawDesc = "" +
 	"\x04path\x18\x01 \x01(\tR\x04path\x125\n" +
 	"\x04from\x18\x02 \x01(\v2!.osdd.recipes.context.ContextFromR\x04from\x125\n" +
 	"\x06filter\x18\x03 \x01(\v2\x18.osdd.common.EntryFilterH\x00R\x06filter\x88\x01\x01B\t\n" +
-	"\a_filter\"\xba\x04\n" +
+	"\a_filter\"\x85\x05\n" +
 	"\vContextFrom\x12I\n" +
 	"\bcombined\x18d \x01(\v2+.osdd.recipes.context.CombinedContextSourceH\x00R\bcombined\x123\n" +
 	"\x06github\x18e \x01(\v2\x19.osdd.common.GitReferenceH\x00R\x06github\x12%\n" +
@@ -1584,7 +1757,9 @@ const file_osdd_recipes_context_proto_rawDesc = "" +
 	"\bgit_repo\x18k \x01(\v2\x1a.osdd.common.GitRepositoryH\x00R\agitRepo\x12I\n" +
 	"\vjira_issues\x18l \x01(\v2&.osdd.recipes.context.JiraIssuesSourceH\x00R\n" +
 	"jiraIssues\x12O\n" +
-	"\rlinear_issues\x18m \x01(\v2(.osdd.recipes.context.LinearIssuesSourceH\x00R\flinearIssuesB\x06\n" +
+	"\rlinear_issues\x18m \x01(\v2(.osdd.recipes.context.LinearIssuesSourceH\x00R\flinearIssues\x12I\n" +
+	"\vgit_history\x18n \x01(\v2&.osdd.recipes.context.GitHistorySourceH\x00R\n" +
+	"gitHistoryB\x06\n" +
 	"\x04type\"\xf5\x02\n" +
 	"\x15CombinedContextSource\x12F\n" +
 	"\x05items\x18\x01 \x03(\v20.osdd.recipes.context.CombinedContextSource.ItemR\x05items\x1a\x93\x02\n" +
@@ -1619,9 +1794,16 @@ const file_osdd_recipes_context_proto_rawDesc = "" +
 	"\x11created_at_filter\x18\x01 \x01(\v2\x18.osdd.common.DatesFilterH\x00R\x0fcreatedAtFilter\x88\x01\x01\x12I\n" +
 	"\x11updated_at_filter\x18\x02 \x01(\v2\x18.osdd.common.DatesFilterH\x01R\x0fupdatedAtFilter\x88\x01\x01B\x14\n" +
 	"\x12_created_at_filterB\x14\n" +
-	"\x12_updated_at_filterB5Z3github.com/opensdd/osdd-api/clients/go/osdd/recipesb\x06proto3"
+	"\x12_updated_at_filter\"\xd3\x01\n" +
+	"\x10GitHistorySource\x12.\n" +
+	"\x04repo\x18\x01 \x01(\v2\x1a.osdd.common.GitRepositoryR\x04repo\x12>\n" +
+	"\vdate_filter\x18\x02 \x01(\v2\x18.osdd.common.DatesFilterH\x00R\n" +
+	"dateFilter\x88\x01\x01\x12+\n" +
+	"\x0fmax_file_tokens\x18\x03 \x01(\x05H\x01R\rmaxFileTokens\x88\x01\x01B\x0e\n" +
+	"\f_date_filterB\x12\n" +
+	"\x10_max_file_tokensB5Z3github.com/opensdd/osdd-api/clients/go/osdd/recipesb\x06proto3"
 
-var file_osdd_recipes_context_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_osdd_recipes_context_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_osdd_recipes_context_proto_goTypes = []any{
 	(*Context)(nil),                    // 0: osdd.recipes.context.Context
 	(*ContextEntry)(nil),               // 1: osdd.recipes.context.ContextEntry
@@ -1631,39 +1813,43 @@ var file_osdd_recipes_context_proto_goTypes = []any{
 	(*JiraIssuesSource)(nil),           // 5: osdd.recipes.context.JiraIssuesSource
 	(*LinearIssuesSource)(nil),         // 6: osdd.recipes.context.LinearIssuesSource
 	(*IssuesFilter)(nil),               // 7: osdd.recipes.context.IssuesFilter
-	(*CombinedContextSource_Item)(nil), // 8: osdd.recipes.context.CombinedContextSource.Item
-	(*osdd.EntryFilter)(nil),           // 9: osdd.common.EntryFilter
-	(*osdd.GitReference)(nil),          // 10: osdd.common.GitReference
-	(*osdd.Exec)(nil),                  // 11: osdd.common.Exec
-	(*osdd.GitRepository)(nil),         // 12: osdd.common.GitRepository
-	(*osdd.UserInputParameter)(nil),    // 13: osdd.common.UserInputParameter
-	(*osdd.DatesFilter)(nil),           // 14: osdd.common.DatesFilter
+	(*GitHistorySource)(nil),           // 8: osdd.recipes.context.GitHistorySource
+	(*CombinedContextSource_Item)(nil), // 9: osdd.recipes.context.CombinedContextSource.Item
+	(*osdd.EntryFilter)(nil),           // 10: osdd.common.EntryFilter
+	(*osdd.GitReference)(nil),          // 11: osdd.common.GitReference
+	(*osdd.Exec)(nil),                  // 12: osdd.common.Exec
+	(*osdd.GitRepository)(nil),         // 13: osdd.common.GitRepository
+	(*osdd.UserInputParameter)(nil),    // 14: osdd.common.UserInputParameter
+	(*osdd.DatesFilter)(nil),           // 15: osdd.common.DatesFilter
 }
 var file_osdd_recipes_context_proto_depIdxs = []int32{
 	1,  // 0: osdd.recipes.context.Context.entries:type_name -> osdd.recipes.context.ContextEntry
 	2,  // 1: osdd.recipes.context.ContextEntry.from:type_name -> osdd.recipes.context.ContextFrom
-	9,  // 2: osdd.recipes.context.ContextEntry.filter:type_name -> osdd.common.EntryFilter
+	10, // 2: osdd.recipes.context.ContextEntry.filter:type_name -> osdd.common.EntryFilter
 	3,  // 3: osdd.recipes.context.ContextFrom.combined:type_name -> osdd.recipes.context.CombinedContextSource
-	10, // 4: osdd.recipes.context.ContextFrom.github:type_name -> osdd.common.GitReference
-	11, // 5: osdd.recipes.context.ContextFrom.cmd:type_name -> osdd.common.Exec
+	11, // 4: osdd.recipes.context.ContextFrom.github:type_name -> osdd.common.GitReference
+	12, // 5: osdd.recipes.context.ContextFrom.cmd:type_name -> osdd.common.Exec
 	4,  // 6: osdd.recipes.context.ContextFrom.user_input:type_name -> osdd.recipes.context.UserInputContextSource
-	12, // 7: osdd.recipes.context.ContextFrom.git_repo:type_name -> osdd.common.GitRepository
+	13, // 7: osdd.recipes.context.ContextFrom.git_repo:type_name -> osdd.common.GitRepository
 	5,  // 8: osdd.recipes.context.ContextFrom.jira_issues:type_name -> osdd.recipes.context.JiraIssuesSource
 	6,  // 9: osdd.recipes.context.ContextFrom.linear_issues:type_name -> osdd.recipes.context.LinearIssuesSource
-	8,  // 10: osdd.recipes.context.CombinedContextSource.items:type_name -> osdd.recipes.context.CombinedContextSource.Item
-	13, // 11: osdd.recipes.context.UserInputContextSource.entries:type_name -> osdd.common.UserInputParameter
-	7,  // 12: osdd.recipes.context.JiraIssuesSource.filter:type_name -> osdd.recipes.context.IssuesFilter
-	7,  // 13: osdd.recipes.context.LinearIssuesSource.filter:type_name -> osdd.recipes.context.IssuesFilter
-	14, // 14: osdd.recipes.context.IssuesFilter.created_at_filter:type_name -> osdd.common.DatesFilter
-	14, // 15: osdd.recipes.context.IssuesFilter.updated_at_filter:type_name -> osdd.common.DatesFilter
-	10, // 16: osdd.recipes.context.CombinedContextSource.Item.github:type_name -> osdd.common.GitReference
-	11, // 17: osdd.recipes.context.CombinedContextSource.Item.cmd:type_name -> osdd.common.Exec
-	4,  // 18: osdd.recipes.context.CombinedContextSource.Item.user_input:type_name -> osdd.recipes.context.UserInputContextSource
-	19, // [19:19] is the sub-list for method output_type
-	19, // [19:19] is the sub-list for method input_type
-	19, // [19:19] is the sub-list for extension type_name
-	19, // [19:19] is the sub-list for extension extendee
-	0,  // [0:19] is the sub-list for field type_name
+	8,  // 10: osdd.recipes.context.ContextFrom.git_history:type_name -> osdd.recipes.context.GitHistorySource
+	9,  // 11: osdd.recipes.context.CombinedContextSource.items:type_name -> osdd.recipes.context.CombinedContextSource.Item
+	14, // 12: osdd.recipes.context.UserInputContextSource.entries:type_name -> osdd.common.UserInputParameter
+	7,  // 13: osdd.recipes.context.JiraIssuesSource.filter:type_name -> osdd.recipes.context.IssuesFilter
+	7,  // 14: osdd.recipes.context.LinearIssuesSource.filter:type_name -> osdd.recipes.context.IssuesFilter
+	15, // 15: osdd.recipes.context.IssuesFilter.created_at_filter:type_name -> osdd.common.DatesFilter
+	15, // 16: osdd.recipes.context.IssuesFilter.updated_at_filter:type_name -> osdd.common.DatesFilter
+	13, // 17: osdd.recipes.context.GitHistorySource.repo:type_name -> osdd.common.GitRepository
+	15, // 18: osdd.recipes.context.GitHistorySource.date_filter:type_name -> osdd.common.DatesFilter
+	11, // 19: osdd.recipes.context.CombinedContextSource.Item.github:type_name -> osdd.common.GitReference
+	12, // 20: osdd.recipes.context.CombinedContextSource.Item.cmd:type_name -> osdd.common.Exec
+	4,  // 21: osdd.recipes.context.CombinedContextSource.Item.user_input:type_name -> osdd.recipes.context.UserInputContextSource
+	22, // [22:22] is the sub-list for method output_type
+	22, // [22:22] is the sub-list for method input_type
+	22, // [22:22] is the sub-list for extension type_name
+	22, // [22:22] is the sub-list for extension extendee
+	0,  // [0:22] is the sub-list for field type_name
 }
 
 func init() { file_osdd_recipes_context_proto_init() }
@@ -1683,11 +1869,13 @@ func file_osdd_recipes_context_proto_init() {
 		(*contextFrom_GitRepo)(nil),
 		(*contextFrom_JiraIssues)(nil),
 		(*contextFrom_LinearIssues)(nil),
+		(*contextFrom_GitHistory)(nil),
 	}
 	file_osdd_recipes_context_proto_msgTypes[5].OneofWrappers = []any{}
 	file_osdd_recipes_context_proto_msgTypes[6].OneofWrappers = []any{}
 	file_osdd_recipes_context_proto_msgTypes[7].OneofWrappers = []any{}
-	file_osdd_recipes_context_proto_msgTypes[8].OneofWrappers = []any{
+	file_osdd_recipes_context_proto_msgTypes[8].OneofWrappers = []any{}
+	file_osdd_recipes_context_proto_msgTypes[9].OneofWrappers = []any{
 		(*combinedContextSource_Item_Github)(nil),
 		(*combinedContextSource_Item_Cmd)(nil),
 		(*combinedContextSource_Item_Text)(nil),
@@ -1701,7 +1889,7 @@ func file_osdd_recipes_context_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_osdd_recipes_context_proto_rawDesc), len(file_osdd_recipes_context_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   9,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

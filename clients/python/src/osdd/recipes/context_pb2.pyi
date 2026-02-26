@@ -23,7 +23,7 @@ class ContextEntry(_message.Message):
     def __init__(self, path: _Optional[str] = ..., filter: _Optional[_Union[_common_pb2.EntryFilter, _Mapping]] = ..., **kwargs) -> None: ...
 
 class ContextFrom(_message.Message):
-    __slots__ = ("combined", "github", "cmd", "text", "prefetch_id", "user_input", "local_file", "git_repo", "jira_issues", "linear_issues")
+    __slots__ = ("combined", "github", "cmd", "text", "prefetch_id", "user_input", "local_file", "git_repo", "jira_issues", "linear_issues", "git_history")
     COMBINED_FIELD_NUMBER: _ClassVar[int]
     GITHUB_FIELD_NUMBER: _ClassVar[int]
     CMD_FIELD_NUMBER: _ClassVar[int]
@@ -34,6 +34,7 @@ class ContextFrom(_message.Message):
     GIT_REPO_FIELD_NUMBER: _ClassVar[int]
     JIRA_ISSUES_FIELD_NUMBER: _ClassVar[int]
     LINEAR_ISSUES_FIELD_NUMBER: _ClassVar[int]
+    GIT_HISTORY_FIELD_NUMBER: _ClassVar[int]
     combined: CombinedContextSource
     github: _common_pb2.GitReference
     cmd: _common_pb2.Exec
@@ -44,7 +45,8 @@ class ContextFrom(_message.Message):
     git_repo: _common_pb2.GitRepository
     jira_issues: JiraIssuesSource
     linear_issues: LinearIssuesSource
-    def __init__(self, combined: _Optional[_Union[CombinedContextSource, _Mapping]] = ..., github: _Optional[_Union[_common_pb2.GitReference, _Mapping]] = ..., cmd: _Optional[_Union[_common_pb2.Exec, _Mapping]] = ..., text: _Optional[str] = ..., prefetch_id: _Optional[str] = ..., user_input: _Optional[_Union[UserInputContextSource, _Mapping]] = ..., local_file: _Optional[str] = ..., git_repo: _Optional[_Union[_common_pb2.GitRepository, _Mapping]] = ..., jira_issues: _Optional[_Union[JiraIssuesSource, _Mapping]] = ..., linear_issues: _Optional[_Union[LinearIssuesSource, _Mapping]] = ...) -> None: ...
+    git_history: GitHistorySource
+    def __init__(self, combined: _Optional[_Union[CombinedContextSource, _Mapping]] = ..., github: _Optional[_Union[_common_pb2.GitReference, _Mapping]] = ..., cmd: _Optional[_Union[_common_pb2.Exec, _Mapping]] = ..., text: _Optional[str] = ..., prefetch_id: _Optional[str] = ..., user_input: _Optional[_Union[UserInputContextSource, _Mapping]] = ..., local_file: _Optional[str] = ..., git_repo: _Optional[_Union[_common_pb2.GitRepository, _Mapping]] = ..., jira_issues: _Optional[_Union[JiraIssuesSource, _Mapping]] = ..., linear_issues: _Optional[_Union[LinearIssuesSource, _Mapping]] = ..., git_history: _Optional[_Union[GitHistorySource, _Mapping]] = ...) -> None: ...
 
 class CombinedContextSource(_message.Message):
     __slots__ = ("items",)
@@ -104,3 +106,13 @@ class IssuesFilter(_message.Message):
     created_at_filter: _common_pb2.DatesFilter
     updated_at_filter: _common_pb2.DatesFilter
     def __init__(self, created_at_filter: _Optional[_Union[_common_pb2.DatesFilter, _Mapping]] = ..., updated_at_filter: _Optional[_Union[_common_pb2.DatesFilter, _Mapping]] = ...) -> None: ...
+
+class GitHistorySource(_message.Message):
+    __slots__ = ("repo", "date_filter", "max_file_tokens")
+    REPO_FIELD_NUMBER: _ClassVar[int]
+    DATE_FILTER_FIELD_NUMBER: _ClassVar[int]
+    MAX_FILE_TOKENS_FIELD_NUMBER: _ClassVar[int]
+    repo: _common_pb2.GitRepository
+    date_filter: _common_pb2.DatesFilter
+    max_file_tokens: int
+    def __init__(self, repo: _Optional[_Union[_common_pb2.GitRepository, _Mapping]] = ..., date_filter: _Optional[_Union[_common_pb2.DatesFilter, _Mapping]] = ..., max_file_tokens: _Optional[int] = ...) -> None: ...

@@ -61,6 +61,7 @@ export interface ContextFrom {
     { $case: "gitRepo"; value: GitRepository }
     | { $case: "jiraIssues"; value: JiraIssuesSource }
     | { $case: "linearIssues"; value: LinearIssuesSource }
+    | { $case: "gitHistory"; value: GitHistorySource }
     | undefined;
 }
 
@@ -131,6 +132,22 @@ export interface LinearIssuesSource {
 export interface IssuesFilter {
   createdAtFilter?: DatesFilter | undefined;
   updatedAtFilter?: DatesFilter | undefined;
+}
+
+export interface GitHistorySource {
+  /** Repository to fetch history from (cloned temporarily). */
+  repo:
+    | GitRepository
+    | undefined;
+  /** Date range for commits and PRs. Both from and to are inclusive. */
+  dateFilter?:
+    | DatesFilter
+    | undefined;
+  /**
+   * Maximum estimated tokens per output file. Content is split at
+   * commit/PR boundaries when this limit is exceeded. Default: 50000.
+   */
+  maxFileTokens?: number | undefined;
 }
 
 function createBaseContext(): Context {
@@ -326,6 +343,9 @@ export const ContextFrom: MessageFns<ContextFrom> = {
       case "linearIssues":
         LinearIssuesSource.encode(message.type.value, writer.uint32(874).fork()).join();
         break;
+      case "gitHistory":
+        GitHistorySource.encode(message.type.value, writer.uint32(882).fork()).join();
+        break;
     }
     return writer;
   },
@@ -417,6 +437,14 @@ export const ContextFrom: MessageFns<ContextFrom> = {
           message.type = { $case: "linearIssues", value: LinearIssuesSource.decode(reader, reader.uint32()) };
           continue;
         }
+        case 110: {
+          if (tag !== 882) {
+            break;
+          }
+
+          message.type = { $case: "gitHistory", value: GitHistorySource.decode(reader, reader.uint32()) };
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -448,6 +476,8 @@ export const ContextFrom: MessageFns<ContextFrom> = {
         ? { $case: "jiraIssues", value: JiraIssuesSource.fromJSON(object.jiraIssues) }
         : isSet(object.linearIssues)
         ? { $case: "linearIssues", value: LinearIssuesSource.fromJSON(object.linearIssues) }
+        : isSet(object.gitHistory)
+        ? { $case: "gitHistory", value: GitHistorySource.fromJSON(object.gitHistory) }
         : undefined,
     };
   },
@@ -474,6 +504,8 @@ export const ContextFrom: MessageFns<ContextFrom> = {
       obj.jiraIssues = JiraIssuesSource.toJSON(message.type.value);
     } else if (message.type?.$case === "linearIssues") {
       obj.linearIssues = LinearIssuesSource.toJSON(message.type.value);
+    } else if (message.type?.$case === "gitHistory") {
+      obj.gitHistory = GitHistorySource.toJSON(message.type.value);
     }
     return obj;
   },
@@ -541,6 +573,12 @@ export const ContextFrom: MessageFns<ContextFrom> = {
       case "linearIssues": {
         if (object.type?.value !== undefined && object.type?.value !== null) {
           message.type = { $case: "linearIssues", value: LinearIssuesSource.fromPartial(object.type.value) };
+        }
+        break;
+      }
+      case "gitHistory": {
+        if (object.type?.value !== undefined && object.type?.value !== null) {
+          message.type = { $case: "gitHistory", value: GitHistorySource.fromPartial(object.type.value) };
         }
         break;
       }
@@ -1143,6 +1181,102 @@ export const IssuesFilter: MessageFns<IssuesFilter> = {
     message.updatedAtFilter = (object.updatedAtFilter !== undefined && object.updatedAtFilter !== null)
       ? DatesFilter.fromPartial(object.updatedAtFilter)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseGitHistorySource(): GitHistorySource {
+  return { repo: undefined, dateFilter: undefined, maxFileTokens: undefined };
+}
+
+export const GitHistorySource: MessageFns<GitHistorySource> = {
+  encode(message: GitHistorySource, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.repo !== undefined) {
+      GitRepository.encode(message.repo, writer.uint32(10).fork()).join();
+    }
+    if (message.dateFilter !== undefined) {
+      DatesFilter.encode(message.dateFilter, writer.uint32(18).fork()).join();
+    }
+    if (message.maxFileTokens !== undefined) {
+      writer.uint32(24).int32(message.maxFileTokens);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GitHistorySource {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGitHistorySource();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.repo = GitRepository.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.dateFilter = DatesFilter.decode(reader, reader.uint32());
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.maxFileTokens = reader.int32();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GitHistorySource {
+    return {
+      repo: isSet(object.repo) ? GitRepository.fromJSON(object.repo) : undefined,
+      dateFilter: isSet(object.dateFilter) ? DatesFilter.fromJSON(object.dateFilter) : undefined,
+      maxFileTokens: isSet(object.maxFileTokens) ? gt.Number(object.maxFileTokens) : undefined,
+    };
+  },
+
+  toJSON(message: GitHistorySource): unknown {
+    const obj: any = {};
+    if (message.repo !== undefined) {
+      obj.repo = GitRepository.toJSON(message.repo);
+    }
+    if (message.dateFilter !== undefined) {
+      obj.dateFilter = DatesFilter.toJSON(message.dateFilter);
+    }
+    if (message.maxFileTokens !== undefined) {
+      obj.maxFileTokens = Math.round(message.maxFileTokens);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<GitHistorySource>): GitHistorySource {
+    return GitHistorySource.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<GitHistorySource>): GitHistorySource {
+    const message = createBaseGitHistorySource();
+    message.repo = (object.repo !== undefined && object.repo !== null)
+      ? GitRepository.fromPartial(object.repo)
+      : undefined;
+    message.dateFilter = (object.dateFilter !== undefined && object.dateFilter !== null)
+      ? DatesFilter.fromPartial(object.dateFilter)
+      : undefined;
+    message.maxFileTokens = object.maxFileTokens ?? undefined;
     return message;
   },
 };

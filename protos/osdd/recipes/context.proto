@@ -45,6 +45,7 @@ message ContextFrom {
     common.GitRepository git_repo = 107;
     JiraIssuesSource jira_issues = 108;
     LinearIssuesSource linear_issues = 109;
+    GitHistorySource git_history = 110;
   }
 }
 
@@ -101,4 +102,14 @@ message LinearIssuesSource {
 message IssuesFilter {
   optional common.DatesFilter created_at_filter = 1;
   optional common.DatesFilter updated_at_filter = 2;
+}
+
+message GitHistorySource {
+  // Repository to fetch history from (cloned temporarily).
+  common.GitRepository repo = 1;
+  // Date range for commits and PRs. Both from and to are inclusive.
+  optional common.DatesFilter date_filter = 2;
+  // Maximum estimated tokens per output file. Content is split at
+  // commit/PR boundaries when this limit is exceeded. Default: 50000.
+  optional int32 max_file_tokens = 3;
 }
