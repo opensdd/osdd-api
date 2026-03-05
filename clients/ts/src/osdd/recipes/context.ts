@@ -148,6 +148,8 @@ export interface GitHistorySource {
    * commit/PR boundaries when this limit is exceeded. Default: 50000.
    */
   maxFileTokens?: number | undefined;
+  skipCommits: boolean;
+  skipPrs: boolean;
 }
 
 function createBaseContext(): Context {
@@ -1186,7 +1188,7 @@ export const IssuesFilter: MessageFns<IssuesFilter> = {
 };
 
 function createBaseGitHistorySource(): GitHistorySource {
-  return { repo: undefined, dateFilter: undefined, maxFileTokens: undefined };
+  return { repo: undefined, dateFilter: undefined, maxFileTokens: undefined, skipCommits: false, skipPrs: false };
 }
 
 export const GitHistorySource: MessageFns<GitHistorySource> = {
@@ -1199,6 +1201,12 @@ export const GitHistorySource: MessageFns<GitHistorySource> = {
     }
     if (message.maxFileTokens !== undefined) {
       writer.uint32(24).int32(message.maxFileTokens);
+    }
+    if (message.skipCommits !== false) {
+      writer.uint32(32).bool(message.skipCommits);
+    }
+    if (message.skipPrs !== false) {
+      writer.uint32(40).bool(message.skipPrs);
     }
     return writer;
   },
@@ -1234,6 +1242,22 @@ export const GitHistorySource: MessageFns<GitHistorySource> = {
           message.maxFileTokens = reader.int32();
           continue;
         }
+        case 4: {
+          if (tag !== 32) {
+            break;
+          }
+
+          message.skipCommits = reader.bool();
+          continue;
+        }
+        case 5: {
+          if (tag !== 40) {
+            break;
+          }
+
+          message.skipPrs = reader.bool();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1248,6 +1272,8 @@ export const GitHistorySource: MessageFns<GitHistorySource> = {
       repo: isSet(object.repo) ? GitRepository.fromJSON(object.repo) : undefined,
       dateFilter: isSet(object.dateFilter) ? DatesFilter.fromJSON(object.dateFilter) : undefined,
       maxFileTokens: isSet(object.maxFileTokens) ? gt.Number(object.maxFileTokens) : undefined,
+      skipCommits: isSet(object.skipCommits) ? gt.Boolean(object.skipCommits) : false,
+      skipPrs: isSet(object.skipPrs) ? gt.Boolean(object.skipPrs) : false,
     };
   },
 
@@ -1261,6 +1287,12 @@ export const GitHistorySource: MessageFns<GitHistorySource> = {
     }
     if (message.maxFileTokens !== undefined) {
       obj.maxFileTokens = Math.round(message.maxFileTokens);
+    }
+    if (message.skipCommits !== false) {
+      obj.skipCommits = message.skipCommits;
+    }
+    if (message.skipPrs !== false) {
+      obj.skipPrs = message.skipPrs;
     }
     return obj;
   },
@@ -1277,6 +1309,8 @@ export const GitHistorySource: MessageFns<GitHistorySource> = {
       ? DatesFilter.fromPartial(object.dateFilter)
       : undefined;
     message.maxFileTokens = object.maxFileTokens ?? undefined;
+    message.skipCommits = object.skipCommits ?? false;
+    message.skipPrs = object.skipPrs ?? false;
     return message;
   },
 };

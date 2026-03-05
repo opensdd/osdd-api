@@ -112,4 +112,6 @@ message GitHistorySource {
   // Maximum estimated tokens per output file. Content is split at
   // commit/PR boundaries when this limit is exceeded. Default: 50000.
   optional int32 max_file_tokens = 3;
+  bool skip_commits = 4;
+  bool skip_prs = 5;
 }
