@@ -108,15 +108,17 @@ class IssuesFilter(_message.Message):
     def __init__(self, created_at_filter: _Optional[_Union[_common_pb2.DatesFilter, _Mapping]] = ..., updated_at_filter: _Optional[_Union[_common_pb2.DatesFilter, _Mapping]] = ...) -> None: ...
 
 class GitHistorySource(_message.Message):
-    __slots__ = ("repo", "date_filter", "max_file_tokens", "skip_commits", "skip_prs")
+    __slots__ = ("repo", "date_filter", "max_file_tokens", "skip_commits", "skip_prs", "commit_summary_only")
     REPO_FIELD_NUMBER: _ClassVar[int]
     DATE_FILTER_FIELD_NUMBER: _ClassVar[int]
     MAX_FILE_TOKENS_FIELD_NUMBER: _ClassVar[int]
     SKIP_COMMITS_FIELD_NUMBER: _ClassVar[int]
     SKIP_PRS_FIELD_NUMBER: _ClassVar[int]
+    COMMIT_SUMMARY_ONLY_FIELD_NUMBER: _ClassVar[int]
     repo: _common_pb2.GitRepository
     date_filter: _common_pb2.DatesFilter
     max_file_tokens: int
     skip_commits: bool
     skip_prs: bool
-    def __init__(self, repo: _Optional[_Union[_common_pb2.GitRepository, _Mapping]] = ..., date_filter: _Optional[_Union[_common_pb2.DatesFilter, _Mapping]] = ..., max_file_tokens: _Optional[int] = ..., skip_commits: bool = ..., skip_prs: bool = ...) -> None: ...
+    commit_summary_only: bool
+    def __init__(self, repo: _Optional[_Union[_common_pb2.GitRepository, _Mapping]] = ..., date_filter: _Optional[_Union[_common_pb2.DatesFilter, _Mapping]] = ..., max_file_tokens: _Optional[int] = ..., skip_commits: bool = ..., skip_prs: bool = ..., commit_summary_only: bool = ...) -> None: ...

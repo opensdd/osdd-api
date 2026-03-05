@@ -1251,16 +1251,17 @@ func (b0 IssuesFilter_builder) Build() *IssuesFilter {
 }
 
 type GitHistorySource struct {
-	state                    protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Repo          *osdd.GitRepository    `protobuf:"bytes,1,opt,name=repo,proto3"`
-	xxx_hidden_DateFilter    *osdd.DatesFilter      `protobuf:"bytes,2,opt,name=date_filter,json=dateFilter,proto3,oneof"`
-	xxx_hidden_MaxFileTokens int32                  `protobuf:"varint,3,opt,name=max_file_tokens,json=maxFileTokens,proto3,oneof"`
-	xxx_hidden_SkipCommits   bool                   `protobuf:"varint,4,opt,name=skip_commits,json=skipCommits,proto3"`
-	xxx_hidden_SkipPrs       bool                   `protobuf:"varint,5,opt,name=skip_prs,json=skipPrs,proto3"`
-	XXX_raceDetectHookData   protoimpl.RaceDetectHookData
-	XXX_presence             [1]uint32
-	unknownFields            protoimpl.UnknownFields
-	sizeCache                protoimpl.SizeCache
+	state                        protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Repo              *osdd.GitRepository    `protobuf:"bytes,1,opt,name=repo,proto3"`
+	xxx_hidden_DateFilter        *osdd.DatesFilter      `protobuf:"bytes,2,opt,name=date_filter,json=dateFilter,proto3,oneof"`
+	xxx_hidden_MaxFileTokens     int32                  `protobuf:"varint,3,opt,name=max_file_tokens,json=maxFileTokens,proto3,oneof"`
+	xxx_hidden_SkipCommits       bool                   `protobuf:"varint,4,opt,name=skip_commits,json=skipCommits,proto3"`
+	xxx_hidden_SkipPrs           bool                   `protobuf:"varint,5,opt,name=skip_prs,json=skipPrs,proto3"`
+	xxx_hidden_CommitSummaryOnly bool                   `protobuf:"varint,6,opt,name=commit_summary_only,json=commitSummaryOnly,proto3"`
+	XXX_raceDetectHookData       protoimpl.RaceDetectHookData
+	XXX_presence                 [1]uint32
+	unknownFields                protoimpl.UnknownFields
+	sizeCache                    protoimpl.SizeCache
 }
 
 func (x *GitHistorySource) Reset() {
@@ -1323,6 +1324,13 @@ func (x *GitHistorySource) GetSkipPrs() bool {
 	return false
 }
 
+func (x *GitHistorySource) GetCommitSummaryOnly() bool {
+	if x != nil {
+		return x.xxx_hidden_CommitSummaryOnly
+	}
+	return false
+}
+
 func (x *GitHistorySource) SetRepo(v *osdd.GitRepository) {
 	x.xxx_hidden_Repo = v
 }
@@ -1333,7 +1341,7 @@ func (x *GitHistorySource) SetDateFilter(v *osdd.DatesFilter) {
 
 func (x *GitHistorySource) SetMaxFileTokens(v int32) {
 	x.xxx_hidden_MaxFileTokens = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 5)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 6)
 }
 
 func (x *GitHistorySource) SetSkipCommits(v bool) {
@@ -1342,6 +1350,10 @@ func (x *GitHistorySource) SetSkipCommits(v bool) {
 
 func (x *GitHistorySource) SetSkipPrs(v bool) {
 	x.xxx_hidden_SkipPrs = v
+}
+
+func (x *GitHistorySource) SetCommitSummaryOnly(v bool) {
+	x.xxx_hidden_CommitSummaryOnly = v
 }
 
 func (x *GitHistorySource) HasRepo() bool {
@@ -1387,9 +1399,10 @@ type GitHistorySource_builder struct {
 	DateFilter *osdd.DatesFilter
 	// Maximum estimated tokens per output file. Content is split at
 	// commit/PR boundaries when this limit is exceeded. Default: 50000.
-	MaxFileTokens *int32
-	SkipCommits   bool
-	SkipPrs       bool
+	MaxFileTokens     *int32
+	SkipCommits       bool
+	SkipPrs           bool
+	CommitSummaryOnly bool
 }
 
 func (b0 GitHistorySource_builder) Build() *GitHistorySource {
@@ -1399,11 +1412,12 @@ func (b0 GitHistorySource_builder) Build() *GitHistorySource {
 	x.xxx_hidden_Repo = b.Repo
 	x.xxx_hidden_DateFilter = b.DateFilter
 	if b.MaxFileTokens != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 5)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 6)
 		x.xxx_hidden_MaxFileTokens = *b.MaxFileTokens
 	}
 	x.xxx_hidden_SkipCommits = b.SkipCommits
 	x.xxx_hidden_SkipPrs = b.SkipPrs
+	x.xxx_hidden_CommitSummaryOnly = b.CommitSummaryOnly
 	return m0
 }
 
@@ -1822,14 +1836,15 @@ const file_osdd_recipes_context_proto_rawDesc = "" +
 	"\x11created_at_filter\x18\x01 \x01(\v2\x18.osdd.common.DatesFilterH\x00R\x0fcreatedAtFilter\x88\x01\x01\x12I\n" +
 	"\x11updated_at_filter\x18\x02 \x01(\v2\x18.osdd.common.DatesFilterH\x01R\x0fupdatedAtFilter\x88\x01\x01B\x14\n" +
 	"\x12_created_at_filterB\x14\n" +
-	"\x12_updated_at_filter\"\x91\x02\n" +
+	"\x12_updated_at_filter\"\xc1\x02\n" +
 	"\x10GitHistorySource\x12.\n" +
 	"\x04repo\x18\x01 \x01(\v2\x1a.osdd.common.GitRepositoryR\x04repo\x12>\n" +
 	"\vdate_filter\x18\x02 \x01(\v2\x18.osdd.common.DatesFilterH\x00R\n" +
 	"dateFilter\x88\x01\x01\x12+\n" +
 	"\x0fmax_file_tokens\x18\x03 \x01(\x05H\x01R\rmaxFileTokens\x88\x01\x01\x12!\n" +
 	"\fskip_commits\x18\x04 \x01(\bR\vskipCommits\x12\x19\n" +
-	"\bskip_prs\x18\x05 \x01(\bR\askipPrsB\x0e\n" +
+	"\bskip_prs\x18\x05 \x01(\bR\askipPrs\x12.\n" +
+	"\x13commit_summary_only\x18\x06 \x01(\bR\x11commitSummaryOnlyB\x0e\n" +
 	"\f_date_filterB\x12\n" +
 	"\x10_max_file_tokensB5Z3github.com/opensdd/osdd-api/clients/go/osdd/recipesb\x06proto3"
 

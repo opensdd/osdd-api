@@ -114,4 +114,5 @@ message GitHistorySource {
   optional int32 max_file_tokens = 3;
   bool skip_commits = 4;
   bool skip_prs = 5;
+  bool commit_summary_only = 6;
 }

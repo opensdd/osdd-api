@@ -150,6 +150,7 @@ export interface GitHistorySource {
   maxFileTokens?: number | undefined;
   skipCommits: boolean;
   skipPrs: boolean;
+  commitSummaryOnly: boolean;
 }
 
 function createBaseContext(): Context {
@@ -1188,7 +1189,14 @@ export const IssuesFilter: MessageFns<IssuesFilter> = {
 };
 
 function createBaseGitHistorySource(): GitHistorySource {
-  return { repo: undefined, dateFilter: undefined, maxFileTokens: undefined, skipCommits: false, skipPrs: false };
+  return {
+    repo: undefined,
+    dateFilter: undefined,
+    maxFileTokens: undefined,
+    skipCommits: false,
+    skipPrs: false,
+    commitSummaryOnly: false,
+  };
 }
 
 export const GitHistorySource: MessageFns<GitHistorySource> = {
@@ -1207,6 +1215,9 @@ export const GitHistorySource: MessageFns<GitHistorySource> = {
     }
     if (message.skipPrs !== false) {
       writer.uint32(40).bool(message.skipPrs);
+    }
+    if (message.commitSummaryOnly !== false) {
+      writer.uint32(48).bool(message.commitSummaryOnly);
     }
     return writer;
   },
@@ -1258,6 +1269,14 @@ export const GitHistorySource: MessageFns<GitHistorySource> = {
           message.skipPrs = reader.bool();
           continue;
         }
+        case 6: {
+          if (tag !== 48) {
+            break;
+          }
+
+          message.commitSummaryOnly = reader.bool();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1274,6 +1293,7 @@ export const GitHistorySource: MessageFns<GitHistorySource> = {
       maxFileTokens: isSet(object.maxFileTokens) ? gt.Number(object.maxFileTokens) : undefined,
       skipCommits: isSet(object.skipCommits) ? gt.Boolean(object.skipCommits) : false,
       skipPrs: isSet(object.skipPrs) ? gt.Boolean(object.skipPrs) : false,
+      commitSummaryOnly: isSet(object.commitSummaryOnly) ? gt.Boolean(object.commitSummaryOnly) : false,
     };
   },
 
@@ -1294,6 +1314,9 @@ export const GitHistorySource: MessageFns<GitHistorySource> = {
     if (message.skipPrs !== false) {
       obj.skipPrs = message.skipPrs;
     }
+    if (message.commitSummaryOnly !== false) {
+      obj.commitSummaryOnly = message.commitSummaryOnly;
+    }
     return obj;
   },
 
@@ -1311,6 +1334,7 @@ export const GitHistorySource: MessageFns<GitHistorySource> = {
     message.maxFileTokens = object.maxFileTokens ?? undefined;
     message.skipCommits = object.skipCommits ?? false;
     message.skipPrs = object.skipPrs ?? false;
+    message.commitSummaryOnly = object.commitSummaryOnly ?? false;
     return message;
   },
 };
