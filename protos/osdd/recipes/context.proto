@@ -46,6 +46,8 @@ message ContextFrom {
     JiraIssuesSource jira_issues = 108;
     LinearIssuesSource linear_issues = 109;
     GitHistorySource git_history = 110;
+    // Fetch raw bytes from an HTTP/HTTPS URL.
+    UrlSource url_fetch = 111;
   }
 }
 
@@ -102,6 +104,15 @@ message LinearIssuesSource {
 message IssuesFilter {
   optional common.DatesFilter created_at_filter = 1;
   optional common.DatesFilter updated_at_filter = 2;
+}
+
+// UrlSource fetches content from an HTTP/HTTPS URL and writes raw bytes
+// to the destination path defined by the enclosing ContextEntry.
+message UrlSource {
+  // HTTP or HTTPS URL to download.
+  string url = 1;
+  // When true, a failed fetch logs a warning instead of failing the recipe.
+  bool optional = 2;
 }
 
 message GitHistorySource {
