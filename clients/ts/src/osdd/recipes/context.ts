@@ -62,6 +62,9 @@ export interface ContextFrom {
     | { $case: "jiraIssues"; value: JiraIssuesSource }
     | { $case: "linearIssues"; value: LinearIssuesSource }
     | { $case: "gitHistory"; value: GitHistorySource }
+    | //
+    /** Fetch raw bytes from an HTTP/HTTPS URL. */
+    { $case: "urlFetch"; value: UrlSource }
     | undefined;
 }
 
@@ -132,6 +135,17 @@ export interface LinearIssuesSource {
 export interface IssuesFilter {
   createdAtFilter?: DatesFilter | undefined;
   updatedAtFilter?: DatesFilter | undefined;
+}
+
+/**
+ * UrlSource fetches content from an HTTP/HTTPS URL and writes raw bytes
+ * to the destination path defined by the enclosing ContextEntry.
+ */
+export interface UrlSource {
+  /** HTTP or HTTPS URL to download. */
+  url: string;
+  /** When true, a failed fetch logs a warning instead of failing the recipe. */
+  optional: boolean;
 }
 
 export interface GitHistorySource {
@@ -349,6 +363,9 @@ export const ContextFrom: MessageFns<ContextFrom> = {
       case "gitHistory":
         GitHistorySource.encode(message.type.value, writer.uint32(882).fork()).join();
         break;
+      case "urlFetch":
+        UrlSource.encode(message.type.value, writer.uint32(890).fork()).join();
+        break;
     }
     return writer;
   },
@@ -448,6 +465,14 @@ export const ContextFrom: MessageFns<ContextFrom> = {
           message.type = { $case: "gitHistory", value: GitHistorySource.decode(reader, reader.uint32()) };
           continue;
         }
+        case 111: {
+          if (tag !== 890) {
+            break;
+          }
+
+          message.type = { $case: "urlFetch", value: UrlSource.decode(reader, reader.uint32()) };
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -481,6 +506,8 @@ export const ContextFrom: MessageFns<ContextFrom> = {
         ? { $case: "linearIssues", value: LinearIssuesSource.fromJSON(object.linearIssues) }
         : isSet(object.gitHistory)
         ? { $case: "gitHistory", value: GitHistorySource.fromJSON(object.gitHistory) }
+        : isSet(object.urlFetch)
+        ? { $case: "urlFetch", value: UrlSource.fromJSON(object.urlFetch) }
         : undefined,
     };
   },
@@ -509,6 +536,8 @@ export const ContextFrom: MessageFns<ContextFrom> = {
       obj.linearIssues = LinearIssuesSource.toJSON(message.type.value);
     } else if (message.type?.$case === "gitHistory") {
       obj.gitHistory = GitHistorySource.toJSON(message.type.value);
+    } else if (message.type?.$case === "urlFetch") {
+      obj.urlFetch = UrlSource.toJSON(message.type.value);
     }
     return obj;
   },
@@ -582,6 +611,12 @@ export const ContextFrom: MessageFns<ContextFrom> = {
       case "gitHistory": {
         if (object.type?.value !== undefined && object.type?.value !== null) {
           message.type = { $case: "gitHistory", value: GitHistorySource.fromPartial(object.type.value) };
+        }
+        break;
+      }
+      case "urlFetch": {
+        if (object.type?.value !== undefined && object.type?.value !== null) {
+          message.type = { $case: "urlFetch", value: UrlSource.fromPartial(object.type.value) };
         }
         break;
       }
@@ -1184,6 +1219,82 @@ export const IssuesFilter: MessageFns<IssuesFilter> = {
     message.updatedAtFilter = (object.updatedAtFilter !== undefined && object.updatedAtFilter !== null)
       ? DatesFilter.fromPartial(object.updatedAtFilter)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseUrlSource(): UrlSource {
+  return { url: "", optional: false };
+}
+
+export const UrlSource: MessageFns<UrlSource> = {
+  encode(message: UrlSource, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.url !== "") {
+      writer.uint32(10).string(message.url);
+    }
+    if (message.optional !== false) {
+      writer.uint32(16).bool(message.optional);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UrlSource {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUrlSource();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.url = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.optional = reader.bool();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UrlSource {
+    return {
+      url: isSet(object.url) ? gt.String(object.url) : "",
+      optional: isSet(object.optional) ? gt.Boolean(object.optional) : false,
+    };
+  },
+
+  toJSON(message: UrlSource): unknown {
+    const obj: any = {};
+    if (message.url !== "") {
+      obj.url = message.url;
+    }
+    if (message.optional !== false) {
+      obj.optional = message.optional;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<UrlSource>): UrlSource {
+    return UrlSource.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<UrlSource>): UrlSource {
+    const message = createBaseUrlSource();
+    message.url = object.url ?? "";
+    message.optional = object.optional ?? false;
     return message;
   },
 };
